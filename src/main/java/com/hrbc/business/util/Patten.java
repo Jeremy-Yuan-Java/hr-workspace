@@ -1,0 +1,9 @@
+package com.hrbc.business.util;
+
+public class Patten {
+    public static String DATETIME = "yyyy-MM-dd HH:mm:ss";
+    public static String DATE = "yyyy-MM-dd";
+    public static String DATECOMPACT = "yyyyMMdd";
+    public static String DATETIMEMILS = "yyyy-MM-dd HH:mm:ss SSS";
+
+}
