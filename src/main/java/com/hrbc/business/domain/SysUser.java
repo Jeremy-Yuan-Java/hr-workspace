@@ -1,5 +1,7 @@
 package com.hrbc.business.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class SysUser {
@@ -18,9 +20,9 @@ public class SysUser {
     private Integer state;
 
     private Integer delflag;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
     public Integer getId() {

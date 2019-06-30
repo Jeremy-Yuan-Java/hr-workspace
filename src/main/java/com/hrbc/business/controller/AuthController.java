@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AuthController {
 
-    @GetMapping("api/auth/login")
+    @PostMapping("api/auth/login")
     public ResponseDTO save(@RequestBody SysUser entity) {
-        return new ResponseDTO(true, "success", entity.getId());
+        return new ResponseDTO(true, "success", "test");
     }
 
     @GetMapping("/")

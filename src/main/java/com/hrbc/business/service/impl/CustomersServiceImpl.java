@@ -1,12 +1,13 @@
 package com.hrbc.business.service.impl;
-import com.hrbc.business.domain.enums.DelFlagE;
+
 import com.alibaba.fastjson.JSONObject;
-import com.hrbc.business.mapper.SysUserMapper;
-import com.hrbc.business.domain.SysUser;
-import com.hrbc.business.domain.SysUserExample;
+import com.hrbc.business.domain.enums.DelFlagE;
+import com.hrbc.business.mapper.CustomersMapper;
+import com.hrbc.business.domain.Customers;
+import com.hrbc.business.domain.CustomersExample;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
-import com.hrbc.business.service.SysUserService;
+import com.hrbc.business.service.CustomersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,17 +15,17 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 @Service
-public class SysUserServiceImpl implements SysUserService {
+public class CustomersServiceImpl implements CustomersService {
     @Autowired
-    private SysUserMapper mapper;
+    private CustomersMapper mapper;
 
     @Override
-    public SysUser get(Integer id) {
+    public Customers get(Integer id) {
         return mapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public int save(SysUser entity) {
+    public int save(Customers entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             return mapper.updateByPrimaryKeySelective(entity);
@@ -38,7 +39,7 @@ public class SysUserServiceImpl implements SysUserService {
     public PageResultDTO loadPage(PageQueryParamDTO params) {
 
         int count = 0;
-        List<SysUser> list = null;
+        List<Customers> list = null;
     int page = 1;
     int size = 10;
     if (params != null) {
@@ -48,13 +49,13 @@ public class SysUserServiceImpl implements SysUserService {
     if (params.getSize() >= 0) {
     size = params.getSize();
     }
-SysUser dto = null;
-SysUserExample example = new SysUserExample();
+Customers dto = null;
+CustomersExample example = new CustomersExample();
     if (!StringUtils.isEmpty(params.getOrderby())) {
     example.setOrderByClause(params.getOrderby());
     }
     if (params.getQuery() != null) {
-    dto = JSONObject.toJavaObject(params.getQuery(), SysUser.class);
+    dto = JSONObject.toJavaObject(params.getQuery(), Customers.class);
     example.createCriteria();
        if (dto.getDelflag() == null) {
                     example.getOredCriteria().get(0).andDelflagEqualTo(DelFlagE.NO.code);
@@ -78,9 +79,9 @@ SysUserExample example = new SysUserExample();
     }
 
     @Override
-    public int remove(SysUser dto) {
+    public int remove(Customers dto) {
 
-SysUser delDto = new SysUser();
+Customers delDto = new Customers();
         delDto.setId(dto.getId());
         delDto.setDelflag(DelFlagE.YES.code);
 
@@ -88,13 +89,13 @@ SysUser delDto = new SysUser();
     }
 
     @Override
-    public int changeState(SysUser dto) {
+    public int changeState(Customers dto) {
 
     return mapper.updateByPrimaryKeySelective(dto);
     }
 
     @Override
-    public List<SysUser> query(SysUserExample example) {
+    public List<Customers> query(CustomersExample example) {
         return mapper.selectByExample(example);
 	}
 }
