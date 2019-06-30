@@ -1,4 +1,4 @@
-package com.hrbc.business.common;
+package com.hrbc.business.domain.common;
 
 import java.util.List;
 
