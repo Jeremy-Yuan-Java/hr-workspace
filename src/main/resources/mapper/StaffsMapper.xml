@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrbc.business.mapper.StaffsMapper" >
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.Staffs" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="staffno" property="staffno" jdbcType="VARCHAR" />
+    <result column="staffname" property="staffname" jdbcType="VARCHAR" />
+    <result column="phonenobak" property="phonenobak" jdbcType="VARCHAR" />
+    <result column="phoneno" property="phoneno" jdbcType="VARCHAR" />
+    <result column="emailbak" property="emailbak" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="stafftime" property="stafftime" jdbcType="TIMESTAMP" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="picpath" property="picpath" jdbcType="VARCHAR" />
+    <result column="jobtitle" property="jobtitle" jdbcType="VARCHAR" />
+    <result column="superior" property="superior" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="education" property="education" jdbcType="VARCHAR" />
+    <result column="salary" property="salary" jdbcType="INTEGER" />
+    <result column="constellation" property="constellation" jdbcType="VARCHAR" />
+    <result column="hometown" property="hometown" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="delflag" property="delflag" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="region" property="region" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, username, staffno, staffname, phonenobak, phoneno, emailbak, idcard, stafftime, 
+    email, picpath, jobtitle, superior, age, gender, education, salary, constellation, 
+    hometown, state, delflag, createtime, updatetime, region
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hrbc.business.domain.StaffsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from staffs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null" >
+      <if test="offset != null" >
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null" >
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from staffs
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from staffs
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.StaffsExample" >
+    delete from staffs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hrbc.business.domain.Staffs" >
+    insert into staffs (id, username, staffno, 
+      staffname, phonenobak, phoneno, 
+      emailbak, idcard, stafftime, 
+      email, picpath, jobtitle, 
+      superior, age, gender, 
+      education, salary, constellation, 
+      hometown, state, delflag, 
+      createtime, updatetime, region
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{staffno,jdbcType=VARCHAR}, 
+      #{staffname,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
+      #{emailbak,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{stafftime,jdbcType=TIMESTAMP}, 
+      #{email,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, #{jobtitle,jdbcType=VARCHAR}, 
+      #{superior,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{gender,jdbcType=INTEGER}, 
+      #{education,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, 
+      #{hometown,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{region,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.Staffs" >
+    insert into staffs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="staffno != null" >
+        staffno,
+      </if>
+      <if test="staffname != null" >
+        staffname,
+      </if>
+      <if test="phonenobak != null" >
+        phonenobak,
+      </if>
+      <if test="phoneno != null" >
+        phoneno,
+      </if>
+      <if test="emailbak != null" >
+        emailbak,
+      </if>
+      <if test="idcard != null" >
+        idcard,
+      </if>
+      <if test="stafftime != null" >
+        stafftime,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="picpath != null" >
+        picpath,
+      </if>
+      <if test="jobtitle != null" >
+        jobtitle,
+      </if>
+      <if test="superior != null" >
+        superior,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="education != null" >
+        education,
+      </if>
+      <if test="salary != null" >
+        salary,
+      </if>
+      <if test="constellation != null" >
+        constellation,
+      </if>
+      <if test="hometown != null" >
+        hometown,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="delflag != null" >
+        delflag,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="region != null" >
+        region,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="staffno != null" >
+        #{staffno,jdbcType=VARCHAR},
+      </if>
+      <if test="staffname != null" >
+        #{staffname,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenobak != null" >
+        #{phonenobak,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneno != null" >
+        #{phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="emailbak != null" >
+        #{emailbak,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="stafftime != null" >
+        #{stafftime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="jobtitle != null" >
+        #{jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="superior != null" >
+        #{superior,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=INTEGER},
+      </if>
+      <if test="constellation != null" >
+        #{constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="hometown != null" >
+        #{hometown,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="delflag != null" >
+        #{delflag,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="region != null" >
+        #{region,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hrbc.business.domain.StaffsExample" resultType="java.lang.Integer" >
+    select count(*) from staffs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update staffs
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.staffno != null" >
+        staffno = #{record.staffno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.staffname != null" >
+        staffname = #{record.staffname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phonenobak != null" >
+        phonenobak = #{record.phonenobak,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneno != null" >
+        phoneno = #{record.phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emailbak != null" >
+        emailbak = #{record.emailbak,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcard != null" >
+        idcard = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stafftime != null" >
+        stafftime = #{record.stafftime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picpath != null" >
+        picpath = #{record.picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobtitle != null" >
+        jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.superior != null" >
+        superior = #{record.superior,jdbcType=VARCHAR},
+      </if>
+      <if test="record.age != null" >
+        age = #{record.age,jdbcType=INTEGER},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=INTEGER},
+      </if>
+      <if test="record.education != null" >
+        education = #{record.education,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salary != null" >
+        salary = #{record.salary,jdbcType=INTEGER},
+      </if>
+      <if test="record.constellation != null" >
+        constellation = #{record.constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hometown != null" >
+        hometown = #{record.hometown,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.delflag != null" >
+        delflag = #{record.delflag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.region != null" >
+        region = #{record.region,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update staffs
+    set id = #{record.id,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      staffno = #{record.staffno,jdbcType=VARCHAR},
+      staffname = #{record.staffname,jdbcType=VARCHAR},
+      phonenobak = #{record.phonenobak,jdbcType=VARCHAR},
+      phoneno = #{record.phoneno,jdbcType=VARCHAR},
+      emailbak = #{record.emailbak,jdbcType=VARCHAR},
+      idcard = #{record.idcard,jdbcType=VARCHAR},
+      stafftime = #{record.stafftime,jdbcType=TIMESTAMP},
+      email = #{record.email,jdbcType=VARCHAR},
+      picpath = #{record.picpath,jdbcType=VARCHAR},
+      jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
+      superior = #{record.superior,jdbcType=VARCHAR},
+      age = #{record.age,jdbcType=INTEGER},
+      gender = #{record.gender,jdbcType=INTEGER},
+      education = #{record.education,jdbcType=VARCHAR},
+      salary = #{record.salary,jdbcType=INTEGER},
+      constellation = #{record.constellation,jdbcType=VARCHAR},
+      hometown = #{record.hometown,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      delflag = #{record.delflag,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      region = #{record.region,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.Staffs" >
+    update staffs
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="staffno != null" >
+        staffno = #{staffno,jdbcType=VARCHAR},
+      </if>
+      <if test="staffname != null" >
+        staffname = #{staffname,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenobak != null" >
+        phonenobak = #{phonenobak,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneno != null" >
+        phoneno = #{phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="emailbak != null" >
+        emailbak = #{emailbak,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="stafftime != null" >
+        stafftime = #{stafftime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        picpath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="jobtitle != null" >
+        jobtitle = #{jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="superior != null" >
+        superior = #{superior,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="education != null" >
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        salary = #{salary,jdbcType=INTEGER},
+      </if>
+      <if test="constellation != null" >
+        constellation = #{constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="hometown != null" >
+        hometown = #{hometown,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="delflag != null" >
+        delflag = #{delflag,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="region != null" >
+        region = #{region,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.Staffs" >
+    update staffs
+    set username = #{username,jdbcType=VARCHAR},
+      staffno = #{staffno,jdbcType=VARCHAR},
+      staffname = #{staffname,jdbcType=VARCHAR},
+      phonenobak = #{phonenobak,jdbcType=VARCHAR},
+      phoneno = #{phoneno,jdbcType=VARCHAR},
+      emailbak = #{emailbak,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      stafftime = #{stafftime,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      picpath = #{picpath,jdbcType=VARCHAR},
+      jobtitle = #{jobtitle,jdbcType=VARCHAR},
+      superior = #{superior,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      gender = #{gender,jdbcType=INTEGER},
+      education = #{education,jdbcType=VARCHAR},
+      salary = #{salary,jdbcType=INTEGER},
+      constellation = #{constellation,jdbcType=VARCHAR},
+      hometown = #{hometown,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      delflag = #{delflag,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      region = #{region,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

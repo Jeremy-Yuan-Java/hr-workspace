@@ -1,0 +1,931 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrbc.business.mapper.CandidatesMapper" >
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.Candidates" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="phoneno" property="phoneno" jdbcType="VARCHAR" />
+    <result column="phonenobak" property="phonenobak" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="emailbak" property="emailbak" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="picpath" property="picpath" jdbcType="VARCHAR" />
+    <result column="postcard" property="postcard" jdbcType="VARCHAR" />
+    <result column="jobtitle" property="jobtitle" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="education" property="education" jdbcType="VARCHAR" />
+    <result column="majorid" property="majorid" jdbcType="INTEGER" />
+    <result column="majordesc" property="majordesc" jdbcType="VARCHAR" />
+    <result column="majorid2" property="majorid2" jdbcType="INTEGER" />
+    <result column="majordesc2" property="majordesc2" jdbcType="VARCHAR" />
+    <result column="salary" property="salary" jdbcType="INTEGER" />
+    <result column="salarymin" property="salarymin" jdbcType="INTEGER" />
+    <result column="salarymax" property="salarymax" jdbcType="INTEGER" />
+    <result column="constellation" property="constellation" jdbcType="VARCHAR" />
+    <result column="hometown" property="hometown" jdbcType="VARCHAR" />
+    <result column="workbase" property="workbase" jdbcType="VARCHAR" />
+    <result column="expectworkbase" property="expectworkbase" jdbcType="VARCHAR" />
+    <result column="lastcompany" property="lastcompany" jdbcType="VARCHAR" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="worksate" property="worksate" jdbcType="INTEGER" />
+    <result column="resumestate" property="resumestate" jdbcType="INTEGER" />
+    <result column="resumefile" property="resumefile" jdbcType="VARCHAR" />
+    <result column="dresume" property="dresume" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="delflag" property="delflag" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="educations" property="educations" jdbcType="VARCHAR" />
+    <result column="workexperiences" property="workexperiences" jdbcType="VARCHAR" />
+    <result column="expectjob" property="expectjob" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="INTEGER" />
+    <result column="languagelevel" property="languagelevel" jdbcType="VARCHAR" />
+    <result column="degree" property="degree" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hrbc.business.domain.CandidatesWithBLOBs" extends="BaseResultMap" >
+    <result column="resumedetail" property="resumedetail" jdbcType="LONGVARBINARY" />
+    <result column="resumedetail1" property="resumedetail1" jdbcType="LONGVARBINARY" />
+    <result column="resumedetail2" property="resumedetail2" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, username, phoneno, phonenobak, email, emailbak, idcard, picpath, postcard, jobtitle, 
+    age, gender, education, majorid, majordesc, majorid2, majordesc2, salary, salarymin, 
+    salarymax, constellation, hometown, workbase, expectworkbase, lastcompany, tags, 
+    worksate, resumestate, resumefile, dresume, state, delflag, createtime, updatetime, 
+    educations, workexperiences, expectjob, weight, languagelevel, degree
+  </sql>
+  <sql id="Blob_Column_List" >
+    resumedetail, resumedetail1, resumedetail2
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.hrbc.business.domain.CandidatesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from candidates
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hrbc.business.domain.CandidatesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from candidates
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null" >
+      <if test="offset != null" >
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null" >
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from candidates
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from candidates
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.CandidatesExample" >
+    delete from candidates
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
+    insert into candidates (id, username, phoneno, 
+      phonenobak, email, emailbak, 
+      idcard, picpath, postcard, 
+      jobtitle, age, gender, 
+      education, majorid, majordesc, 
+      majorid2, majordesc2, salary, 
+      salarymin, salarymax, constellation, 
+      hometown, workbase, expectworkbase, 
+      lastcompany, tags, worksate, 
+      resumestate, resumefile, dresume, 
+      state, delflag, createtime, 
+      updatetime, educations, workexperiences, 
+      expectjob, weight, languagelevel, 
+      degree, resumedetail, resumedetail1, 
+      resumedetail2)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
+      #{phonenobak,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{emailbak,jdbcType=VARCHAR}, 
+      #{idcard,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, #{postcard,jdbcType=VARCHAR}, 
+      #{jobtitle,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{gender,jdbcType=INTEGER}, 
+      #{education,jdbcType=VARCHAR}, #{majorid,jdbcType=INTEGER}, #{majordesc,jdbcType=VARCHAR}, 
+      #{majorid2,jdbcType=INTEGER}, #{majordesc2,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, 
+      #{salarymin,jdbcType=INTEGER}, #{salarymax,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, 
+      #{hometown,jdbcType=VARCHAR}, #{workbase,jdbcType=VARCHAR}, #{expectworkbase,jdbcType=VARCHAR}, 
+      #{lastcompany,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, #{worksate,jdbcType=INTEGER}, 
+      #{resumestate,jdbcType=INTEGER}, #{resumefile,jdbcType=VARCHAR}, #{dresume,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{educations,jdbcType=VARCHAR}, #{workexperiences,jdbcType=VARCHAR}, 
+      #{expectjob,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{languagelevel,jdbcType=VARCHAR}, 
+      #{degree,jdbcType=INTEGER}, #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
+      #{resumedetail2,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
+    insert into candidates
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="phoneno != null" >
+        phoneno,
+      </if>
+      <if test="phonenobak != null" >
+        phonenobak,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="emailbak != null" >
+        emailbak,
+      </if>
+      <if test="idcard != null" >
+        idcard,
+      </if>
+      <if test="picpath != null" >
+        picpath,
+      </if>
+      <if test="postcard != null" >
+        postcard,
+      </if>
+      <if test="jobtitle != null" >
+        jobtitle,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="education != null" >
+        education,
+      </if>
+      <if test="majorid != null" >
+        majorid,
+      </if>
+      <if test="majordesc != null" >
+        majordesc,
+      </if>
+      <if test="majorid2 != null" >
+        majorid2,
+      </if>
+      <if test="majordesc2 != null" >
+        majordesc2,
+      </if>
+      <if test="salary != null" >
+        salary,
+      </if>
+      <if test="salarymin != null" >
+        salarymin,
+      </if>
+      <if test="salarymax != null" >
+        salarymax,
+      </if>
+      <if test="constellation != null" >
+        constellation,
+      </if>
+      <if test="hometown != null" >
+        hometown,
+      </if>
+      <if test="workbase != null" >
+        workbase,
+      </if>
+      <if test="expectworkbase != null" >
+        expectworkbase,
+      </if>
+      <if test="lastcompany != null" >
+        lastcompany,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
+      <if test="worksate != null" >
+        worksate,
+      </if>
+      <if test="resumestate != null" >
+        resumestate,
+      </if>
+      <if test="resumefile != null" >
+        resumefile,
+      </if>
+      <if test="dresume != null" >
+        dresume,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="delflag != null" >
+        delflag,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="educations != null" >
+        educations,
+      </if>
+      <if test="workexperiences != null" >
+        workexperiences,
+      </if>
+      <if test="expectjob != null" >
+        expectjob,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="languagelevel != null" >
+        languagelevel,
+      </if>
+      <if test="degree != null" >
+        degree,
+      </if>
+      <if test="resumedetail != null" >
+        resumedetail,
+      </if>
+      <if test="resumedetail1 != null" >
+        resumedetail1,
+      </if>
+      <if test="resumedetail2 != null" >
+        resumedetail2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneno != null" >
+        #{phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenobak != null" >
+        #{phonenobak,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailbak != null" >
+        #{emailbak,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="postcard != null" >
+        #{postcard,jdbcType=VARCHAR},
+      </if>
+      <if test="jobtitle != null" >
+        #{jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="majorid != null" >
+        #{majorid,jdbcType=INTEGER},
+      </if>
+      <if test="majordesc != null" >
+        #{majordesc,jdbcType=VARCHAR},
+      </if>
+      <if test="majorid2 != null" >
+        #{majorid2,jdbcType=INTEGER},
+      </if>
+      <if test="majordesc2 != null" >
+        #{majordesc2,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=INTEGER},
+      </if>
+      <if test="salarymin != null" >
+        #{salarymin,jdbcType=INTEGER},
+      </if>
+      <if test="salarymax != null" >
+        #{salarymax,jdbcType=INTEGER},
+      </if>
+      <if test="constellation != null" >
+        #{constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="hometown != null" >
+        #{hometown,jdbcType=VARCHAR},
+      </if>
+      <if test="workbase != null" >
+        #{workbase,jdbcType=VARCHAR},
+      </if>
+      <if test="expectworkbase != null" >
+        #{expectworkbase,jdbcType=VARCHAR},
+      </if>
+      <if test="lastcompany != null" >
+        #{lastcompany,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="worksate != null" >
+        #{worksate,jdbcType=INTEGER},
+      </if>
+      <if test="resumestate != null" >
+        #{resumestate,jdbcType=INTEGER},
+      </if>
+      <if test="resumefile != null" >
+        #{resumefile,jdbcType=VARCHAR},
+      </if>
+      <if test="dresume != null" >
+        #{dresume,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="delflag != null" >
+        #{delflag,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="educations != null" >
+        #{educations,jdbcType=VARCHAR},
+      </if>
+      <if test="workexperiences != null" >
+        #{workexperiences,jdbcType=VARCHAR},
+      </if>
+      <if test="expectjob != null" >
+        #{expectjob,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="languagelevel != null" >
+        #{languagelevel,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=INTEGER},
+      </if>
+      <if test="resumedetail != null" >
+        #{resumedetail,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="resumedetail1 != null" >
+        #{resumedetail1,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="resumedetail2 != null" >
+        #{resumedetail2,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hrbc.business.domain.CandidatesExample" resultType="java.lang.Integer" >
+    select count(*) from candidates
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update candidates
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneno != null" >
+        phoneno = #{record.phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phonenobak != null" >
+        phonenobak = #{record.phonenobak,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emailbak != null" >
+        emailbak = #{record.emailbak,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcard != null" >
+        idcard = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picpath != null" >
+        picpath = #{record.picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postcard != null" >
+        postcard = #{record.postcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobtitle != null" >
+        jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.age != null" >
+        age = #{record.age,jdbcType=INTEGER},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=INTEGER},
+      </if>
+      <if test="record.education != null" >
+        education = #{record.education,jdbcType=VARCHAR},
+      </if>
+      <if test="record.majorid != null" >
+        majorid = #{record.majorid,jdbcType=INTEGER},
+      </if>
+      <if test="record.majordesc != null" >
+        majordesc = #{record.majordesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.majorid2 != null" >
+        majorid2 = #{record.majorid2,jdbcType=INTEGER},
+      </if>
+      <if test="record.majordesc2 != null" >
+        majordesc2 = #{record.majordesc2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salary != null" >
+        salary = #{record.salary,jdbcType=INTEGER},
+      </if>
+      <if test="record.salarymin != null" >
+        salarymin = #{record.salarymin,jdbcType=INTEGER},
+      </if>
+      <if test="record.salarymax != null" >
+        salarymax = #{record.salarymax,jdbcType=INTEGER},
+      </if>
+      <if test="record.constellation != null" >
+        constellation = #{record.constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hometown != null" >
+        hometown = #{record.hometown,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workbase != null" >
+        workbase = #{record.workbase,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expectworkbase != null" >
+        expectworkbase = #{record.expectworkbase,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastcompany != null" >
+        lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tags != null" >
+        tags = #{record.tags,jdbcType=VARCHAR},
+      </if>
+      <if test="record.worksate != null" >
+        worksate = #{record.worksate,jdbcType=INTEGER},
+      </if>
+      <if test="record.resumestate != null" >
+        resumestate = #{record.resumestate,jdbcType=INTEGER},
+      </if>
+      <if test="record.resumefile != null" >
+        resumefile = #{record.resumefile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dresume != null" >
+        dresume = #{record.dresume,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.delflag != null" >
+        delflag = #{record.delflag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.educations != null" >
+        educations = #{record.educations,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workexperiences != null" >
+        workexperiences = #{record.workexperiences,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expectjob != null" >
+        expectjob = #{record.expectjob,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weight != null" >
+        weight = #{record.weight,jdbcType=INTEGER},
+      </if>
+      <if test="record.languagelevel != null" >
+        languagelevel = #{record.languagelevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.degree != null" >
+        degree = #{record.degree,jdbcType=INTEGER},
+      </if>
+      <if test="record.resumedetail != null" >
+        resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="record.resumedetail1 != null" >
+        resumedetail1 = #{record.resumedetail1,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="record.resumedetail2 != null" >
+        resumedetail2 = #{record.resumedetail2,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update candidates
+    set id = #{record.id,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      phoneno = #{record.phoneno,jdbcType=VARCHAR},
+      phonenobak = #{record.phonenobak,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      emailbak = #{record.emailbak,jdbcType=VARCHAR},
+      idcard = #{record.idcard,jdbcType=VARCHAR},
+      picpath = #{record.picpath,jdbcType=VARCHAR},
+      postcard = #{record.postcard,jdbcType=VARCHAR},
+      jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
+      age = #{record.age,jdbcType=INTEGER},
+      gender = #{record.gender,jdbcType=INTEGER},
+      education = #{record.education,jdbcType=VARCHAR},
+      majorid = #{record.majorid,jdbcType=INTEGER},
+      majordesc = #{record.majordesc,jdbcType=VARCHAR},
+      majorid2 = #{record.majorid2,jdbcType=INTEGER},
+      majordesc2 = #{record.majordesc2,jdbcType=VARCHAR},
+      salary = #{record.salary,jdbcType=INTEGER},
+      salarymin = #{record.salarymin,jdbcType=INTEGER},
+      salarymax = #{record.salarymax,jdbcType=INTEGER},
+      constellation = #{record.constellation,jdbcType=VARCHAR},
+      hometown = #{record.hometown,jdbcType=VARCHAR},
+      workbase = #{record.workbase,jdbcType=VARCHAR},
+      expectworkbase = #{record.expectworkbase,jdbcType=VARCHAR},
+      lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
+      tags = #{record.tags,jdbcType=VARCHAR},
+      worksate = #{record.worksate,jdbcType=INTEGER},
+      resumestate = #{record.resumestate,jdbcType=INTEGER},
+      resumefile = #{record.resumefile,jdbcType=VARCHAR},
+      dresume = #{record.dresume,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      delflag = #{record.delflag,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      educations = #{record.educations,jdbcType=VARCHAR},
+      workexperiences = #{record.workexperiences,jdbcType=VARCHAR},
+      expectjob = #{record.expectjob,jdbcType=VARCHAR},
+      weight = #{record.weight,jdbcType=INTEGER},
+      languagelevel = #{record.languagelevel,jdbcType=VARCHAR},
+      degree = #{record.degree,jdbcType=INTEGER},
+      resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
+      resumedetail1 = #{record.resumedetail1,jdbcType=LONGVARBINARY},
+      resumedetail2 = #{record.resumedetail2,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update candidates
+    set id = #{record.id,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      phoneno = #{record.phoneno,jdbcType=VARCHAR},
+      phonenobak = #{record.phonenobak,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      emailbak = #{record.emailbak,jdbcType=VARCHAR},
+      idcard = #{record.idcard,jdbcType=VARCHAR},
+      picpath = #{record.picpath,jdbcType=VARCHAR},
+      postcard = #{record.postcard,jdbcType=VARCHAR},
+      jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
+      age = #{record.age,jdbcType=INTEGER},
+      gender = #{record.gender,jdbcType=INTEGER},
+      education = #{record.education,jdbcType=VARCHAR},
+      majorid = #{record.majorid,jdbcType=INTEGER},
+      majordesc = #{record.majordesc,jdbcType=VARCHAR},
+      majorid2 = #{record.majorid2,jdbcType=INTEGER},
+      majordesc2 = #{record.majordesc2,jdbcType=VARCHAR},
+      salary = #{record.salary,jdbcType=INTEGER},
+      salarymin = #{record.salarymin,jdbcType=INTEGER},
+      salarymax = #{record.salarymax,jdbcType=INTEGER},
+      constellation = #{record.constellation,jdbcType=VARCHAR},
+      hometown = #{record.hometown,jdbcType=VARCHAR},
+      workbase = #{record.workbase,jdbcType=VARCHAR},
+      expectworkbase = #{record.expectworkbase,jdbcType=VARCHAR},
+      lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
+      tags = #{record.tags,jdbcType=VARCHAR},
+      worksate = #{record.worksate,jdbcType=INTEGER},
+      resumestate = #{record.resumestate,jdbcType=INTEGER},
+      resumefile = #{record.resumefile,jdbcType=VARCHAR},
+      dresume = #{record.dresume,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      delflag = #{record.delflag,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      educations = #{record.educations,jdbcType=VARCHAR},
+      workexperiences = #{record.workexperiences,jdbcType=VARCHAR},
+      expectjob = #{record.expectjob,jdbcType=VARCHAR},
+      weight = #{record.weight,jdbcType=INTEGER},
+      languagelevel = #{record.languagelevel,jdbcType=VARCHAR},
+      degree = #{record.degree,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
+    update candidates
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneno != null" >
+        phoneno = #{phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenobak != null" >
+        phonenobak = #{phonenobak,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailbak != null" >
+        emailbak = #{emailbak,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        picpath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="postcard != null" >
+        postcard = #{postcard,jdbcType=VARCHAR},
+      </if>
+      <if test="jobtitle != null" >
+        jobtitle = #{jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="education != null" >
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="majorid != null" >
+        majorid = #{majorid,jdbcType=INTEGER},
+      </if>
+      <if test="majordesc != null" >
+        majordesc = #{majordesc,jdbcType=VARCHAR},
+      </if>
+      <if test="majorid2 != null" >
+        majorid2 = #{majorid2,jdbcType=INTEGER},
+      </if>
+      <if test="majordesc2 != null" >
+        majordesc2 = #{majordesc2,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        salary = #{salary,jdbcType=INTEGER},
+      </if>
+      <if test="salarymin != null" >
+        salarymin = #{salarymin,jdbcType=INTEGER},
+      </if>
+      <if test="salarymax != null" >
+        salarymax = #{salarymax,jdbcType=INTEGER},
+      </if>
+      <if test="constellation != null" >
+        constellation = #{constellation,jdbcType=VARCHAR},
+      </if>
+      <if test="hometown != null" >
+        hometown = #{hometown,jdbcType=VARCHAR},
+      </if>
+      <if test="workbase != null" >
+        workbase = #{workbase,jdbcType=VARCHAR},
+      </if>
+      <if test="expectworkbase != null" >
+        expectworkbase = #{expectworkbase,jdbcType=VARCHAR},
+      </if>
+      <if test="lastcompany != null" >
+        lastcompany = #{lastcompany,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="worksate != null" >
+        worksate = #{worksate,jdbcType=INTEGER},
+      </if>
+      <if test="resumestate != null" >
+        resumestate = #{resumestate,jdbcType=INTEGER},
+      </if>
+      <if test="resumefile != null" >
+        resumefile = #{resumefile,jdbcType=VARCHAR},
+      </if>
+      <if test="dresume != null" >
+        dresume = #{dresume,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="delflag != null" >
+        delflag = #{delflag,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="educations != null" >
+        educations = #{educations,jdbcType=VARCHAR},
+      </if>
+      <if test="workexperiences != null" >
+        workexperiences = #{workexperiences,jdbcType=VARCHAR},
+      </if>
+      <if test="expectjob != null" >
+        expectjob = #{expectjob,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="languagelevel != null" >
+        languagelevel = #{languagelevel,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        degree = #{degree,jdbcType=INTEGER},
+      </if>
+      <if test="resumedetail != null" >
+        resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="resumedetail1 != null" >
+        resumedetail1 = #{resumedetail1,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="resumedetail2 != null" >
+        resumedetail2 = #{resumedetail2,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
+    update candidates
+    set username = #{username,jdbcType=VARCHAR},
+      phoneno = #{phoneno,jdbcType=VARCHAR},
+      phonenobak = #{phonenobak,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      emailbak = #{emailbak,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      picpath = #{picpath,jdbcType=VARCHAR},
+      postcard = #{postcard,jdbcType=VARCHAR},
+      jobtitle = #{jobtitle,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      gender = #{gender,jdbcType=INTEGER},
+      education = #{education,jdbcType=VARCHAR},
+      majorid = #{majorid,jdbcType=INTEGER},
+      majordesc = #{majordesc,jdbcType=VARCHAR},
+      majorid2 = #{majorid2,jdbcType=INTEGER},
+      majordesc2 = #{majordesc2,jdbcType=VARCHAR},
+      salary = #{salary,jdbcType=INTEGER},
+      salarymin = #{salarymin,jdbcType=INTEGER},
+      salarymax = #{salarymax,jdbcType=INTEGER},
+      constellation = #{constellation,jdbcType=VARCHAR},
+      hometown = #{hometown,jdbcType=VARCHAR},
+      workbase = #{workbase,jdbcType=VARCHAR},
+      expectworkbase = #{expectworkbase,jdbcType=VARCHAR},
+      lastcompany = #{lastcompany,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      worksate = #{worksate,jdbcType=INTEGER},
+      resumestate = #{resumestate,jdbcType=INTEGER},
+      resumefile = #{resumefile,jdbcType=VARCHAR},
+      dresume = #{dresume,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      delflag = #{delflag,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      educations = #{educations,jdbcType=VARCHAR},
+      workexperiences = #{workexperiences,jdbcType=VARCHAR},
+      expectjob = #{expectjob,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
+      languagelevel = #{languagelevel,jdbcType=VARCHAR},
+      degree = #{degree,jdbcType=INTEGER},
+      resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
+      resumedetail1 = #{resumedetail1,jdbcType=LONGVARBINARY},
+      resumedetail2 = #{resumedetail2,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.Candidates" >
+    update candidates
+    set username = #{username,jdbcType=VARCHAR},
+      phoneno = #{phoneno,jdbcType=VARCHAR},
+      phonenobak = #{phonenobak,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      emailbak = #{emailbak,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      picpath = #{picpath,jdbcType=VARCHAR},
+      postcard = #{postcard,jdbcType=VARCHAR},
+      jobtitle = #{jobtitle,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      gender = #{gender,jdbcType=INTEGER},
+      education = #{education,jdbcType=VARCHAR},
+      majorid = #{majorid,jdbcType=INTEGER},
+      majordesc = #{majordesc,jdbcType=VARCHAR},
+      majorid2 = #{majorid2,jdbcType=INTEGER},
+      majordesc2 = #{majordesc2,jdbcType=VARCHAR},
+      salary = #{salary,jdbcType=INTEGER},
+      salarymin = #{salarymin,jdbcType=INTEGER},
+      salarymax = #{salarymax,jdbcType=INTEGER},
+      constellation = #{constellation,jdbcType=VARCHAR},
+      hometown = #{hometown,jdbcType=VARCHAR},
+      workbase = #{workbase,jdbcType=VARCHAR},
+      expectworkbase = #{expectworkbase,jdbcType=VARCHAR},
+      lastcompany = #{lastcompany,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      worksate = #{worksate,jdbcType=INTEGER},
+      resumestate = #{resumestate,jdbcType=INTEGER},
+      resumefile = #{resumefile,jdbcType=VARCHAR},
+      dresume = #{dresume,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      delflag = #{delflag,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      educations = #{educations,jdbcType=VARCHAR},
+      workexperiences = #{workexperiences,jdbcType=VARCHAR},
+      expectjob = #{expectjob,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
+      languagelevel = #{languagelevel,jdbcType=VARCHAR},
+      degree = #{degree,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

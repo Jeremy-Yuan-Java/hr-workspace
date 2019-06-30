@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrbc.business.mapper.JobsCandidatesMapper" >
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.JobsCandidates" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="candidateid" property="candidateid" jdbcType="INTEGER" />
+    <result column="candidatename" property="candidatename" jdbcType="VARCHAR" />
+    <result column="optime" property="optime" jdbcType="TIMESTAMP" />
+    <result column="opuser" property="opuser" jdbcType="INTEGER" />
+    <result column="opusername" property="opusername" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="delflag" property="delflag" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hrbc.business.domain.JobsCandidates" extends="BaseResultMap" >
+    <result column="communicaterecs" property="communicaterecs" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, candidateid, candidatename, optime, opuser, opusername, remark, state, delflag, 
+    createtime, updatetime
+  </sql>
+  <sql id="Blob_Column_List" >
+    communicaterecs
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.hrbc.business.domain.JobsCandidatesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from jobs_candidates
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hrbc.business.domain.JobsCandidatesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from jobs_candidates
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null" >
+      <if test="offset != null" >
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null" >
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from jobs_candidates
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from jobs_candidates
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.JobsCandidatesExample" >
+    delete from jobs_candidates
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hrbc.business.domain.JobsCandidates" >
+    insert into jobs_candidates (id, candidateid, candidatename, 
+      optime, opuser, opusername, 
+      remark, state, delflag, 
+      createtime, updatetime, communicaterecs
+      )
+    values (#{id,jdbcType=INTEGER}, #{candidateid,jdbcType=INTEGER}, #{candidatename,jdbcType=VARCHAR}, 
+      #{optime,jdbcType=TIMESTAMP}, #{opuser,jdbcType=INTEGER}, #{opusername,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{communicaterecs,jdbcType=LONGVARBINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.JobsCandidates" >
+    insert into jobs_candidates
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="candidateid != null" >
+        candidateid,
+      </if>
+      <if test="candidatename != null" >
+        candidatename,
+      </if>
+      <if test="optime != null" >
+        optime,
+      </if>
+      <if test="opuser != null" >
+        opuser,
+      </if>
+      <if test="opusername != null" >
+        opusername,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="delflag != null" >
+        delflag,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="communicaterecs != null" >
+        communicaterecs,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="candidateid != null" >
+        #{candidateid,jdbcType=INTEGER},
+      </if>
+      <if test="candidatename != null" >
+        #{candidatename,jdbcType=VARCHAR},
+      </if>
+      <if test="optime != null" >
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opuser != null" >
+        #{opuser,jdbcType=INTEGER},
+      </if>
+      <if test="opusername != null" >
+        #{opusername,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="delflag != null" >
+        #{delflag,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="communicaterecs != null" >
+        #{communicaterecs,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hrbc.business.domain.JobsCandidatesExample" resultType="java.lang.Integer" >
+    select count(*) from jobs_candidates
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update jobs_candidates
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.candidateid != null" >
+        candidateid = #{record.candidateid,jdbcType=INTEGER},
+      </if>
+      <if test="record.candidatename != null" >
+        candidatename = #{record.candidatename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.optime != null" >
+        optime = #{record.optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.opuser != null" >
+        opuser = #{record.opuser,jdbcType=INTEGER},
+      </if>
+      <if test="record.opusername != null" >
+        opusername = #{record.opusername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.delflag != null" >
+        delflag = #{record.delflag,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.communicaterecs != null" >
+        communicaterecs = #{record.communicaterecs,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update jobs_candidates
+    set id = #{record.id,jdbcType=INTEGER},
+      candidateid = #{record.candidateid,jdbcType=INTEGER},
+      candidatename = #{record.candidatename,jdbcType=VARCHAR},
+      optime = #{record.optime,jdbcType=TIMESTAMP},
+      opuser = #{record.opuser,jdbcType=INTEGER},
+      opusername = #{record.opusername,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      delflag = #{record.delflag,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      communicaterecs = #{record.communicaterecs,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update jobs_candidates
+    set id = #{record.id,jdbcType=INTEGER},
+      candidateid = #{record.candidateid,jdbcType=INTEGER},
+      candidatename = #{record.candidatename,jdbcType=VARCHAR},
+      optime = #{record.optime,jdbcType=TIMESTAMP},
+      opuser = #{record.opuser,jdbcType=INTEGER},
+      opusername = #{record.opusername,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      delflag = #{record.delflag,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.JobsCandidates" >
+    update jobs_candidates
+    <set >
+      <if test="candidateid != null" >
+        candidateid = #{candidateid,jdbcType=INTEGER},
+      </if>
+      <if test="candidatename != null" >
+        candidatename = #{candidatename,jdbcType=VARCHAR},
+      </if>
+      <if test="optime != null" >
+        optime = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opuser != null" >
+        opuser = #{opuser,jdbcType=INTEGER},
+      </if>
+      <if test="opusername != null" >
+        opusername = #{opusername,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="delflag != null" >
+        delflag = #{delflag,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="communicaterecs != null" >
+        communicaterecs = #{communicaterecs,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hrbc.business.domain.JobsCandidates" >
+    update jobs_candidates
+    set candidateid = #{candidateid,jdbcType=INTEGER},
+      candidatename = #{candidatename,jdbcType=VARCHAR},
+      optime = #{optime,jdbcType=TIMESTAMP},
+      opuser = #{opuser,jdbcType=INTEGER},
+      opusername = #{opusername,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      delflag = #{delflag,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      communicaterecs = #{communicaterecs,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.JobsCandidates" >
+    update jobs_candidates
+    set candidateid = #{candidateid,jdbcType=INTEGER},
+      candidatename = #{candidatename,jdbcType=VARCHAR},
+      optime = #{optime,jdbcType=TIMESTAMP},
+      opuser = #{opuser,jdbcType=INTEGER},
+      opusername = #{opusername,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      delflag = #{delflag,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
