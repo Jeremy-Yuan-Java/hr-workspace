@@ -11,12 +11,14 @@ public interface SysUserService {
     public SysUser get(Integer id);
 
     public int save(SysUser entity);
+    public int verify(SysUser entity);
 
     public PageResultDTO loadPage(PageQueryParamDTO params);
 
     public int remove(SysUser dto);
 
     public int changeState(SysUser dto);
+    public int changePWD(SysUser dto);
 
     public List<SysUser> query(SysUserExample example);
 

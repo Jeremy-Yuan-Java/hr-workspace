@@ -27,6 +27,12 @@ public class SysUserController {
         return new ResponseDTO(true, "success", entity.getId());
     }
 
+    @PostMapping("changepwd")
+    public ResponseDTO changePWD(@RequestBody SysUser entity) {
+        service.changePWD(entity);
+        return new ResponseDTO(true, "success", entity.getId());
+    }
+
     @PostMapping("loadPage")
     public PageResultDTO loadPage(@RequestBody PageQueryParamDTO params) {
 

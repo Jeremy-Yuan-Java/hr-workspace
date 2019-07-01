@@ -16,6 +16,8 @@ import java.util.Date;
 
 @Component
 public class JwtToken {
+
+    public static String ISSUER = "GCQ";
     public static String sercetKey = "gcqsys";
     public final static long keeptime = 1000 * 60 * 60 * 24 * 1;
 
@@ -29,6 +31,9 @@ public class JwtToken {
         return USER_LOCAL.get();
     }
 
+    public static String generToken(String id, String username) {
+        return generToken(id, ISSUER, username);
+    }
 
     public static String generToken(String id, String issuer, String subject) {
         long ttlMillis = keeptime;
