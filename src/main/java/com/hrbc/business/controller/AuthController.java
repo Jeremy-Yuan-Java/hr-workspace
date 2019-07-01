@@ -13,6 +13,11 @@ public class AuthController {
         return new ResponseDTO(true, "success", "test");
     }
 
+    @PostMapping("api/auth/logout")
+    public ResponseDTO logout() {
+        return new ResponseDTO(true, "success", "");
+    }
+
     @GetMapping("/")
     public ResponseDTO ping() {
         return new ResponseDTO(true, "success", null);
