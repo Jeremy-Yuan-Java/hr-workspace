@@ -41,7 +41,7 @@
     <result column="expectjob" property="expectjob" jdbcType="VARCHAR" />
     <result column="weight" property="weight" jdbcType="INTEGER" />
     <result column="languagelevel" property="languagelevel" jdbcType="VARCHAR" />
-    <result column="degree" property="degree" jdbcType="INTEGER" />
+    <result column="degree" property="degree" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.hrbc.business.domain.CandidatesWithBLOBs" extends="BaseResultMap" >
     <result column="resumedetail" property="resumedetail" jdbcType="LONGVARBINARY" />
@@ -201,7 +201,7 @@
       #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
       #{updatetime,jdbcType=TIMESTAMP}, #{educations,jdbcType=VARCHAR}, #{workexperiences,jdbcType=VARCHAR}, 
       #{expectjob,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{languagelevel,jdbcType=VARCHAR}, 
-      #{degree,jdbcType=INTEGER}, #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
+      #{degree,jdbcType=VARCHAR}, #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
       #{resumedetail2,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
@@ -456,7 +456,7 @@
         #{languagelevel,jdbcType=VARCHAR},
       </if>
       <if test="degree != null" >
-        #{degree,jdbcType=INTEGER},
+        #{degree,jdbcType=VARCHAR},
       </if>
       <if test="resumedetail != null" >
         #{resumedetail,jdbcType=LONGVARBINARY},
@@ -596,7 +596,7 @@
         languagelevel = #{record.languagelevel,jdbcType=VARCHAR},
       </if>
       <if test="record.degree != null" >
-        degree = #{record.degree,jdbcType=INTEGER},
+        degree = #{record.degree,jdbcType=VARCHAR},
       </if>
       <if test="record.resumedetail != null" >
         resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
@@ -653,7 +653,7 @@
       expectjob = #{record.expectjob,jdbcType=VARCHAR},
       weight = #{record.weight,jdbcType=INTEGER},
       languagelevel = #{record.languagelevel,jdbcType=VARCHAR},
-      degree = #{record.degree,jdbcType=INTEGER},
+      degree = #{record.degree,jdbcType=VARCHAR},
       resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{record.resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{record.resumedetail2,jdbcType=LONGVARBINARY}
@@ -702,7 +702,7 @@
       expectjob = #{record.expectjob,jdbcType=VARCHAR},
       weight = #{record.weight,jdbcType=INTEGER},
       languagelevel = #{record.languagelevel,jdbcType=VARCHAR},
-      degree = #{record.degree,jdbcType=INTEGER}
+      degree = #{record.degree,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -825,7 +825,7 @@
         languagelevel = #{languagelevel,jdbcType=VARCHAR},
       </if>
       <if test="degree != null" >
-        degree = #{degree,jdbcType=INTEGER},
+        degree = #{degree,jdbcType=VARCHAR},
       </if>
       <if test="resumedetail != null" >
         resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
@@ -879,7 +879,7 @@
       expectjob = #{expectjob,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=INTEGER},
       languagelevel = #{languagelevel,jdbcType=VARCHAR},
-      degree = #{degree,jdbcType=INTEGER},
+      degree = #{degree,jdbcType=VARCHAR},
       resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{resumedetail2,jdbcType=LONGVARBINARY}
@@ -925,7 +925,7 @@
       expectjob = #{expectjob,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=INTEGER},
       languagelevel = #{languagelevel,jdbcType=VARCHAR},
-      degree = #{degree,jdbcType=INTEGER}
+      degree = #{degree,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1,5 +1,7 @@
 package com.hrbc.business.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Staffs {
@@ -18,7 +20,7 @@ public class Staffs {
     private String emailbak;
 
     private String idcard;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date stafftime;
 
     private String email;
@@ -50,6 +52,8 @@ public class Staffs {
     private Date updatetime;
 
     private String region;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date birthday;
 
     public Integer getId() {
         return id;
@@ -241,5 +245,13 @@ public class Staffs {
 
     public void setRegion(String region) {
         this.region = region == null ? null : region.trim();
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 }

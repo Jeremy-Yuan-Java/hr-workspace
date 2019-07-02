@@ -26,6 +26,7 @@
     <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
     <result column="region" property="region" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -88,7 +89,7 @@
   <sql id="Base_Column_List" >
     id, username, staffno, staffname, phonenobak, phoneno, emailbak, idcard, stafftime, 
     email, picpath, jobtitle, superior, age, gender, education, salary, constellation, 
-    hometown, state, delflag, createtime, updatetime, region
+    hometown, state, delflag, createtime, updatetime, region, birthday
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hrbc.business.domain.StaffsExample" >
     select
@@ -136,8 +137,8 @@
       superior, age, gender, 
       education, salary, constellation, 
       hometown, state, delflag, 
-      createtime, updatetime, region
-      )
+      createtime, updatetime, region, 
+      birthday)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{staffno,jdbcType=VARCHAR}, 
       #{staffname,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
       #{emailbak,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{stafftime,jdbcType=TIMESTAMP}, 
@@ -145,8 +146,8 @@
       #{superior,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{gender,jdbcType=INTEGER}, 
       #{education,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, 
       #{hometown,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{region,jdbcType=VARCHAR}
-      )
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{region,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.Staffs" >
     insert into staffs
@@ -223,6 +224,9 @@
       <if test="region != null" >
         region,
       </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -296,6 +300,9 @@
       </if>
       <if test="region != null" >
         #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -380,6 +387,9 @@
       <if test="record.region != null" >
         region = #{record.region,jdbcType=VARCHAR},
       </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -410,7 +420,8 @@
       delflag = #{record.delflag,jdbcType=INTEGER},
       createtime = #{record.createtime,jdbcType=TIMESTAMP},
       updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
-      region = #{record.region,jdbcType=VARCHAR}
+      region = #{record.region,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -487,6 +498,9 @@
       <if test="region != null" >
         region = #{region,jdbcType=VARCHAR},
       </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -514,7 +528,8 @@
       delflag = #{delflag,jdbcType=INTEGER},
       createtime = #{createtime,jdbcType=TIMESTAMP},
       updatetime = #{updatetime,jdbcType=TIMESTAMP},
-      region = #{region,jdbcType=VARCHAR}
+      region = #{region,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -81,7 +81,7 @@ public class Candidates {
 
     private String languagelevel;
 
-    private Integer degree;
+    private String degree;
 
     public Integer getId() {
         return id;
@@ -395,11 +395,11 @@ public class Candidates {
         this.languagelevel = languagelevel == null ? null : languagelevel.trim();
     }
 
-    public Integer getDegree() {
+    public String getDegree() {
         return degree;
     }
 
-    public void setDegree(Integer degree) {
-        this.degree = degree;
+    public void setDegree(String degree) {
+        this.degree = degree == null ? null : degree.trim();
     }
 }

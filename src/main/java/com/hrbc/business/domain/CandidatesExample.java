@@ -2715,52 +2715,62 @@ public class CandidatesExample {
             return (Criteria) this;
         }
 
-        public Criteria andDegreeEqualTo(Integer value) {
+        public Criteria andDegreeEqualTo(String value) {
             addCriterion("degree =", value, "degree");
             return (Criteria) this;
         }
 
-        public Criteria andDegreeNotEqualTo(Integer value) {
+        public Criteria andDegreeNotEqualTo(String value) {
             addCriterion("degree <>", value, "degree");
             return (Criteria) this;
         }
 
-        public Criteria andDegreeGreaterThan(Integer value) {
+        public Criteria andDegreeGreaterThan(String value) {
             addCriterion("degree >", value, "degree");
             return (Criteria) this;
         }
 
-        public Criteria andDegreeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andDegreeGreaterThanOrEqualTo(String value) {
             addCriterion("degree >=", value, "degree");
             return (Criteria) this;
         }
 
-        public Criteria andDegreeLessThan(Integer value) {
+        public Criteria andDegreeLessThan(String value) {
             addCriterion("degree <", value, "degree");
             return (Criteria) this;
         }
 
-        public Criteria andDegreeLessThanOrEqualTo(Integer value) {
+        public Criteria andDegreeLessThanOrEqualTo(String value) {
             addCriterion("degree <=", value, "degree");
             return (Criteria) this;
         }
 
-        public Criteria andDegreeIn(List<Integer> values) {
+        public Criteria andDegreeLike(String value) {
+            addCriterion("degree like", value, "degree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegreeNotLike(String value) {
+            addCriterion("degree not like", value, "degree");
+            return (Criteria) this;
+        }
+
+        public Criteria andDegreeIn(List<String> values) {
             addCriterion("degree in", values, "degree");
             return (Criteria) this;
         }
 
-        public Criteria andDegreeNotIn(List<Integer> values) {
+        public Criteria andDegreeNotIn(List<String> values) {
             addCriterion("degree not in", values, "degree");
             return (Criteria) this;
         }
 
-        public Criteria andDegreeBetween(Integer value1, Integer value2) {
+        public Criteria andDegreeBetween(String value1, String value2) {
             addCriterion("degree between", value1, value2, "degree");
             return (Criteria) this;
         }
 
-        public Criteria andDegreeNotBetween(Integer value1, Integer value2) {
+        public Criteria andDegreeNotBetween(String value1, String value2) {
             addCriterion("degree not between", value1, value2, "degree");
             return (Criteria) this;
         }
