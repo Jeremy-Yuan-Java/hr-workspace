@@ -13,7 +13,7 @@
     <result column="postcard" property="postcard" jdbcType="VARCHAR" />
     <result column="jobtitle" property="jobtitle" jdbcType="VARCHAR" />
     <result column="age" property="age" jdbcType="INTEGER" />
-    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
     <result column="education" property="education" jdbcType="VARCHAR" />
     <result column="majorid" property="majorid" jdbcType="INTEGER" />
     <result column="majordesc" property="majordesc" jdbcType="VARCHAR" />
@@ -191,7 +191,7 @@
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
       #{phonenobak,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{emailbak,jdbcType=VARCHAR}, 
       #{idcard,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, #{postcard,jdbcType=VARCHAR}, 
-      #{jobtitle,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{gender,jdbcType=INTEGER}, 
+      #{jobtitle,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{gender,jdbcType=VARCHAR}, 
       #{education,jdbcType=VARCHAR}, #{majorid,jdbcType=INTEGER}, #{majordesc,jdbcType=VARCHAR}, 
       #{majorid2,jdbcType=INTEGER}, #{majordesc2,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, 
       #{salarymin,jdbcType=INTEGER}, #{salarymax,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, 
@@ -372,7 +372,7 @@
         #{age,jdbcType=INTEGER},
       </if>
       <if test="gender != null" >
-        #{gender,jdbcType=INTEGER},
+        #{gender,jdbcType=VARCHAR},
       </if>
       <if test="education != null" >
         #{education,jdbcType=VARCHAR},
@@ -512,7 +512,7 @@
         age = #{record.age,jdbcType=INTEGER},
       </if>
       <if test="record.gender != null" >
-        gender = #{record.gender,jdbcType=INTEGER},
+        gender = #{record.gender,jdbcType=VARCHAR},
       </if>
       <if test="record.education != null" >
         education = #{record.education,jdbcType=VARCHAR},
@@ -625,7 +625,7 @@
       postcard = #{record.postcard,jdbcType=VARCHAR},
       jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
-      gender = #{record.gender,jdbcType=INTEGER},
+      gender = #{record.gender,jdbcType=VARCHAR},
       education = #{record.education,jdbcType=VARCHAR},
       majorid = #{record.majorid,jdbcType=INTEGER},
       majordesc = #{record.majordesc,jdbcType=VARCHAR},
@@ -674,7 +674,7 @@
       postcard = #{record.postcard,jdbcType=VARCHAR},
       jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
-      gender = #{record.gender,jdbcType=INTEGER},
+      gender = #{record.gender,jdbcType=VARCHAR},
       education = #{record.education,jdbcType=VARCHAR},
       majorid = #{record.majorid,jdbcType=INTEGER},
       majordesc = #{record.majordesc,jdbcType=VARCHAR},
@@ -741,7 +741,7 @@
         age = #{age,jdbcType=INTEGER},
       </if>
       <if test="gender != null" >
-        gender = #{gender,jdbcType=INTEGER},
+        gender = #{gender,jdbcType=VARCHAR},
       </if>
       <if test="education != null" >
         education = #{education,jdbcType=VARCHAR},
@@ -851,7 +851,7 @@
       postcard = #{postcard,jdbcType=VARCHAR},
       jobtitle = #{jobtitle,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
-      gender = #{gender,jdbcType=INTEGER},
+      gender = #{gender,jdbcType=VARCHAR},
       education = #{education,jdbcType=VARCHAR},
       majorid = #{majorid,jdbcType=INTEGER},
       majordesc = #{majordesc,jdbcType=VARCHAR},
@@ -897,7 +897,7 @@
       postcard = #{postcard,jdbcType=VARCHAR},
       jobtitle = #{jobtitle,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
-      gender = #{gender,jdbcType=INTEGER},
+      gender = #{gender,jdbcType=VARCHAR},
       education = #{education,jdbcType=VARCHAR},
       majorid = #{majorid,jdbcType=INTEGER},
       majordesc = #{majordesc,jdbcType=VARCHAR},

@@ -20,7 +20,7 @@ public class Staffs {
     private String emailbak;
 
     private String idcard;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date stafftime;
 
     private String email;
@@ -33,7 +33,7 @@ public class Staffs {
 
     private Integer age;
 
-    private Integer gender;
+    private String gender;
 
     private String education;
 
@@ -46,13 +46,13 @@ public class Staffs {
     private Integer state;
 
     private Integer delflag;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
     private String region;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     public Integer getId() {
@@ -167,11 +167,11 @@ public class Staffs {
         this.age = age;
     }
 
-    public Integer getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

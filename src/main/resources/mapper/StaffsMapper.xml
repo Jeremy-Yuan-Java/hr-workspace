@@ -16,7 +16,7 @@
     <result column="jobtitle" property="jobtitle" jdbcType="VARCHAR" />
     <result column="superior" property="superior" jdbcType="VARCHAR" />
     <result column="age" property="age" jdbcType="INTEGER" />
-    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
     <result column="education" property="education" jdbcType="VARCHAR" />
     <result column="salary" property="salary" jdbcType="INTEGER" />
     <result column="constellation" property="constellation" jdbcType="VARCHAR" />
@@ -143,7 +143,7 @@
       #{staffname,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
       #{emailbak,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{stafftime,jdbcType=TIMESTAMP}, 
       #{email,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, #{jobtitle,jdbcType=VARCHAR}, 
-      #{superior,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{gender,jdbcType=INTEGER}, 
+      #{superior,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{gender,jdbcType=VARCHAR}, 
       #{education,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, 
       #{hometown,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
       #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{region,jdbcType=VARCHAR}, 
@@ -272,7 +272,7 @@
         #{age,jdbcType=INTEGER},
       </if>
       <if test="gender != null" >
-        #{gender,jdbcType=INTEGER},
+        #{gender,jdbcType=VARCHAR},
       </if>
       <if test="education != null" >
         #{education,jdbcType=VARCHAR},
@@ -358,7 +358,7 @@
         age = #{record.age,jdbcType=INTEGER},
       </if>
       <if test="record.gender != null" >
-        gender = #{record.gender,jdbcType=INTEGER},
+        gender = #{record.gender,jdbcType=VARCHAR},
       </if>
       <if test="record.education != null" >
         education = #{record.education,jdbcType=VARCHAR},
@@ -411,7 +411,7 @@
       jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
       superior = #{record.superior,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
-      gender = #{record.gender,jdbcType=INTEGER},
+      gender = #{record.gender,jdbcType=VARCHAR},
       education = #{record.education,jdbcType=VARCHAR},
       salary = #{record.salary,jdbcType=INTEGER},
       constellation = #{record.constellation,jdbcType=VARCHAR},
@@ -469,7 +469,7 @@
         age = #{age,jdbcType=INTEGER},
       </if>
       <if test="gender != null" >
-        gender = #{gender,jdbcType=INTEGER},
+        gender = #{gender,jdbcType=VARCHAR},
       </if>
       <if test="education != null" >
         education = #{education,jdbcType=VARCHAR},
@@ -519,7 +519,7 @@
       jobtitle = #{jobtitle,jdbcType=VARCHAR},
       superior = #{superior,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
-      gender = #{gender,jdbcType=INTEGER},
+      gender = #{gender,jdbcType=VARCHAR},
       education = #{education,jdbcType=VARCHAR},
       salary = #{salary,jdbcType=INTEGER},
       constellation = #{constellation,jdbcType=VARCHAR},

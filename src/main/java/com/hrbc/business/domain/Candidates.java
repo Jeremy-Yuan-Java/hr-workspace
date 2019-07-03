@@ -25,7 +25,7 @@ public class Candidates {
 
     private Integer age;
 
-    private Integer gender;
+    private String gender;
 
     private String education;
 
@@ -171,12 +171,12 @@ public class Candidates {
         this.age = age;
     }
 
-    public Integer getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
-        this.gender = gender;
+    public void setGender(String gender) {
+        this.gender = gender == null ? null : gender.trim();
     }
 
     public String getEducation() {
