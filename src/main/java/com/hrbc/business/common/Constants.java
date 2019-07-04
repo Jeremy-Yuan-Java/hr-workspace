@@ -1,6 +1,8 @@
 package com.hrbc.business.common;
 
 public class Constants {
+
+
     /**
      * 系统对内提供服务的api基础路径
      */
