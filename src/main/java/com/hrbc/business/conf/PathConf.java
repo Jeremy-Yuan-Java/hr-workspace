@@ -41,7 +41,7 @@ public class PathConf {
     }
 
     public String getFilesubpathpic() {
-        return filesubpathpic;
+        return filerootpath + filesubpathpic;
     }
 
     public void setFilesubpathpic(String filesubpathpic) {
@@ -49,7 +49,7 @@ public class PathConf {
     }
 
     public String getFilesubpathresume() {
-        return filesubpathresume;
+        return filerootpath + filesubpathresume;
     }
 
     public void setFilesubpathresume(String filesubpathresume) {

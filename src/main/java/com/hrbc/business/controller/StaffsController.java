@@ -1,6 +1,7 @@
 package com.hrbc.business.controller;
 
 import com.hrbc.business.common.Constants;
+import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Staffs;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
@@ -20,6 +21,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "api/staffs", produces = {"application/json;charset=UTF-8"})
 public class StaffsController {
+    @Autowired
+    PathConf pathConf;
 
     @Autowired
     private StaffsService service;
@@ -72,7 +75,7 @@ public class StaffsController {
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         fileName = UUID.randomUUID() + suffixName;
-        File dest = new File(Constants.STAFF_PIC_PATH + fileName);
+        File dest = new File(pathConf.getFilesubpathpic() + fileName);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
         }
