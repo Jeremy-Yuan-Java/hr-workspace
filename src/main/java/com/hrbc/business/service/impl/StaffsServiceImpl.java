@@ -65,6 +65,37 @@ public class StaffsServiceImpl implements StaffsService {
                     example.getOredCriteria().get(0).andDelflagEqualTo(dto.getDelflag());
 
                 }
+                if (!StringUtils.isEmpty(dto.getState())) {
+                    example.getOredCriteria().get(0).andStateEqualTo(dto.getState());
+
+                }
+
+                if (!StringUtils.isEmpty(dto.getStaffname())) {
+                    example.getOredCriteria().get(0).andStaffnameLike("%" + dto.getStaffname() + "%");
+
+                }
+                if (!StringUtils.isEmpty(dto.getStaffno())) {
+                    example.getOredCriteria().get(0).andStaffnoLike("%" + dto.getStaffno() + "%");
+
+                }
+                if (!StringUtils.isEmpty(dto.getPhoneno())) {
+                    example.getOredCriteria().get(0).andPhonenoLike("%" + dto.getPhoneno() + "%");
+
+                }
+                if (!StringUtils.isEmpty(dto.getPhonenobak())) {
+                    example.getOredCriteria().get(0).andPhonenobakLike("%" + dto.getPhonenobak() + "%");
+
+                }
+                if (!StringUtils.isEmpty(dto.getEmail())) {
+                    example.getOredCriteria().get(0).andEmailLike("%" + dto.getEmail() + "%");
+
+                }
+                if (!StringUtils.isEmpty(dto.getIdcard())) {
+                    example.getOredCriteria().get(0).andIdcardLike("%" + dto.getIdcard() + "%");
+                }
+                if (!StringUtils.isEmpty(dto.getJobtitle())) {
+                    example.getOredCriteria().get(0).andJobtitleLike("%" + dto.getJobtitle() + "%");
+                }
             }
             count = mapper.countByExample(example);
 
