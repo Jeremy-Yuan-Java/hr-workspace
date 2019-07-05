@@ -11,7 +11,7 @@ public class PathConf {
     /**
      * ACCESS_PATH
      */
-    public static String ACCESS_PATH = "files";
+    public static String ACCESS_PATH = "/files/";
     /**
      * 员工照片文件名前缀
      */
@@ -27,10 +27,12 @@ public class PathConf {
 
     @Value("${file.rootpath}")
     private String filerootpath;
-    @Value("${file.subpath.pic}")
-    private String filesubpathpic;
-    @Value("${file.subpath.resume}")
-    private String filesubpathresume;
+    private static String PIC = "pic/";
+    private static String RESUME = "resumes/";
+
+    public static String ACCESS_PATH_PIC = ACCESS_PATH+PIC;
+    public static String ACCESS_PATH_RESUME = ACCESS_PATH+RESUME;
+
 
     public String getFilerootpath() {
         return filerootpath;
@@ -40,19 +42,14 @@ public class PathConf {
         this.filerootpath = filerootpath;
     }
 
-    public String getFilesubpathpic() {
-        return filerootpath + filesubpathpic;
+
+    public String getWholePathPic() {
+        return filerootpath + PIC;
     }
 
-    public void setFilesubpathpic(String filesubpathpic) {
-        this.filesubpathpic = filesubpathpic;
+    public String getWholePathResumes() {
+        return filerootpath + RESUME;
     }
 
-    public String getFilesubpathresume() {
-        return filerootpath + filesubpathresume;
-    }
 
-    public void setFilesubpathresume(String filesubpathresume) {
-        this.filesubpathresume = filesubpathresume;
-    }
 }

@@ -9,6 +9,7 @@ import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.service.StaffsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,25 +69,32 @@ public class StaffsController {
 
 
     @PostMapping(value = "/pic")
-    public ResponseDTO fileUpload(@RequestParam(value = "file") MultipartFile file, Model model, HttpServletRequest request) {
-        if (file.isEmpty()) {
-            System.out.println("文件为空空");
+    public ResponseDTO fileUpload(@RequestParam(value = "file") MultipartFile file,@RequestParam(value = "id") String id, Model model, HttpServletRequest request) {
+        if (file.isEmpty()||StringUtils.isEmpty(id)) {
+            System.out.println("文件为空/数据为空");
         }
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        fileName = UUID.randomUUID() + suffixName;
-        File dest = new File(pathConf.getFilesubpathpic() + fileName);
+        fileName = PathConf.SUFFIX_STAFFPIC.concat(id) + suffixName;
+        File dest = new File(pathConf.getWholePathPic().concat(fileName));
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
+        }else {
+            dest.deleteOnExit();
         }
         try {
             file.transferTo(dest);
+
+            Staffs staffs = new Staffs();
+            staffs.setId(Integer.parseInt(id));
+            staffs.setPicpath(fileName);
+            service.save(staffs);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String filename = "/temp-rainy/" + fileName;
-        model.addAttribute("filename", filename);
-        return new ResponseDTO(true,"",filename);
+
+
+        return new ResponseDTO(true,"",fileName);
     }
 
 }
