@@ -104,7 +104,7 @@ public class StaffsServiceImpl implements StaffsService {
                 example.setLimit(size);
                 list = mapper.selectByExample(example);
                 list.forEach(s -> {
-                    s.setPicpath(PathConf.ACCESS_PATH_PIC.concat(s.getPicpath()));
+                    s.setPicpath(PathConf.ACCESS_PATH_PIC+s.getPicpath());
                 });
             }
         }
