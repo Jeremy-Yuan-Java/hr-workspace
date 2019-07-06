@@ -20,6 +20,8 @@
     <result column="delflag" property="delflag" jdbcType="INTEGER" />
     <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="majorsub" property="majorsub" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.hrbc.business.domain.Customers" extends="BaseResultMap" >
     <result column="followrec" property="followrec" jdbcType="LONGVARBINARY" />
@@ -84,7 +86,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, cno, cname, opsstaffname, opsstaffno, contactuser, phoneno, phonenobak, email, 
-    emailbak, wechat, jobtitle, businessstate, verify, state, delflag, createtime, updatetime
+    emailbak, wechat, jobtitle, businessstate, verify, state, delflag, createtime, updatetime, 
+    major, majorsub
   </sql>
   <sql id="Blob_Column_List" >
     followrec
@@ -152,14 +155,16 @@
       emailbak, wechat, jobtitle, 
       businessstate, verify, state, 
       delflag, createtime, updatetime, 
-      followrec)
+      major, majorsub, followrec
+      )
     values (#{id,jdbcType=INTEGER}, #{cno,jdbcType=VARCHAR}, #{cname,jdbcType=VARCHAR}, 
       #{opsstaffname,jdbcType=VARCHAR}, #{opsstaffno,jdbcType=VARCHAR}, #{contactuser,jdbcType=VARCHAR}, 
       #{phoneno,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{emailbak,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, #{jobtitle,jdbcType=VARCHAR}, 
       #{businessstate,jdbcType=VARCHAR}, #{verify,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
       #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
-      #{followrec,jdbcType=LONGVARBINARY})
+      #{major,jdbcType=VARCHAR}, #{majorsub,jdbcType=VARCHAR}, #{followrec,jdbcType=LONGVARBINARY}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.Customers" >
     insert into customers
@@ -217,6 +222,12 @@
       </if>
       <if test="updatetime != null" >
         updatetime,
+      </if>
+      <if test="major != null" >
+        major,
+      </if>
+      <if test="majorsub != null" >
+        majorsub,
       </if>
       <if test="followrec != null" >
         followrec,
@@ -276,6 +287,12 @@
       </if>
       <if test="updatetime != null" >
         #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="major != null" >
+        #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="majorsub != null" >
+        #{majorsub,jdbcType=VARCHAR},
       </if>
       <if test="followrec != null" >
         #{followrec,jdbcType=LONGVARBINARY},
@@ -345,6 +362,12 @@
       <if test="record.updatetime != null" >
         updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.major != null" >
+        major = #{record.major,jdbcType=VARCHAR},
+      </if>
+      <if test="record.majorsub != null" >
+        majorsub = #{record.majorsub,jdbcType=VARCHAR},
+      </if>
       <if test="record.followrec != null" >
         followrec = #{record.followrec,jdbcType=LONGVARBINARY},
       </if>
@@ -373,6 +396,8 @@
       delflag = #{record.delflag,jdbcType=INTEGER},
       createtime = #{record.createtime,jdbcType=TIMESTAMP},
       updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      major = #{record.major,jdbcType=VARCHAR},
+      majorsub = #{record.majorsub,jdbcType=VARCHAR},
       followrec = #{record.followrec,jdbcType=LONGVARBINARY}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -397,7 +422,9 @@
       state = #{record.state,jdbcType=INTEGER},
       delflag = #{record.delflag,jdbcType=INTEGER},
       createtime = #{record.createtime,jdbcType=TIMESTAMP},
-      updatetime = #{record.updatetime,jdbcType=TIMESTAMP}
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      major = #{record.major,jdbcType=VARCHAR},
+      majorsub = #{record.majorsub,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -456,6 +483,12 @@
       <if test="updatetime != null" >
         updatetime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
+      <if test="major != null" >
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="majorsub != null" >
+        majorsub = #{majorsub,jdbcType=VARCHAR},
+      </if>
       <if test="followrec != null" >
         followrec = #{followrec,jdbcType=LONGVARBINARY},
       </if>
@@ -481,6 +514,8 @@
       delflag = #{delflag,jdbcType=INTEGER},
       createtime = #{createtime,jdbcType=TIMESTAMP},
       updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      major = #{major,jdbcType=VARCHAR},
+      majorsub = #{majorsub,jdbcType=VARCHAR},
       followrec = #{followrec,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -502,7 +537,9 @@
       state = #{state,jdbcType=INTEGER},
       delflag = #{delflag,jdbcType=INTEGER},
       createtime = #{createtime,jdbcType=TIMESTAMP},
-      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      major = #{major,jdbcType=VARCHAR},
+      majorsub = #{majorsub,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

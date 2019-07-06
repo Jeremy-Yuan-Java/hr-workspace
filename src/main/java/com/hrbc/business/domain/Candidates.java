@@ -29,13 +29,9 @@ public class Candidates {
 
     private String education;
 
-    private Integer majorid;
+    private String major;
 
-    private String majordesc;
-
-    private Integer majorid2;
-
-    private String majordesc2;
+    private String majorsub;
 
     private Integer salary;
 
@@ -187,36 +183,20 @@ public class Candidates {
         this.education = education == null ? null : education.trim();
     }
 
-    public Integer getMajorid() {
-        return majorid;
+    public String getMajor() {
+        return major;
     }
 
-    public void setMajorid(Integer majorid) {
-        this.majorid = majorid;
+    public void setMajor(String major) {
+        this.major = major == null ? null : major.trim();
     }
 
-    public String getMajordesc() {
-        return majordesc;
+    public String getMajorsub() {
+        return majorsub;
     }
 
-    public void setMajordesc(String majordesc) {
-        this.majordesc = majordesc == null ? null : majordesc.trim();
-    }
-
-    public Integer getMajorid2() {
-        return majorid2;
-    }
-
-    public void setMajorid2(Integer majorid2) {
-        this.majorid2 = majorid2;
-    }
-
-    public String getMajordesc2() {
-        return majordesc2;
-    }
-
-    public void setMajordesc2(String majordesc2) {
-        this.majordesc2 = majordesc2 == null ? null : majordesc2.trim();
+    public void setMajorsub(String majorsub) {
+        this.majorsub = majorsub == null ? null : majorsub.trim();
     }
 
     public Integer getSalary() {

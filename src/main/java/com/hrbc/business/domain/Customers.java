@@ -1,5 +1,7 @@
 package com.hrbc.business.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Customers {
@@ -34,10 +36,14 @@ public class Customers {
     private Integer state;
 
     private Integer delflag;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createtime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updatetime;
+
+    private String major;
+
+    private String majorsub;
 
     private byte[] followrec;
 
@@ -183,6 +189,22 @@ public class Customers {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major == null ? null : major.trim();
+    }
+
+    public String getMajorsub() {
+        return majorsub;
+    }
+
+    public void setMajorsub(String majorsub) {
+        this.majorsub = majorsub == null ? null : majorsub.trim();
     }
 
     public byte[] getFollowrec() {

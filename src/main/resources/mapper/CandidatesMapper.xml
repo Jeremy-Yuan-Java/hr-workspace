@@ -15,10 +15,8 @@
     <result column="age" property="age" jdbcType="INTEGER" />
     <result column="gender" property="gender" jdbcType="VARCHAR" />
     <result column="education" property="education" jdbcType="VARCHAR" />
-    <result column="majorid" property="majorid" jdbcType="INTEGER" />
-    <result column="majordesc" property="majordesc" jdbcType="VARCHAR" />
-    <result column="majorid2" property="majorid2" jdbcType="INTEGER" />
-    <result column="majordesc2" property="majordesc2" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="majorsub" property="majorsub" jdbcType="VARCHAR" />
     <result column="salary" property="salary" jdbcType="INTEGER" />
     <result column="salarymin" property="salarymin" jdbcType="INTEGER" />
     <result column="salarymax" property="salarymax" jdbcType="INTEGER" />
@@ -108,10 +106,10 @@
   </sql>
   <sql id="Base_Column_List" >
     id, username, phoneno, phonenobak, email, emailbak, idcard, picpath, postcard, jobtitle, 
-    age, gender, education, majorid, majordesc, majorid2, majordesc2, salary, salarymin, 
-    salarymax, constellation, hometown, workbase, expectworkbase, lastcompany, tags, 
-    worksate, resumestate, resumefile, dresume, state, delflag, createtime, updatetime, 
-    educations, workexperiences, expectjob, weight, languagelevel, degree
+    age, gender, education, major, majorsub, salary, salarymin, salarymax, constellation, 
+    hometown, workbase, expectworkbase, lastcompany, tags, worksate, resumestate, resumefile, 
+    dresume, state, delflag, createtime, updatetime, educations, workexperiences, expectjob, 
+    weight, languagelevel, degree
   </sql>
   <sql id="Blob_Column_List" >
     resumedetail, resumedetail1, resumedetail2
@@ -177,32 +175,32 @@
       phonenobak, email, emailbak, 
       idcard, picpath, postcard, 
       jobtitle, age, gender, 
-      education, majorid, majordesc, 
-      majorid2, majordesc2, salary, 
-      salarymin, salarymax, constellation, 
-      hometown, workbase, expectworkbase, 
-      lastcompany, tags, worksate, 
-      resumestate, resumefile, dresume, 
-      state, delflag, createtime, 
-      updatetime, educations, workexperiences, 
-      expectjob, weight, languagelevel, 
-      degree, resumedetail, resumedetail1, 
-      resumedetail2)
+      education, major, majorsub, 
+      salary, salarymin, salarymax, 
+      constellation, hometown, workbase, 
+      expectworkbase, lastcompany, tags, 
+      worksate, resumestate, resumefile, 
+      dresume, state, delflag, 
+      createtime, updatetime, educations, 
+      workexperiences, expectjob, weight, 
+      languagelevel, degree, resumedetail, 
+      resumedetail1, resumedetail2
+      )
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
       #{phonenobak,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{emailbak,jdbcType=VARCHAR}, 
       #{idcard,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, #{postcard,jdbcType=VARCHAR}, 
       #{jobtitle,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{gender,jdbcType=VARCHAR}, 
-      #{education,jdbcType=VARCHAR}, #{majorid,jdbcType=INTEGER}, #{majordesc,jdbcType=VARCHAR}, 
-      #{majorid2,jdbcType=INTEGER}, #{majordesc2,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, 
-      #{salarymin,jdbcType=INTEGER}, #{salarymax,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, 
-      #{hometown,jdbcType=VARCHAR}, #{workbase,jdbcType=VARCHAR}, #{expectworkbase,jdbcType=VARCHAR}, 
-      #{lastcompany,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, #{worksate,jdbcType=INTEGER}, 
-      #{resumestate,jdbcType=INTEGER}, #{resumefile,jdbcType=VARCHAR}, #{dresume,jdbcType=VARCHAR}, 
-      #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{updatetime,jdbcType=TIMESTAMP}, #{educations,jdbcType=VARCHAR}, #{workexperiences,jdbcType=VARCHAR}, 
-      #{expectjob,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{languagelevel,jdbcType=VARCHAR}, 
-      #{degree,jdbcType=VARCHAR}, #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
-      #{resumedetail2,jdbcType=LONGVARBINARY})
+      #{education,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, #{majorsub,jdbcType=VARCHAR}, 
+      #{salary,jdbcType=INTEGER}, #{salarymin,jdbcType=INTEGER}, #{salarymax,jdbcType=INTEGER}, 
+      #{constellation,jdbcType=VARCHAR}, #{hometown,jdbcType=VARCHAR}, #{workbase,jdbcType=VARCHAR}, 
+      #{expectworkbase,jdbcType=VARCHAR}, #{lastcompany,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, 
+      #{worksate,jdbcType=INTEGER}, #{resumestate,jdbcType=INTEGER}, #{resumefile,jdbcType=VARCHAR}, 
+      #{dresume,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{educations,jdbcType=VARCHAR}, 
+      #{workexperiences,jdbcType=VARCHAR}, #{expectjob,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, 
+      #{languagelevel,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR}, #{resumedetail,jdbcType=LONGVARBINARY}, 
+      #{resumedetail1,jdbcType=LONGVARBINARY}, #{resumedetail2,jdbcType=LONGVARBINARY}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
     insert into candidates
@@ -246,17 +244,11 @@
       <if test="education != null" >
         education,
       </if>
-      <if test="majorid != null" >
-        majorid,
+      <if test="major != null" >
+        major,
       </if>
-      <if test="majordesc != null" >
-        majordesc,
-      </if>
-      <if test="majorid2 != null" >
-        majorid2,
-      </if>
-      <if test="majordesc2 != null" >
-        majordesc2,
+      <if test="majorsub != null" >
+        majorsub,
       </if>
       <if test="salary != null" >
         salary,
@@ -377,17 +369,11 @@
       <if test="education != null" >
         #{education,jdbcType=VARCHAR},
       </if>
-      <if test="majorid != null" >
-        #{majorid,jdbcType=INTEGER},
+      <if test="major != null" >
+        #{major,jdbcType=VARCHAR},
       </if>
-      <if test="majordesc != null" >
-        #{majordesc,jdbcType=VARCHAR},
-      </if>
-      <if test="majorid2 != null" >
-        #{majorid2,jdbcType=INTEGER},
-      </if>
-      <if test="majordesc2 != null" >
-        #{majordesc2,jdbcType=VARCHAR},
+      <if test="majorsub != null" >
+        #{majorsub,jdbcType=VARCHAR},
       </if>
       <if test="salary != null" >
         #{salary,jdbcType=INTEGER},
@@ -517,17 +503,11 @@
       <if test="record.education != null" >
         education = #{record.education,jdbcType=VARCHAR},
       </if>
-      <if test="record.majorid != null" >
-        majorid = #{record.majorid,jdbcType=INTEGER},
+      <if test="record.major != null" >
+        major = #{record.major,jdbcType=VARCHAR},
       </if>
-      <if test="record.majordesc != null" >
-        majordesc = #{record.majordesc,jdbcType=VARCHAR},
-      </if>
-      <if test="record.majorid2 != null" >
-        majorid2 = #{record.majorid2,jdbcType=INTEGER},
-      </if>
-      <if test="record.majordesc2 != null" >
-        majordesc2 = #{record.majordesc2,jdbcType=VARCHAR},
+      <if test="record.majorsub != null" >
+        majorsub = #{record.majorsub,jdbcType=VARCHAR},
       </if>
       <if test="record.salary != null" >
         salary = #{record.salary,jdbcType=INTEGER},
@@ -627,10 +607,8 @@
       age = #{record.age,jdbcType=INTEGER},
       gender = #{record.gender,jdbcType=VARCHAR},
       education = #{record.education,jdbcType=VARCHAR},
-      majorid = #{record.majorid,jdbcType=INTEGER},
-      majordesc = #{record.majordesc,jdbcType=VARCHAR},
-      majorid2 = #{record.majorid2,jdbcType=INTEGER},
-      majordesc2 = #{record.majordesc2,jdbcType=VARCHAR},
+      major = #{record.major,jdbcType=VARCHAR},
+      majorsub = #{record.majorsub,jdbcType=VARCHAR},
       salary = #{record.salary,jdbcType=INTEGER},
       salarymin = #{record.salarymin,jdbcType=INTEGER},
       salarymax = #{record.salarymax,jdbcType=INTEGER},
@@ -676,10 +654,8 @@
       age = #{record.age,jdbcType=INTEGER},
       gender = #{record.gender,jdbcType=VARCHAR},
       education = #{record.education,jdbcType=VARCHAR},
-      majorid = #{record.majorid,jdbcType=INTEGER},
-      majordesc = #{record.majordesc,jdbcType=VARCHAR},
-      majorid2 = #{record.majorid2,jdbcType=INTEGER},
-      majordesc2 = #{record.majordesc2,jdbcType=VARCHAR},
+      major = #{record.major,jdbcType=VARCHAR},
+      majorsub = #{record.majorsub,jdbcType=VARCHAR},
       salary = #{record.salary,jdbcType=INTEGER},
       salarymin = #{record.salarymin,jdbcType=INTEGER},
       salarymax = #{record.salarymax,jdbcType=INTEGER},
@@ -746,17 +722,11 @@
       <if test="education != null" >
         education = #{education,jdbcType=VARCHAR},
       </if>
-      <if test="majorid != null" >
-        majorid = #{majorid,jdbcType=INTEGER},
+      <if test="major != null" >
+        major = #{major,jdbcType=VARCHAR},
       </if>
-      <if test="majordesc != null" >
-        majordesc = #{majordesc,jdbcType=VARCHAR},
-      </if>
-      <if test="majorid2 != null" >
-        majorid2 = #{majorid2,jdbcType=INTEGER},
-      </if>
-      <if test="majordesc2 != null" >
-        majordesc2 = #{majordesc2,jdbcType=VARCHAR},
+      <if test="majorsub != null" >
+        majorsub = #{majorsub,jdbcType=VARCHAR},
       </if>
       <if test="salary != null" >
         salary = #{salary,jdbcType=INTEGER},
@@ -853,10 +823,8 @@
       age = #{age,jdbcType=INTEGER},
       gender = #{gender,jdbcType=VARCHAR},
       education = #{education,jdbcType=VARCHAR},
-      majorid = #{majorid,jdbcType=INTEGER},
-      majordesc = #{majordesc,jdbcType=VARCHAR},
-      majorid2 = #{majorid2,jdbcType=INTEGER},
-      majordesc2 = #{majordesc2,jdbcType=VARCHAR},
+      major = #{major,jdbcType=VARCHAR},
+      majorsub = #{majorsub,jdbcType=VARCHAR},
       salary = #{salary,jdbcType=INTEGER},
       salarymin = #{salarymin,jdbcType=INTEGER},
       salarymax = #{salarymax,jdbcType=INTEGER},
@@ -899,10 +867,8 @@
       age = #{age,jdbcType=INTEGER},
       gender = #{gender,jdbcType=VARCHAR},
       education = #{education,jdbcType=VARCHAR},
-      majorid = #{majorid,jdbcType=INTEGER},
-      majordesc = #{majordesc,jdbcType=VARCHAR},
-      majorid2 = #{majorid2,jdbcType=INTEGER},
-      majordesc2 = #{majordesc2,jdbcType=VARCHAR},
+      major = #{major,jdbcType=VARCHAR},
+      majorsub = #{majorsub,jdbcType=VARCHAR},
       salary = #{salary,jdbcType=INTEGER},
       salarymin = #{salarymin,jdbcType=INTEGER},
       salarymax = #{salarymax,jdbcType=INTEGER},
