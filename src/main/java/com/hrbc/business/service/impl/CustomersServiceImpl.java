@@ -47,6 +47,14 @@ public class CustomersServiceImpl implements CustomersService {
         }
     }
 
+    @Override
+    public int changeOpsUser(Customers entity) {
+        Customers n = new Customers();
+        n.setId(entity.getId());
+        n.setOpsstaffname(entity.getOpsstaffname());
+        n.setOpsstaffno(entity.getOpsstaffno());
+        return mapper.updateByPrimaryKeySelective(n);
+    }
 
     @Override
     public Customers saveCommunicate(Customers entity) {

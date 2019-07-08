@@ -36,6 +36,13 @@ public class CustomersController {
         return new ResponseDTO(true, "success", entity.getId());
     }
 
+    @PostMapping("changeopsuser")
+    public ResponseDTO changeopsuser(@RequestBody Customers entity) {
+        service.changeOpsUser(entity);
+        return new ResponseDTO(true, "success", entity.getId());
+    }
+
+
     @PostMapping("communicate")
     public ResponseDTO communicate(@RequestBody Customers entity) {
         service.saveCommunicate(entity);

@@ -226,8 +226,20 @@ public class Customers {
         this.communicaterec = communicaterec;
     }
 
+    /**
+     * 不要轻易改动
+     * @return
+     */
     public JSONArray getFollows() {
-        return follows;
+        JSONArray array = null;
+        if (followrec == null) {
+            array = JSONArray.parseArray("[]");
+        } else {
+
+            array = JSONArray.parseArray(new String(followrec));
+        }
+        followrec = null;
+        return array;
     }
 
     public void setFollows(JSONArray follows) {
