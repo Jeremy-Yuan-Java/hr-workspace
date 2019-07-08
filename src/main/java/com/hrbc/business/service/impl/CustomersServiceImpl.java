@@ -30,7 +30,13 @@ public class CustomersServiceImpl implements CustomersService {
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
-            return mapper.insertSelective(entity);
+            int i =  mapper.insertSelective(entity);
+            String no = String.format("%08d", entity.getId());
+            Customers n = new Customers();
+            n.setCno(no);
+            n.setId(entity.getId());
+            mapper.updateByPrimaryKeySelective(n);
+            return i;
 
         }
     }
@@ -115,5 +121,11 @@ public class CustomersServiceImpl implements CustomersService {
     @Override
     public List<Customers> query(CustomersExample example) {
         return mapper.selectByExample(example);
+    }
+
+
+    public static void main(String[] args) {
+        System.out.printf(String.format("%04d", 1));
+
     }
 }

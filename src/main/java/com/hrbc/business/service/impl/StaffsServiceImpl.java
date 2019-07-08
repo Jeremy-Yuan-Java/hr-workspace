@@ -2,6 +2,7 @@ package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hrbc.business.conf.PathConf;
+import com.hrbc.business.domain.Customers;
 import com.hrbc.business.domain.Staffs;
 import com.hrbc.business.domain.StaffsExample;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
@@ -31,7 +32,13 @@ public class StaffsServiceImpl implements StaffsService {
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
-            return mapper.insertSelective(entity);
+            int i = mapper.insertSelective(entity);
+            String no = String.format("%08d", entity.getId());
+            Staffs n = new Staffs();
+            n.setStaffno(no);
+            n.setId(entity.getId());
+            mapper.updateByPrimaryKeySelective(n);
+            return i;
 
         }
     }
