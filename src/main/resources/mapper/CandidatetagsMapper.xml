@@ -107,13 +107,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hrbc.business.domain.Candidatetags" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.hrbc.business.domain.Candidatetags" >
     insert into candidatetags (tag, state, delflag, 
       createtime, updatetime)
     values (#{tag,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
       #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.hrbc.business.domain.Candidatetags" >
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.hrbc.business.domain.Candidatetags" >
     insert into candidatetags
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="tag != null" >

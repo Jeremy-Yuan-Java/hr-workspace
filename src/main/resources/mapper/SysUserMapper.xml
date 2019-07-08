@@ -112,7 +112,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hrbc.business.domain.SysUser" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.hrbc.business.domain.SysUser" >
     insert into sys_user (id, username, cnname, 
       pwd, accounttype, enname, 
       state, delflag, createtime, 
@@ -122,7 +122,7 @@
       #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
       #{updatetime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.hrbc.business.domain.SysUser" >
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.hrbc.business.domain.SysUser" >
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

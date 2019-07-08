@@ -170,7 +170,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
     insert into candidates (id, username, phoneno, 
       phonenobak, email, emailbak, 
       idcard, picpath, postcard, 
@@ -202,7 +202,7 @@
       #{resumedetail1,jdbcType=LONGVARBINARY}, #{resumedetail2,jdbcType=LONGVARBINARY}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs" >
     insert into candidates
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

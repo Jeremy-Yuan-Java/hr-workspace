@@ -148,7 +148,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hrbc.business.domain.Customers" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.hrbc.business.domain.Customers" >
     insert into customers (id, cno, cname, 
       opsstaffname, opsstaffno, contactuser, 
       phoneno, phonenobak, email, 
@@ -166,7 +166,7 @@
       #{major,jdbcType=VARCHAR}, #{majorsub,jdbcType=VARCHAR}, #{followrec,jdbcType=LONGVARBINARY}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.hrbc.business.domain.Customers" >
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.hrbc.business.domain.Customers" >
     insert into customers
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
