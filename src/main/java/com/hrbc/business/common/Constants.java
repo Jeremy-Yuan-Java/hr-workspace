@@ -1,5 +1,7 @@
 package com.hrbc.business.common;
-
+/**
+ * @author huangyongchao
+ */
 public class Constants {
 
 

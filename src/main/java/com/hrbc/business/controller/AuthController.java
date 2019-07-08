@@ -6,7 +6,9 @@ import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+/**
+ * @author huangyongchao
+ */
 @CrossOrigin
 @RestController
 public class AuthController {

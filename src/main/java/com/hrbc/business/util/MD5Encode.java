@@ -1,7 +1,9 @@
 package com.hrbc.business.util;
 
 import java.security.MessageDigest;
-
+/**
+ * @author huangyongchao
+ */
 public class MD5Encode {
 	
 	public final static String encode(String src, String key){
