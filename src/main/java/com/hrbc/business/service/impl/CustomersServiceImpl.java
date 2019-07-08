@@ -1,6 +1,8 @@
 package com.hrbc.business.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.domain.Customers;
 import com.hrbc.business.domain.CustomersExample;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
@@ -8,10 +10,13 @@ import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
 import com.hrbc.business.mapper.CustomersMapper;
 import com.hrbc.business.service.CustomersService;
+import com.hrbc.business.util.Patten;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,6 +26,7 @@ public class CustomersServiceImpl implements CustomersService {
 
     @Override
     public Customers get(Integer id) {
+
         return mapper.selectByPrimaryKey(id);
     }
 
@@ -30,7 +36,7 @@ public class CustomersServiceImpl implements CustomersService {
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
-            int i =  mapper.insertSelective(entity);
+            int i = mapper.insertSelective(entity);
             String no = String.format("%08d", entity.getId());
             Customers n = new Customers();
             n.setCno(no);
@@ -39,6 +45,28 @@ public class CustomersServiceImpl implements CustomersService {
             return i;
 
         }
+    }
+
+
+    @Override
+    public Customers saveCommunicate(Customers entity) {
+        Customers customers = mapper.selectByPrimaryKey(entity.getId());
+        JSONArray cs = null;
+
+        if (customers.getFollowrec() == null) {
+            cs = JSONArray.parseArray(new String("[]"));
+
+        } else {
+            cs = JSONArray.parseArray(new String(customers.getFollowrec()));
+        }
+        JSONObject obj = new JSONObject();
+        obj.put("user", JwtToken.getUser());
+        obj.put("stmp", DateFormatUtils.format(new Date(), Patten.DATETIME));
+        obj.put("rec", entity.getCommunicaterec());
+        cs.add(obj);
+        entity.setFollowrec(JSONObject.toJSONString(cs).getBytes());
+        mapper.updateByPrimaryKeySelective(entity);
+        return entity;
     }
 
     @Override
@@ -94,7 +122,7 @@ public class CustomersServiceImpl implements CustomersService {
             if (count > 0) {
                 example.setOffset((page - 1) * size);
                 example.setLimit(size);
-                list = mapper.selectByExample(example);
+                list = mapper.selectByExampleWithBLOBs(example);
             }
         }
 

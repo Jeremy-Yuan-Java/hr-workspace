@@ -17,7 +17,9 @@ public class AuthController {
     @PostMapping("api/auth/login")
     public ResponseDTO save(@RequestBody SysUser entity) {
         if (sysUserService.verify(entity) > 0) {
-            return new ResponseDTO(true, "success", JwtToken.generToken(entity.getUsername(), entity.getUsername()));
+            String token = JwtToken.generToken(entity.getUsername(), entity.getUsername());
+            JwtToken.setUserLocal(entity.getUsername());
+            return new ResponseDTO(true, "success", token);
         } else {
             return new ResponseDTO(false, "error", null);
         }

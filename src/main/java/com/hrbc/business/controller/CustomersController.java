@@ -1,12 +1,21 @@
 package com.hrbc.business.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.domain.Customers;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.service.CustomersService;
+import com.hrbc.business.util.Patten;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 @CrossOrigin
 @RestController
@@ -26,6 +35,14 @@ public class CustomersController {
         service.save(entity);
         return new ResponseDTO(true, "success", entity.getId());
     }
+
+    @PostMapping("communicate")
+    public ResponseDTO communicate(@RequestBody Customers entity) {
+        service.saveCommunicate(entity);
+        return new ResponseDTO(true, "success", entity.getId());
+    }
+
+
 
     @PostMapping("loadPage")
     public PageResultDTO loadPage(@RequestBody PageQueryParamDTO params) {

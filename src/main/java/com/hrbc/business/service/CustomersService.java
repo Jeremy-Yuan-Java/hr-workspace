@@ -11,6 +11,7 @@ public interface CustomersService {
     public Customers get(Integer id);
 
     public int save(Customers entity);
+    public Customers saveCommunicate(Customers entity);
 
     public PageResultDTO loadPage(PageQueryParamDTO params);
 
