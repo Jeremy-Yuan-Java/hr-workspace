@@ -38,7 +38,7 @@ public class CandidatetagsServiceImpl implements CandidatetagsService {
     @Override
     public PageResultDTO loadPage(PageQueryParamDTO params) {
 
-        int count = 0;
+        long count = 0;
         List<Candidatetags> list = null;
         int page = 1;
         int size = 10;

@@ -3,12 +3,10 @@ package com.hrbc.business.mapper;
 import com.hrbc.business.domain.SysUser;
 import com.hrbc.business.domain.SysUserExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-@Mapper
+
 public interface SysUserMapper {
-    int countByExample(SysUserExample example);
+    long countByExample(SysUserExample example);
 
     int deleteByExample(SysUserExample example);
 
@@ -29,4 +27,6 @@ public interface SysUserMapper {
     int updateByPrimaryKeySelective(SysUser record);
 
     int updateByPrimaryKey(SysUser record);
+
+    int batchInsert(@Param("recordList") List<SysUser> recordList);
 }

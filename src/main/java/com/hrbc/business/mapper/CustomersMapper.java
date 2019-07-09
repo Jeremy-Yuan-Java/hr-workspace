@@ -3,12 +3,10 @@ package com.hrbc.business.mapper;
 import com.hrbc.business.domain.Customers;
 import com.hrbc.business.domain.CustomersExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-@Mapper
+
 public interface CustomersMapper {
-    int countByExample(CustomersExample example);
+    long countByExample(CustomersExample example);
 
     int deleteByExample(CustomersExample example);
 
@@ -35,4 +33,6 @@ public interface CustomersMapper {
     int updateByPrimaryKeyWithBLOBs(Customers record);
 
     int updateByPrimaryKey(Customers record);
+
+    int batchInsert(@Param("recordList") List<Customers> recordList);
 }

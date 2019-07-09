@@ -80,7 +80,7 @@ public class CustomersServiceImpl implements CustomersService {
     @Override
     public PageResultDTO loadPage(PageQueryParamDTO params) {
 
-        int count = 0;
+        long count = 0;
         List<Customers> list = null;
         int page = 1;
         int size = 10;

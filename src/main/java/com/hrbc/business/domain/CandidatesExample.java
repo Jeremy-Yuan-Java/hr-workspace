@@ -2664,6 +2664,76 @@ public class CandidatesExample {
             addCriterion("degree not between", value1, value2, "degree");
             return (Criteria) this;
         }
+
+        public Criteria andLivebaseIsNull() {
+            addCriterion("livebase is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseIsNotNull() {
+            addCriterion("livebase is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseEqualTo(String value) {
+            addCriterion("livebase =", value, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseNotEqualTo(String value) {
+            addCriterion("livebase <>", value, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseGreaterThan(String value) {
+            addCriterion("livebase >", value, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseGreaterThanOrEqualTo(String value) {
+            addCriterion("livebase >=", value, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseLessThan(String value) {
+            addCriterion("livebase <", value, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseLessThanOrEqualTo(String value) {
+            addCriterion("livebase <=", value, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseLike(String value) {
+            addCriterion("livebase like", value, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseNotLike(String value) {
+            addCriterion("livebase not like", value, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseIn(List<String> values) {
+            addCriterion("livebase in", values, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseNotIn(List<String> values) {
+            addCriterion("livebase not in", values, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseBetween(String value1, String value2) {
+            addCriterion("livebase between", value1, value2, "livebase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLivebaseNotBetween(String value1, String value2) {
+            addCriterion("livebase not between", value1, value2, "livebase");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

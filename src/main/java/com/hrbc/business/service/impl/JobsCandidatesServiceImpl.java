@@ -37,7 +37,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     @Override
     public PageResultDTO loadPage(PageQueryParamDTO params) {
 
-        int count = 0;
+        long count = 0;
         List<JobsCandidates> list = null;
     int page = 1;
     int size = 10;

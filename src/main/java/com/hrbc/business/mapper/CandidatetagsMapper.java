@@ -3,12 +3,10 @@ package com.hrbc.business.mapper;
 import com.hrbc.business.domain.Candidatetags;
 import com.hrbc.business.domain.CandidatetagsExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-@Mapper
+
 public interface CandidatetagsMapper {
-    int countByExample(CandidatetagsExample example);
+    long countByExample(CandidatetagsExample example);
 
     int deleteByExample(CandidatetagsExample example);
 
@@ -29,4 +27,6 @@ public interface CandidatetagsMapper {
     int updateByPrimaryKeySelective(Candidatetags record);
 
     int updateByPrimaryKey(Candidatetags record);
+
+    int batchInsert(@Param("recordList") List<Candidatetags> recordList);
 }

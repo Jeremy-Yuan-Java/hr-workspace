@@ -79,6 +79,9 @@ public class Candidates {
 
     private String degree;
 
+
+    private String livebase;
+
     public Integer getId() {
         return id;
     }
@@ -381,5 +384,13 @@ public class Candidates {
 
     public void setDegree(String degree) {
         this.degree = degree == null ? null : degree.trim();
+    }
+
+    public String getLivebase() {
+        return livebase;
+    }
+
+    public void setLivebase(String livebase) {
+        this.livebase = livebase;
     }
 }
