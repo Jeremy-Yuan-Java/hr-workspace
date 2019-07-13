@@ -14,17 +14,14 @@
     <result column="jobtitle" jdbcType="VARCHAR" property="jobtitle" />
     <result column="age" jdbcType="INTEGER" property="age" />
     <result column="gender" jdbcType="VARCHAR" property="gender" />
-    <result column="education" jdbcType="VARCHAR" property="education" />
     <result column="major" jdbcType="VARCHAR" property="major" />
     <result column="majorsub" jdbcType="VARCHAR" property="majorsub" />
     <result column="salary" jdbcType="INTEGER" property="salary" />
     <result column="salarymin" jdbcType="INTEGER" property="salarymin" />
     <result column="salarymax" jdbcType="INTEGER" property="salarymax" />
-    <result column="constellation" jdbcType="VARCHAR" property="constellation" />
     <result column="hometown" jdbcType="VARCHAR" property="hometown" />
     <result column="workbase" jdbcType="VARCHAR" property="workbase" />
     <result column="expectworkbase" jdbcType="VARCHAR" property="expectworkbase" />
-    <result column="lastcompany" jdbcType="VARCHAR" property="lastcompany" />
     <result column="tags" jdbcType="VARCHAR" property="tags" />
     <result column="worksate" jdbcType="INTEGER" property="worksate" />
     <result column="resumestate" jdbcType="INTEGER" property="resumestate" />
@@ -34,13 +31,39 @@
     <result column="delflag" jdbcType="INTEGER" property="delflag" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
-    <result column="educations" jdbcType="VARCHAR" property="educations" />
-    <result column="workexperiences" jdbcType="VARCHAR" property="workexperiences" />
     <result column="expectjob" jdbcType="VARCHAR" property="expectjob" />
     <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="languagelevel" jdbcType="VARCHAR" property="languagelevel" />
     <result column="degree" jdbcType="VARCHAR" property="degree" />
     <result column="livebase" jdbcType="VARCHAR" property="livebase" />
+    <result column="edu1" jdbcType="VARCHAR" property="edu1" />
+    <result column="edu1stdate" jdbcType="TIMESTAMP" property="edu1stdate" />
+    <result column="edu1eddate" jdbcType="TIMESTAMP" property="edu1eddate" />
+    <result column="edu2" jdbcType="VARCHAR" property="edu2" />
+    <result column="edu2stdate" jdbcType="TIMESTAMP" property="edu2stdate" />
+    <result column="edu2eddate" jdbcType="TIMESTAMP" property="edu2eddate" />
+    <result column="edu3" jdbcType="VARCHAR" property="edu3" />
+    <result column="edu3stdate" jdbcType="TIMESTAMP" property="edu3stdate" />
+    <result column="edu3eddate" jdbcType="TIMESTAMP" property="edu3eddate" />
+    <result column="work1" jdbcType="VARCHAR" property="work1" />
+    <result column="work1stdate" jdbcType="TIMESTAMP" property="work1stdate" />
+    <result column="work1eddate" jdbcType="TIMESTAMP" property="work1eddate" />
+    <result column="work2" jdbcType="VARCHAR" property="work2" />
+    <result column="work2stdate" jdbcType="TIMESTAMP" property="work2stdate" />
+    <result column="work2eddate" jdbcType="TIMESTAMP" property="work2eddate" />
+    <result column="work3" jdbcType="VARCHAR" property="work3" />
+    <result column="work3stdate" jdbcType="TIMESTAMP" property="work3stdate" />
+    <result column="work3eddate" jdbcType="TIMESTAMP" property="work3eddate" />
+    <result column="work4" jdbcType="VARCHAR" property="work4" />
+    <result column="work4stdate" jdbcType="TIMESTAMP" property="work4stdate" />
+    <result column="work4eddate" jdbcType="TIMESTAMP" property="work4eddate" />
+    <result column="certifications" jdbcType="VARCHAR" property="certifications" />
+    <result column="educations" jdbcType="VARCHAR" property="educations" />
+    <result column="workexperiences" jdbcType="VARCHAR" property="workexperiences" />
+    <result column="perprofile" jdbcType="VARCHAR" property="perprofile" />
+    <result column="personaliy" jdbcType="VARCHAR" property="personaliy" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.CandidatesWithBLOBs">
     <result column="resumedetail" jdbcType="LONGVARBINARY" property="resumedetail" />
@@ -107,10 +130,13 @@
   </sql>
   <sql id="Base_Column_List">
     id, username, phoneno, phonenobak, email, emailbak, idcard, picpath, postcard, jobtitle, 
-    age, gender, education, major, majorsub, salary, salarymin, salarymax, constellation, 
-    hometown, workbase, expectworkbase, lastcompany, tags, worksate, resumestate, resumefile, 
-    dresume, state, delflag, createtime, updatetime, educations, workexperiences, expectjob, 
-    weight, languagelevel, degree, livebase
+    age, gender, major, majorsub, salary, salarymin, salarymax, hometown, workbase, expectworkbase, 
+    tags, worksate, resumestate, resumefile, dresume, state, delflag, createtime, updatetime, 
+    expectjob, weight, languagelevel, degree, livebase, edu1, edu1stdate, edu1eddate, 
+    edu2, edu2stdate, edu2eddate, edu3, edu3stdate, edu3eddate, work1, work1stdate, work1eddate, 
+    work2, work2stdate, work2eddate, work3, work3stdate, work3eddate, work4, work4stdate, 
+    work4eddate, certifications, educations, workexperiences, perprofile, personaliy, 
+    birthday, remark
   </sql>
   <sql id="Blob_Column_List">
     resumedetail, resumedetail1, resumedetail2
@@ -178,33 +204,47 @@
     insert into candidates (username, phoneno, phonenobak, 
       email, emailbak, idcard, 
       picpath, postcard, jobtitle, 
-      age, gender, education, 
-      major, majorsub, salary, 
-      salarymin, salarymax, constellation, 
-      hometown, workbase, expectworkbase, 
-      lastcompany, tags, worksate, 
+      age, gender, major, 
+      majorsub, salary, salarymin, 
+      salarymax, hometown, workbase, 
+      expectworkbase, tags, worksate, 
       resumestate, resumefile, dresume, 
       state, delflag, createtime, 
-      updatetime, educations, workexperiences, 
-      expectjob, weight, languagelevel, 
-      degree, livebase, resumedetail, 
-      resumedetail1, resumedetail2
-      )
+      updatetime, expectjob, weight, 
+      languagelevel, degree, livebase, 
+      edu1, edu1stdate, edu1eddate, 
+      edu2, edu2stdate, edu2eddate, 
+      edu3, edu3stdate, edu3eddate, 
+      work1, work1stdate, work1eddate, 
+      work2, work2stdate, work2eddate, 
+      work3, work3stdate, work3eddate, 
+      work4, work4stdate, work4eddate, 
+      certifications, educations, workexperiences, 
+      perprofile, personaliy, birthday, 
+      remark, resumedetail, resumedetail1, 
+      resumedetail2)
     values (#{username,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{emailbak,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
       #{picpath,jdbcType=VARCHAR}, #{postcard,jdbcType=VARCHAR}, #{jobtitle,jdbcType=VARCHAR}, 
-      #{age,jdbcType=INTEGER}, #{gender,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
-      #{major,jdbcType=VARCHAR}, #{majorsub,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, 
-      #{salarymin,jdbcType=INTEGER}, #{salarymax,jdbcType=INTEGER}, #{constellation,jdbcType=VARCHAR}, 
-      #{hometown,jdbcType=VARCHAR}, #{workbase,jdbcType=VARCHAR}, #{expectworkbase,jdbcType=VARCHAR}, 
-      #{lastcompany,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, #{worksate,jdbcType=INTEGER}, 
+      #{age,jdbcType=INTEGER}, #{gender,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
+      #{majorsub,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, #{salarymin,jdbcType=INTEGER}, 
+      #{salarymax,jdbcType=INTEGER}, #{hometown,jdbcType=VARCHAR}, #{workbase,jdbcType=VARCHAR}, 
+      #{expectworkbase,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, #{worksate,jdbcType=INTEGER}, 
       #{resumestate,jdbcType=INTEGER}, #{resumefile,jdbcType=VARCHAR}, #{dresume,jdbcType=VARCHAR}, 
       #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{updatetime,jdbcType=TIMESTAMP}, #{educations,jdbcType=VARCHAR}, #{workexperiences,jdbcType=VARCHAR}, 
-      #{expectjob,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{languagelevel,jdbcType=VARCHAR}, 
-      #{degree,jdbcType=VARCHAR}, #{livebase,jdbcType=VARCHAR}, #{resumedetail,jdbcType=LONGVARBINARY}, 
-      #{resumedetail1,jdbcType=LONGVARBINARY}, #{resumedetail2,jdbcType=LONGVARBINARY}
-      )
+      #{updatetime,jdbcType=TIMESTAMP}, #{expectjob,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, 
+      #{languagelevel,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR}, #{livebase,jdbcType=VARCHAR}, 
+      #{edu1,jdbcType=VARCHAR}, #{edu1stdate,jdbcType=TIMESTAMP}, #{edu1eddate,jdbcType=TIMESTAMP}, 
+      #{edu2,jdbcType=VARCHAR}, #{edu2stdate,jdbcType=TIMESTAMP}, #{edu2eddate,jdbcType=TIMESTAMP}, 
+      #{edu3,jdbcType=VARCHAR}, #{edu3stdate,jdbcType=TIMESTAMP}, #{edu3eddate,jdbcType=TIMESTAMP}, 
+      #{work1,jdbcType=VARCHAR}, #{work1stdate,jdbcType=TIMESTAMP}, #{work1eddate,jdbcType=TIMESTAMP}, 
+      #{work2,jdbcType=VARCHAR}, #{work2stdate,jdbcType=TIMESTAMP}, #{work2eddate,jdbcType=TIMESTAMP}, 
+      #{work3,jdbcType=VARCHAR}, #{work3stdate,jdbcType=TIMESTAMP}, #{work3eddate,jdbcType=TIMESTAMP}, 
+      #{work4,jdbcType=VARCHAR}, #{work4stdate,jdbcType=TIMESTAMP}, #{work4eddate,jdbcType=TIMESTAMP}, 
+      #{certifications,jdbcType=VARCHAR}, #{educations,jdbcType=VARCHAR}, #{workexperiences,jdbcType=VARCHAR}, 
+      #{perprofile,jdbcType=VARCHAR}, #{personaliy,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
+      #{resumedetail2,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -245,9 +285,6 @@
       <if test="gender != null">
         gender,
       </if>
-      <if test="education != null">
-        education,
-      </if>
       <if test="major != null">
         major,
       </if>
@@ -263,9 +300,6 @@
       <if test="salarymax != null">
         salarymax,
       </if>
-      <if test="constellation != null">
-        constellation,
-      </if>
       <if test="hometown != null">
         hometown,
       </if>
@@ -274,9 +308,6 @@
       </if>
       <if test="expectworkbase != null">
         expectworkbase,
-      </if>
-      <if test="lastcompany != null">
-        lastcompany,
       </if>
       <if test="tags != null">
         tags,
@@ -305,12 +336,6 @@
       <if test="updatetime != null">
         updatetime,
       </if>
-      <if test="educations != null">
-        educations,
-      </if>
-      <if test="workexperiences != null">
-        workexperiences,
-      </if>
       <if test="expectjob != null">
         expectjob,
       </if>
@@ -325,6 +350,90 @@
       </if>
       <if test="livebase != null">
         livebase,
+      </if>
+      <if test="edu1 != null">
+        edu1,
+      </if>
+      <if test="edu1stdate != null">
+        edu1stdate,
+      </if>
+      <if test="edu1eddate != null">
+        edu1eddate,
+      </if>
+      <if test="edu2 != null">
+        edu2,
+      </if>
+      <if test="edu2stdate != null">
+        edu2stdate,
+      </if>
+      <if test="edu2eddate != null">
+        edu2eddate,
+      </if>
+      <if test="edu3 != null">
+        edu3,
+      </if>
+      <if test="edu3stdate != null">
+        edu3stdate,
+      </if>
+      <if test="edu3eddate != null">
+        edu3eddate,
+      </if>
+      <if test="work1 != null">
+        work1,
+      </if>
+      <if test="work1stdate != null">
+        work1stdate,
+      </if>
+      <if test="work1eddate != null">
+        work1eddate,
+      </if>
+      <if test="work2 != null">
+        work2,
+      </if>
+      <if test="work2stdate != null">
+        work2stdate,
+      </if>
+      <if test="work2eddate != null">
+        work2eddate,
+      </if>
+      <if test="work3 != null">
+        work3,
+      </if>
+      <if test="work3stdate != null">
+        work3stdate,
+      </if>
+      <if test="work3eddate != null">
+        work3eddate,
+      </if>
+      <if test="work4 != null">
+        work4,
+      </if>
+      <if test="work4stdate != null">
+        work4stdate,
+      </if>
+      <if test="work4eddate != null">
+        work4eddate,
+      </if>
+      <if test="certifications != null">
+        certifications,
+      </if>
+      <if test="educations != null">
+        educations,
+      </if>
+      <if test="workexperiences != null">
+        workexperiences,
+      </if>
+      <if test="perprofile != null">
+        perprofile,
+      </if>
+      <if test="personaliy != null">
+        personaliy,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="remark != null">
+        remark,
       </if>
       <if test="resumedetail != null">
         resumedetail,
@@ -370,9 +479,6 @@
       <if test="gender != null">
         #{gender,jdbcType=VARCHAR},
       </if>
-      <if test="education != null">
-        #{education,jdbcType=VARCHAR},
-      </if>
       <if test="major != null">
         #{major,jdbcType=VARCHAR},
       </if>
@@ -388,9 +494,6 @@
       <if test="salarymax != null">
         #{salarymax,jdbcType=INTEGER},
       </if>
-      <if test="constellation != null">
-        #{constellation,jdbcType=VARCHAR},
-      </if>
       <if test="hometown != null">
         #{hometown,jdbcType=VARCHAR},
       </if>
@@ -399,9 +502,6 @@
       </if>
       <if test="expectworkbase != null">
         #{expectworkbase,jdbcType=VARCHAR},
-      </if>
-      <if test="lastcompany != null">
-        #{lastcompany,jdbcType=VARCHAR},
       </if>
       <if test="tags != null">
         #{tags,jdbcType=VARCHAR},
@@ -430,12 +530,6 @@
       <if test="updatetime != null">
         #{updatetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="educations != null">
-        #{educations,jdbcType=VARCHAR},
-      </if>
-      <if test="workexperiences != null">
-        #{workexperiences,jdbcType=VARCHAR},
-      </if>
       <if test="expectjob != null">
         #{expectjob,jdbcType=VARCHAR},
       </if>
@@ -450,6 +544,90 @@
       </if>
       <if test="livebase != null">
         #{livebase,jdbcType=VARCHAR},
+      </if>
+      <if test="edu1 != null">
+        #{edu1,jdbcType=VARCHAR},
+      </if>
+      <if test="edu1stdate != null">
+        #{edu1stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu1eddate != null">
+        #{edu1eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu2 != null">
+        #{edu2,jdbcType=VARCHAR},
+      </if>
+      <if test="edu2stdate != null">
+        #{edu2stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu2eddate != null">
+        #{edu2eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu3 != null">
+        #{edu3,jdbcType=VARCHAR},
+      </if>
+      <if test="edu3stdate != null">
+        #{edu3stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu3eddate != null">
+        #{edu3eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work1 != null">
+        #{work1,jdbcType=VARCHAR},
+      </if>
+      <if test="work1stdate != null">
+        #{work1stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work1eddate != null">
+        #{work1eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work2 != null">
+        #{work2,jdbcType=VARCHAR},
+      </if>
+      <if test="work2stdate != null">
+        #{work2stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work2eddate != null">
+        #{work2eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work3 != null">
+        #{work3,jdbcType=VARCHAR},
+      </if>
+      <if test="work3stdate != null">
+        #{work3stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work3eddate != null">
+        #{work3eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work4 != null">
+        #{work4,jdbcType=VARCHAR},
+      </if>
+      <if test="work4stdate != null">
+        #{work4stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work4eddate != null">
+        #{work4eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certifications != null">
+        #{certifications,jdbcType=VARCHAR},
+      </if>
+      <if test="educations != null">
+        #{educations,jdbcType=VARCHAR},
+      </if>
+      <if test="workexperiences != null">
+        #{workexperiences,jdbcType=VARCHAR},
+      </if>
+      <if test="perprofile != null">
+        #{perprofile,jdbcType=VARCHAR},
+      </if>
+      <if test="personaliy != null">
+        #{personaliy,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="resumedetail != null">
         #{resumedetail,jdbcType=LONGVARBINARY},
@@ -507,9 +685,6 @@
       <if test="record.gender != null">
         gender = #{record.gender,jdbcType=VARCHAR},
       </if>
-      <if test="record.education != null">
-        education = #{record.education,jdbcType=VARCHAR},
-      </if>
       <if test="record.major != null">
         major = #{record.major,jdbcType=VARCHAR},
       </if>
@@ -525,9 +700,6 @@
       <if test="record.salarymax != null">
         salarymax = #{record.salarymax,jdbcType=INTEGER},
       </if>
-      <if test="record.constellation != null">
-        constellation = #{record.constellation,jdbcType=VARCHAR},
-      </if>
       <if test="record.hometown != null">
         hometown = #{record.hometown,jdbcType=VARCHAR},
       </if>
@@ -536,9 +708,6 @@
       </if>
       <if test="record.expectworkbase != null">
         expectworkbase = #{record.expectworkbase,jdbcType=VARCHAR},
-      </if>
-      <if test="record.lastcompany != null">
-        lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
       </if>
       <if test="record.tags != null">
         tags = #{record.tags,jdbcType=VARCHAR},
@@ -567,12 +736,6 @@
       <if test="record.updatetime != null">
         updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.educations != null">
-        educations = #{record.educations,jdbcType=VARCHAR},
-      </if>
-      <if test="record.workexperiences != null">
-        workexperiences = #{record.workexperiences,jdbcType=VARCHAR},
-      </if>
       <if test="record.expectjob != null">
         expectjob = #{record.expectjob,jdbcType=VARCHAR},
       </if>
@@ -587,6 +750,90 @@
       </if>
       <if test="record.livebase != null">
         livebase = #{record.livebase,jdbcType=VARCHAR},
+      </if>
+      <if test="record.edu1 != null">
+        edu1 = #{record.edu1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.edu1stdate != null">
+        edu1stdate = #{record.edu1stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.edu1eddate != null">
+        edu1eddate = #{record.edu1eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.edu2 != null">
+        edu2 = #{record.edu2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.edu2stdate != null">
+        edu2stdate = #{record.edu2stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.edu2eddate != null">
+        edu2eddate = #{record.edu2eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.edu3 != null">
+        edu3 = #{record.edu3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.edu3stdate != null">
+        edu3stdate = #{record.edu3stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.edu3eddate != null">
+        edu3eddate = #{record.edu3eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.work1 != null">
+        work1 = #{record.work1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work1stdate != null">
+        work1stdate = #{record.work1stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.work1eddate != null">
+        work1eddate = #{record.work1eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.work2 != null">
+        work2 = #{record.work2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work2stdate != null">
+        work2stdate = #{record.work2stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.work2eddate != null">
+        work2eddate = #{record.work2eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.work3 != null">
+        work3 = #{record.work3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work3stdate != null">
+        work3stdate = #{record.work3stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.work3eddate != null">
+        work3eddate = #{record.work3eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.work4 != null">
+        work4 = #{record.work4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work4stdate != null">
+        work4stdate = #{record.work4stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.work4eddate != null">
+        work4eddate = #{record.work4eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.certifications != null">
+        certifications = #{record.certifications,jdbcType=VARCHAR},
+      </if>
+      <if test="record.educations != null">
+        educations = #{record.educations,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workexperiences != null">
+        workexperiences = #{record.workexperiences,jdbcType=VARCHAR},
+      </if>
+      <if test="record.perprofile != null">
+        perprofile = #{record.perprofile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.personaliy != null">
+        personaliy = #{record.personaliy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null">
+        birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
       </if>
       <if test="record.resumedetail != null">
         resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
@@ -616,17 +863,14 @@
       jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
       gender = #{record.gender,jdbcType=VARCHAR},
-      education = #{record.education,jdbcType=VARCHAR},
       major = #{record.major,jdbcType=VARCHAR},
       majorsub = #{record.majorsub,jdbcType=VARCHAR},
       salary = #{record.salary,jdbcType=INTEGER},
       salarymin = #{record.salarymin,jdbcType=INTEGER},
       salarymax = #{record.salarymax,jdbcType=INTEGER},
-      constellation = #{record.constellation,jdbcType=VARCHAR},
       hometown = #{record.hometown,jdbcType=VARCHAR},
       workbase = #{record.workbase,jdbcType=VARCHAR},
       expectworkbase = #{record.expectworkbase,jdbcType=VARCHAR},
-      lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
       tags = #{record.tags,jdbcType=VARCHAR},
       worksate = #{record.worksate,jdbcType=INTEGER},
       resumestate = #{record.resumestate,jdbcType=INTEGER},
@@ -636,13 +880,39 @@
       delflag = #{record.delflag,jdbcType=INTEGER},
       createtime = #{record.createtime,jdbcType=TIMESTAMP},
       updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
-      educations = #{record.educations,jdbcType=VARCHAR},
-      workexperiences = #{record.workexperiences,jdbcType=VARCHAR},
       expectjob = #{record.expectjob,jdbcType=VARCHAR},
       weight = #{record.weight,jdbcType=INTEGER},
       languagelevel = #{record.languagelevel,jdbcType=VARCHAR},
       degree = #{record.degree,jdbcType=VARCHAR},
       livebase = #{record.livebase,jdbcType=VARCHAR},
+      edu1 = #{record.edu1,jdbcType=VARCHAR},
+      edu1stdate = #{record.edu1stdate,jdbcType=TIMESTAMP},
+      edu1eddate = #{record.edu1eddate,jdbcType=TIMESTAMP},
+      edu2 = #{record.edu2,jdbcType=VARCHAR},
+      edu2stdate = #{record.edu2stdate,jdbcType=TIMESTAMP},
+      edu2eddate = #{record.edu2eddate,jdbcType=TIMESTAMP},
+      edu3 = #{record.edu3,jdbcType=VARCHAR},
+      edu3stdate = #{record.edu3stdate,jdbcType=TIMESTAMP},
+      edu3eddate = #{record.edu3eddate,jdbcType=TIMESTAMP},
+      work1 = #{record.work1,jdbcType=VARCHAR},
+      work1stdate = #{record.work1stdate,jdbcType=TIMESTAMP},
+      work1eddate = #{record.work1eddate,jdbcType=TIMESTAMP},
+      work2 = #{record.work2,jdbcType=VARCHAR},
+      work2stdate = #{record.work2stdate,jdbcType=TIMESTAMP},
+      work2eddate = #{record.work2eddate,jdbcType=TIMESTAMP},
+      work3 = #{record.work3,jdbcType=VARCHAR},
+      work3stdate = #{record.work3stdate,jdbcType=TIMESTAMP},
+      work3eddate = #{record.work3eddate,jdbcType=TIMESTAMP},
+      work4 = #{record.work4,jdbcType=VARCHAR},
+      work4stdate = #{record.work4stdate,jdbcType=TIMESTAMP},
+      work4eddate = #{record.work4eddate,jdbcType=TIMESTAMP},
+      certifications = #{record.certifications,jdbcType=VARCHAR},
+      educations = #{record.educations,jdbcType=VARCHAR},
+      workexperiences = #{record.workexperiences,jdbcType=VARCHAR},
+      perprofile = #{record.perprofile,jdbcType=VARCHAR},
+      personaliy = #{record.personaliy,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
       resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{record.resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{record.resumedetail2,jdbcType=LONGVARBINARY}
@@ -664,17 +934,14 @@
       jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
       gender = #{record.gender,jdbcType=VARCHAR},
-      education = #{record.education,jdbcType=VARCHAR},
       major = #{record.major,jdbcType=VARCHAR},
       majorsub = #{record.majorsub,jdbcType=VARCHAR},
       salary = #{record.salary,jdbcType=INTEGER},
       salarymin = #{record.salarymin,jdbcType=INTEGER},
       salarymax = #{record.salarymax,jdbcType=INTEGER},
-      constellation = #{record.constellation,jdbcType=VARCHAR},
       hometown = #{record.hometown,jdbcType=VARCHAR},
       workbase = #{record.workbase,jdbcType=VARCHAR},
       expectworkbase = #{record.expectworkbase,jdbcType=VARCHAR},
-      lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
       tags = #{record.tags,jdbcType=VARCHAR},
       worksate = #{record.worksate,jdbcType=INTEGER},
       resumestate = #{record.resumestate,jdbcType=INTEGER},
@@ -684,13 +951,39 @@
       delflag = #{record.delflag,jdbcType=INTEGER},
       createtime = #{record.createtime,jdbcType=TIMESTAMP},
       updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
-      educations = #{record.educations,jdbcType=VARCHAR},
-      workexperiences = #{record.workexperiences,jdbcType=VARCHAR},
       expectjob = #{record.expectjob,jdbcType=VARCHAR},
       weight = #{record.weight,jdbcType=INTEGER},
       languagelevel = #{record.languagelevel,jdbcType=VARCHAR},
       degree = #{record.degree,jdbcType=VARCHAR},
-      livebase = #{record.livebase,jdbcType=VARCHAR}
+      livebase = #{record.livebase,jdbcType=VARCHAR},
+      edu1 = #{record.edu1,jdbcType=VARCHAR},
+      edu1stdate = #{record.edu1stdate,jdbcType=TIMESTAMP},
+      edu1eddate = #{record.edu1eddate,jdbcType=TIMESTAMP},
+      edu2 = #{record.edu2,jdbcType=VARCHAR},
+      edu2stdate = #{record.edu2stdate,jdbcType=TIMESTAMP},
+      edu2eddate = #{record.edu2eddate,jdbcType=TIMESTAMP},
+      edu3 = #{record.edu3,jdbcType=VARCHAR},
+      edu3stdate = #{record.edu3stdate,jdbcType=TIMESTAMP},
+      edu3eddate = #{record.edu3eddate,jdbcType=TIMESTAMP},
+      work1 = #{record.work1,jdbcType=VARCHAR},
+      work1stdate = #{record.work1stdate,jdbcType=TIMESTAMP},
+      work1eddate = #{record.work1eddate,jdbcType=TIMESTAMP},
+      work2 = #{record.work2,jdbcType=VARCHAR},
+      work2stdate = #{record.work2stdate,jdbcType=TIMESTAMP},
+      work2eddate = #{record.work2eddate,jdbcType=TIMESTAMP},
+      work3 = #{record.work3,jdbcType=VARCHAR},
+      work3stdate = #{record.work3stdate,jdbcType=TIMESTAMP},
+      work3eddate = #{record.work3eddate,jdbcType=TIMESTAMP},
+      work4 = #{record.work4,jdbcType=VARCHAR},
+      work4stdate = #{record.work4stdate,jdbcType=TIMESTAMP},
+      work4eddate = #{record.work4eddate,jdbcType=TIMESTAMP},
+      certifications = #{record.certifications,jdbcType=VARCHAR},
+      educations = #{record.educations,jdbcType=VARCHAR},
+      workexperiences = #{record.workexperiences,jdbcType=VARCHAR},
+      perprofile = #{record.perprofile,jdbcType=VARCHAR},
+      personaliy = #{record.personaliy,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -731,9 +1024,6 @@
       <if test="gender != null">
         gender = #{gender,jdbcType=VARCHAR},
       </if>
-      <if test="education != null">
-        education = #{education,jdbcType=VARCHAR},
-      </if>
       <if test="major != null">
         major = #{major,jdbcType=VARCHAR},
       </if>
@@ -749,9 +1039,6 @@
       <if test="salarymax != null">
         salarymax = #{salarymax,jdbcType=INTEGER},
       </if>
-      <if test="constellation != null">
-        constellation = #{constellation,jdbcType=VARCHAR},
-      </if>
       <if test="hometown != null">
         hometown = #{hometown,jdbcType=VARCHAR},
       </if>
@@ -760,9 +1047,6 @@
       </if>
       <if test="expectworkbase != null">
         expectworkbase = #{expectworkbase,jdbcType=VARCHAR},
-      </if>
-      <if test="lastcompany != null">
-        lastcompany = #{lastcompany,jdbcType=VARCHAR},
       </if>
       <if test="tags != null">
         tags = #{tags,jdbcType=VARCHAR},
@@ -791,12 +1075,6 @@
       <if test="updatetime != null">
         updatetime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="educations != null">
-        educations = #{educations,jdbcType=VARCHAR},
-      </if>
-      <if test="workexperiences != null">
-        workexperiences = #{workexperiences,jdbcType=VARCHAR},
-      </if>
       <if test="expectjob != null">
         expectjob = #{expectjob,jdbcType=VARCHAR},
       </if>
@@ -811,6 +1089,90 @@
       </if>
       <if test="livebase != null">
         livebase = #{livebase,jdbcType=VARCHAR},
+      </if>
+      <if test="edu1 != null">
+        edu1 = #{edu1,jdbcType=VARCHAR},
+      </if>
+      <if test="edu1stdate != null">
+        edu1stdate = #{edu1stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu1eddate != null">
+        edu1eddate = #{edu1eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu2 != null">
+        edu2 = #{edu2,jdbcType=VARCHAR},
+      </if>
+      <if test="edu2stdate != null">
+        edu2stdate = #{edu2stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu2eddate != null">
+        edu2eddate = #{edu2eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu3 != null">
+        edu3 = #{edu3,jdbcType=VARCHAR},
+      </if>
+      <if test="edu3stdate != null">
+        edu3stdate = #{edu3stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edu3eddate != null">
+        edu3eddate = #{edu3eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work1 != null">
+        work1 = #{work1,jdbcType=VARCHAR},
+      </if>
+      <if test="work1stdate != null">
+        work1stdate = #{work1stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work1eddate != null">
+        work1eddate = #{work1eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work2 != null">
+        work2 = #{work2,jdbcType=VARCHAR},
+      </if>
+      <if test="work2stdate != null">
+        work2stdate = #{work2stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work2eddate != null">
+        work2eddate = #{work2eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work3 != null">
+        work3 = #{work3,jdbcType=VARCHAR},
+      </if>
+      <if test="work3stdate != null">
+        work3stdate = #{work3stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work3eddate != null">
+        work3eddate = #{work3eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work4 != null">
+        work4 = #{work4,jdbcType=VARCHAR},
+      </if>
+      <if test="work4stdate != null">
+        work4stdate = #{work4stdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="work4eddate != null">
+        work4eddate = #{work4eddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certifications != null">
+        certifications = #{certifications,jdbcType=VARCHAR},
+      </if>
+      <if test="educations != null">
+        educations = #{educations,jdbcType=VARCHAR},
+      </if>
+      <if test="workexperiences != null">
+        workexperiences = #{workexperiences,jdbcType=VARCHAR},
+      </if>
+      <if test="perprofile != null">
+        perprofile = #{perprofile,jdbcType=VARCHAR},
+      </if>
+      <if test="personaliy != null">
+        personaliy = #{personaliy,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="resumedetail != null">
         resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
@@ -837,17 +1199,14 @@
       jobtitle = #{jobtitle,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
       gender = #{gender,jdbcType=VARCHAR},
-      education = #{education,jdbcType=VARCHAR},
       major = #{major,jdbcType=VARCHAR},
       majorsub = #{majorsub,jdbcType=VARCHAR},
       salary = #{salary,jdbcType=INTEGER},
       salarymin = #{salarymin,jdbcType=INTEGER},
       salarymax = #{salarymax,jdbcType=INTEGER},
-      constellation = #{constellation,jdbcType=VARCHAR},
       hometown = #{hometown,jdbcType=VARCHAR},
       workbase = #{workbase,jdbcType=VARCHAR},
       expectworkbase = #{expectworkbase,jdbcType=VARCHAR},
-      lastcompany = #{lastcompany,jdbcType=VARCHAR},
       tags = #{tags,jdbcType=VARCHAR},
       worksate = #{worksate,jdbcType=INTEGER},
       resumestate = #{resumestate,jdbcType=INTEGER},
@@ -857,13 +1216,39 @@
       delflag = #{delflag,jdbcType=INTEGER},
       createtime = #{createtime,jdbcType=TIMESTAMP},
       updatetime = #{updatetime,jdbcType=TIMESTAMP},
-      educations = #{educations,jdbcType=VARCHAR},
-      workexperiences = #{workexperiences,jdbcType=VARCHAR},
       expectjob = #{expectjob,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=INTEGER},
       languagelevel = #{languagelevel,jdbcType=VARCHAR},
       degree = #{degree,jdbcType=VARCHAR},
       livebase = #{livebase,jdbcType=VARCHAR},
+      edu1 = #{edu1,jdbcType=VARCHAR},
+      edu1stdate = #{edu1stdate,jdbcType=TIMESTAMP},
+      edu1eddate = #{edu1eddate,jdbcType=TIMESTAMP},
+      edu2 = #{edu2,jdbcType=VARCHAR},
+      edu2stdate = #{edu2stdate,jdbcType=TIMESTAMP},
+      edu2eddate = #{edu2eddate,jdbcType=TIMESTAMP},
+      edu3 = #{edu3,jdbcType=VARCHAR},
+      edu3stdate = #{edu3stdate,jdbcType=TIMESTAMP},
+      edu3eddate = #{edu3eddate,jdbcType=TIMESTAMP},
+      work1 = #{work1,jdbcType=VARCHAR},
+      work1stdate = #{work1stdate,jdbcType=TIMESTAMP},
+      work1eddate = #{work1eddate,jdbcType=TIMESTAMP},
+      work2 = #{work2,jdbcType=VARCHAR},
+      work2stdate = #{work2stdate,jdbcType=TIMESTAMP},
+      work2eddate = #{work2eddate,jdbcType=TIMESTAMP},
+      work3 = #{work3,jdbcType=VARCHAR},
+      work3stdate = #{work3stdate,jdbcType=TIMESTAMP},
+      work3eddate = #{work3eddate,jdbcType=TIMESTAMP},
+      work4 = #{work4,jdbcType=VARCHAR},
+      work4stdate = #{work4stdate,jdbcType=TIMESTAMP},
+      work4eddate = #{work4eddate,jdbcType=TIMESTAMP},
+      certifications = #{certifications,jdbcType=VARCHAR},
+      educations = #{educations,jdbcType=VARCHAR},
+      workexperiences = #{workexperiences,jdbcType=VARCHAR},
+      perprofile = #{perprofile,jdbcType=VARCHAR},
+      personaliy = #{personaliy,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
       resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{resumedetail2,jdbcType=LONGVARBINARY}
@@ -882,17 +1267,14 @@
       jobtitle = #{jobtitle,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
       gender = #{gender,jdbcType=VARCHAR},
-      education = #{education,jdbcType=VARCHAR},
       major = #{major,jdbcType=VARCHAR},
       majorsub = #{majorsub,jdbcType=VARCHAR},
       salary = #{salary,jdbcType=INTEGER},
       salarymin = #{salarymin,jdbcType=INTEGER},
       salarymax = #{salarymax,jdbcType=INTEGER},
-      constellation = #{constellation,jdbcType=VARCHAR},
       hometown = #{hometown,jdbcType=VARCHAR},
       workbase = #{workbase,jdbcType=VARCHAR},
       expectworkbase = #{expectworkbase,jdbcType=VARCHAR},
-      lastcompany = #{lastcompany,jdbcType=VARCHAR},
       tags = #{tags,jdbcType=VARCHAR},
       worksate = #{worksate,jdbcType=INTEGER},
       resumestate = #{resumestate,jdbcType=INTEGER},
@@ -902,13 +1284,39 @@
       delflag = #{delflag,jdbcType=INTEGER},
       createtime = #{createtime,jdbcType=TIMESTAMP},
       updatetime = #{updatetime,jdbcType=TIMESTAMP},
-      educations = #{educations,jdbcType=VARCHAR},
-      workexperiences = #{workexperiences,jdbcType=VARCHAR},
       expectjob = #{expectjob,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=INTEGER},
       languagelevel = #{languagelevel,jdbcType=VARCHAR},
       degree = #{degree,jdbcType=VARCHAR},
-      livebase = #{livebase,jdbcType=VARCHAR}
+      livebase = #{livebase,jdbcType=VARCHAR},
+      edu1 = #{edu1,jdbcType=VARCHAR},
+      edu1stdate = #{edu1stdate,jdbcType=TIMESTAMP},
+      edu1eddate = #{edu1eddate,jdbcType=TIMESTAMP},
+      edu2 = #{edu2,jdbcType=VARCHAR},
+      edu2stdate = #{edu2stdate,jdbcType=TIMESTAMP},
+      edu2eddate = #{edu2eddate,jdbcType=TIMESTAMP},
+      edu3 = #{edu3,jdbcType=VARCHAR},
+      edu3stdate = #{edu3stdate,jdbcType=TIMESTAMP},
+      edu3eddate = #{edu3eddate,jdbcType=TIMESTAMP},
+      work1 = #{work1,jdbcType=VARCHAR},
+      work1stdate = #{work1stdate,jdbcType=TIMESTAMP},
+      work1eddate = #{work1eddate,jdbcType=TIMESTAMP},
+      work2 = #{work2,jdbcType=VARCHAR},
+      work2stdate = #{work2stdate,jdbcType=TIMESTAMP},
+      work2eddate = #{work2eddate,jdbcType=TIMESTAMP},
+      work3 = #{work3,jdbcType=VARCHAR},
+      work3stdate = #{work3stdate,jdbcType=TIMESTAMP},
+      work3eddate = #{work3eddate,jdbcType=TIMESTAMP},
+      work4 = #{work4,jdbcType=VARCHAR},
+      work4stdate = #{work4stdate,jdbcType=TIMESTAMP},
+      work4eddate = #{work4eddate,jdbcType=TIMESTAMP},
+      certifications = #{certifications,jdbcType=VARCHAR},
+      educations = #{educations,jdbcType=VARCHAR},
+      workexperiences = #{workexperiences,jdbcType=VARCHAR},
+      perprofile = #{perprofile,jdbcType=VARCHAR},
+      personaliy = #{personaliy,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -924,17 +1332,14 @@
     jobtitle,
     age,
     gender,
-    education,
     major,
     majorsub,
     salary,
     salarymin,
     salarymax,
-    constellation,
     hometown,
     workbase,
     expectworkbase,
-    lastcompany,
     tags,
     worksate,
     resumestate,
@@ -944,13 +1349,39 @@
     delflag,
     createtime,
     updatetime,
-    educations,
-    workexperiences,
     expectjob,
     weight,
     languagelevel,
     degree,
     livebase,
+    edu1,
+    edu1stdate,
+    edu1eddate,
+    edu2,
+    edu2stdate,
+    edu2eddate,
+    edu3,
+    edu3stdate,
+    edu3eddate,
+    work1,
+    work1stdate,
+    work1eddate,
+    work2,
+    work2stdate,
+    work2eddate,
+    work3,
+    work3stdate,
+    work3eddate,
+    work4,
+    work4stdate,
+    work4eddate,
+    certifications,
+    educations,
+    workexperiences,
+    perprofile,
+    personaliy,
+    birthday,
+    remark,
     resumedetail,
     resumedetail1,
     resumedetail2
@@ -969,17 +1400,14 @@
       #{item.jobtitle,jdbcType=VARCHAR},
       #{item.age,jdbcType=INTEGER},
       #{item.gender,jdbcType=VARCHAR},
-      #{item.education,jdbcType=VARCHAR},
       #{item.major,jdbcType=VARCHAR},
       #{item.majorsub,jdbcType=VARCHAR},
       #{item.salary,jdbcType=INTEGER},
       #{item.salarymin,jdbcType=INTEGER},
       #{item.salarymax,jdbcType=INTEGER},
-      #{item.constellation,jdbcType=VARCHAR},
       #{item.hometown,jdbcType=VARCHAR},
       #{item.workbase,jdbcType=VARCHAR},
       #{item.expectworkbase,jdbcType=VARCHAR},
-      #{item.lastcompany,jdbcType=VARCHAR},
       #{item.tags,jdbcType=VARCHAR},
       #{item.worksate,jdbcType=INTEGER},
       #{item.resumestate,jdbcType=INTEGER},
@@ -989,13 +1417,39 @@
       #{item.delflag,jdbcType=INTEGER},
       #{item.createtime,jdbcType=TIMESTAMP},
       #{item.updatetime,jdbcType=TIMESTAMP},
-      #{item.educations,jdbcType=VARCHAR},
-      #{item.workexperiences,jdbcType=VARCHAR},
       #{item.expectjob,jdbcType=VARCHAR},
       #{item.weight,jdbcType=INTEGER},
       #{item.languagelevel,jdbcType=VARCHAR},
       #{item.degree,jdbcType=VARCHAR},
       #{item.livebase,jdbcType=VARCHAR},
+      #{item.edu1,jdbcType=VARCHAR},
+      #{item.edu1stdate,jdbcType=TIMESTAMP},
+      #{item.edu1eddate,jdbcType=TIMESTAMP},
+      #{item.edu2,jdbcType=VARCHAR},
+      #{item.edu2stdate,jdbcType=TIMESTAMP},
+      #{item.edu2eddate,jdbcType=TIMESTAMP},
+      #{item.edu3,jdbcType=VARCHAR},
+      #{item.edu3stdate,jdbcType=TIMESTAMP},
+      #{item.edu3eddate,jdbcType=TIMESTAMP},
+      #{item.work1,jdbcType=VARCHAR},
+      #{item.work1stdate,jdbcType=TIMESTAMP},
+      #{item.work1eddate,jdbcType=TIMESTAMP},
+      #{item.work2,jdbcType=VARCHAR},
+      #{item.work2stdate,jdbcType=TIMESTAMP},
+      #{item.work2eddate,jdbcType=TIMESTAMP},
+      #{item.work3,jdbcType=VARCHAR},
+      #{item.work3stdate,jdbcType=TIMESTAMP},
+      #{item.work3eddate,jdbcType=TIMESTAMP},
+      #{item.work4,jdbcType=VARCHAR},
+      #{item.work4stdate,jdbcType=TIMESTAMP},
+      #{item.work4eddate,jdbcType=TIMESTAMP},
+      #{item.certifications,jdbcType=VARCHAR},
+      #{item.educations,jdbcType=VARCHAR},
+      #{item.workexperiences,jdbcType=VARCHAR},
+      #{item.perprofile,jdbcType=VARCHAR},
+      #{item.personaliy,jdbcType=VARCHAR},
+      #{item.birthday,jdbcType=TIMESTAMP},
+      #{item.remark,jdbcType=VARCHAR},
       #{item.resumedetail,jdbcType=LONGVARBINARY},
       #{item.resumedetail1,jdbcType=LONGVARBINARY},
       #{item.resumedetail2,jdbcType=LONGVARBINARY}
