@@ -1,5 +1,7 @@
 package com.hrbc.business.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Candidates {
@@ -56,9 +58,9 @@ public class Candidates {
     private Integer state;
 
     private Integer delflag;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createtime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updatetime;
 
     private String expectjob;
@@ -72,45 +74,45 @@ public class Candidates {
     private String livebase;
 
     private String edu1;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date edu1stdate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date edu1eddate;
 
     private String edu2;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date edu2stdate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date edu2eddate;
 
     private String edu3;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date edu3stdate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date edu3eddate;
 
     private String work1;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date work1stdate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date work1eddate;
 
     private String work2;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date work2stdate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date work2eddate;
 
     private String work3;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date work3stdate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date work3eddate;
 
     private String work4;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date work4stdate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date work4eddate;
 
     private String certifications;
@@ -122,10 +124,15 @@ public class Candidates {
     private String perprofile;
 
     private String personaliy;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private String remark;
+
+    private String married;
+
+
+    private Integer workyears;
 
     public Integer getId() {
         return id;
@@ -621,5 +628,22 @@ public class Candidates {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getMarried() {
+        return married;
+    }
+
+    public void setMarried(String married) {
+        this.married = married == null ? null : married.trim();
+    }
+
+
+    public Integer getWorkyears() {
+        return workyears;
+    }
+
+    public void setWorkyears(Integer workyears) {
+        this.workyears = workyears;
     }
 }

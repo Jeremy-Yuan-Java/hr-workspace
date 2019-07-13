@@ -4194,6 +4194,136 @@ public class CandidatesExample {
             addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
+
+        public Criteria andMarriedIsNull() {
+            addCriterion("married is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedIsNotNull() {
+            addCriterion("married is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedEqualTo(String value) {
+            addCriterion("married =", value, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedNotEqualTo(String value) {
+            addCriterion("married <>", value, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedGreaterThan(String value) {
+            addCriterion("married >", value, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedGreaterThanOrEqualTo(String value) {
+            addCriterion("married >=", value, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedLessThan(String value) {
+            addCriterion("married <", value, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedLessThanOrEqualTo(String value) {
+            addCriterion("married <=", value, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedLike(String value) {
+            addCriterion("married like", value, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedNotLike(String value) {
+            addCriterion("married not like", value, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedIn(List<String> values) {
+            addCriterion("married in", values, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedNotIn(List<String> values) {
+            addCriterion("married not in", values, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedBetween(String value1, String value2) {
+            addCriterion("married between", value1, value2, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andMarriedNotBetween(String value1, String value2) {
+            addCriterion("married not between", value1, value2, "married");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsIsNull() {
+            addCriterion("workyears is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsIsNotNull() {
+            addCriterion("workyears is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsEqualTo(Integer value) {
+            addCriterion("workyears =", value, "workyears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsNotEqualTo(Integer value) {
+            addCriterion("workyears <>", value, "workyears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsGreaterThan(Integer value) {
+            addCriterion("workyears >", value, "workyears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("workyears >=", value, "workyears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsLessThan(Integer value) {
+            addCriterion("workyears <", value, "workyears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsLessThanOrEqualTo(Integer value) {
+            addCriterion("workyears <=", value, "workyears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsIn(List<Integer> values) {
+            addCriterion("workyears in", values, "workyears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsNotIn(List<Integer> values) {
+            addCriterion("workyears not in", values, "workyears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsBetween(Integer value1, Integer value2) {
+            addCriterion("workyears between", value1, value2, "workyears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkyearsNotBetween(Integer value1, Integer value2) {
+            addCriterion("workyears not between", value1, value2, "workyears");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
