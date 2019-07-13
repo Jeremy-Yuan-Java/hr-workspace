@@ -66,6 +66,9 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="married" jdbcType="VARCHAR" property="married" />
     <result column="workyears" jdbcType="INTEGER" property="workyears" />
+    <result column="work2jobtitle" jdbcType="VARCHAR" property="work2jobtitle" />
+    <result column="work3jobtitle" jdbcType="VARCHAR" property="work3jobtitle" />
+    <result column="work4jobtitle" jdbcType="VARCHAR" property="work4jobtitle" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.CandidatesWithBLOBs">
     <result column="resumedetail" jdbcType="LONGVARBINARY" property="resumedetail" />
@@ -138,7 +141,7 @@
     edu2, edu2stdate, edu2eddate, edu3, edu3stdate, edu3eddate, work1, work1stdate, work1eddate, 
     work2, work2stdate, work2eddate, work3, work3stdate, work3eddate, work4, work4stdate, 
     work4eddate, certifications, educations, workexperiences, perprofile, personaliy, 
-    birthday, remark, married, workyears
+    birthday, remark, married, workyears, work2jobtitle, work3jobtitle, work4jobtitle
   </sql>
   <sql id="Blob_Column_List">
     resumedetail, resumedetail1, resumedetail2
@@ -224,6 +227,7 @@
       certifications, educations, workexperiences, 
       perprofile, personaliy, birthday, 
       remark, married, workyears, 
+      work2jobtitle, work3jobtitle, work4jobtitle, 
       resumedetail, resumedetail1, 
       resumedetail2)
     values (#{username,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, 
@@ -247,6 +251,7 @@
       #{certifications,jdbcType=VARCHAR}, #{educations,jdbcType=VARCHAR}, #{workexperiences,jdbcType=VARCHAR}, 
       #{perprofile,jdbcType=VARCHAR}, #{personaliy,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=VARCHAR}, #{married,jdbcType=VARCHAR}, #{workyears,jdbcType=INTEGER}, 
+      #{work2jobtitle,jdbcType=VARCHAR}, #{work3jobtitle,jdbcType=VARCHAR}, #{work4jobtitle,jdbcType=VARCHAR}, 
       #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
       #{resumedetail2,jdbcType=LONGVARBINARY})
   </insert>
@@ -444,6 +449,15 @@
       </if>
       <if test="workyears != null">
         workyears,
+      </if>
+      <if test="work2jobtitle != null">
+        work2jobtitle,
+      </if>
+      <if test="work3jobtitle != null">
+        work3jobtitle,
+      </if>
+      <if test="work4jobtitle != null">
+        work4jobtitle,
       </if>
       <if test="resumedetail != null">
         resumedetail,
@@ -644,6 +658,15 @@
       </if>
       <if test="workyears != null">
         #{workyears,jdbcType=INTEGER},
+      </if>
+      <if test="work2jobtitle != null">
+        #{work2jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="work3jobtitle != null">
+        #{work3jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="work4jobtitle != null">
+        #{work4jobtitle,jdbcType=VARCHAR},
       </if>
       <if test="resumedetail != null">
         #{resumedetail,jdbcType=LONGVARBINARY},
@@ -857,6 +880,15 @@
       <if test="record.workyears != null">
         workyears = #{record.workyears,jdbcType=INTEGER},
       </if>
+      <if test="record.work2jobtitle != null">
+        work2jobtitle = #{record.work2jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work3jobtitle != null">
+        work3jobtitle = #{record.work3jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work4jobtitle != null">
+        work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR},
+      </if>
       <if test="record.resumedetail != null">
         resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
       </if>
@@ -937,6 +969,9 @@
       remark = #{record.remark,jdbcType=VARCHAR},
       married = #{record.married,jdbcType=VARCHAR},
       workyears = #{record.workyears,jdbcType=INTEGER},
+      work2jobtitle = #{record.work2jobtitle,jdbcType=VARCHAR},
+      work3jobtitle = #{record.work3jobtitle,jdbcType=VARCHAR},
+      work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR},
       resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{record.resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{record.resumedetail2,jdbcType=LONGVARBINARY}
@@ -1009,7 +1044,10 @@
       birthday = #{record.birthday,jdbcType=TIMESTAMP},
       remark = #{record.remark,jdbcType=VARCHAR},
       married = #{record.married,jdbcType=VARCHAR},
-      workyears = #{record.workyears,jdbcType=INTEGER}
+      workyears = #{record.workyears,jdbcType=INTEGER},
+      work2jobtitle = #{record.work2jobtitle,jdbcType=VARCHAR},
+      work3jobtitle = #{record.work3jobtitle,jdbcType=VARCHAR},
+      work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -1206,6 +1244,15 @@
       <if test="workyears != null">
         workyears = #{workyears,jdbcType=INTEGER},
       </if>
+      <if test="work2jobtitle != null">
+        work2jobtitle = #{work2jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="work3jobtitle != null">
+        work3jobtitle = #{work3jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="work4jobtitle != null">
+        work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR},
+      </if>
       <if test="resumedetail != null">
         resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
       </if>
@@ -1283,6 +1330,9 @@
       remark = #{remark,jdbcType=VARCHAR},
       married = #{married,jdbcType=VARCHAR},
       workyears = #{workyears,jdbcType=INTEGER},
+      work2jobtitle = #{work2jobtitle,jdbcType=VARCHAR},
+      work3jobtitle = #{work3jobtitle,jdbcType=VARCHAR},
+      work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR},
       resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{resumedetail2,jdbcType=LONGVARBINARY}
@@ -1352,7 +1402,10 @@
       birthday = #{birthday,jdbcType=TIMESTAMP},
       remark = #{remark,jdbcType=VARCHAR},
       married = #{married,jdbcType=VARCHAR},
-      workyears = #{workyears,jdbcType=INTEGER}
+      workyears = #{workyears,jdbcType=INTEGER},
+      work2jobtitle = #{work2jobtitle,jdbcType=VARCHAR},
+      work3jobtitle = #{work3jobtitle,jdbcType=VARCHAR},
+      work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -1420,6 +1473,9 @@
     remark,
     married,
     workyears,
+    work2jobtitle,
+    work3jobtitle,
+    work4jobtitle,
     resumedetail,
     resumedetail1,
     resumedetail2
@@ -1490,6 +1546,9 @@
       #{item.remark,jdbcType=VARCHAR},
       #{item.married,jdbcType=VARCHAR},
       #{item.workyears,jdbcType=INTEGER},
+      #{item.work2jobtitle,jdbcType=VARCHAR},
+      #{item.work3jobtitle,jdbcType=VARCHAR},
+      #{item.work4jobtitle,jdbcType=VARCHAR},
       #{item.resumedetail,jdbcType=LONGVARBINARY},
       #{item.resumedetail1,jdbcType=LONGVARBINARY},
       #{item.resumedetail2,jdbcType=LONGVARBINARY}

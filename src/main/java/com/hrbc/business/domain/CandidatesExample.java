@@ -4324,6 +4324,216 @@ public class CandidatesExample {
             addCriterion("workyears not between", value1, value2, "workyears");
             return (Criteria) this;
         }
+
+        public Criteria andWork2jobtitleIsNull() {
+            addCriterion("work2jobtitle is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleIsNotNull() {
+            addCriterion("work2jobtitle is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleEqualTo(String value) {
+            addCriterion("work2jobtitle =", value, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleNotEqualTo(String value) {
+            addCriterion("work2jobtitle <>", value, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleGreaterThan(String value) {
+            addCriterion("work2jobtitle >", value, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleGreaterThanOrEqualTo(String value) {
+            addCriterion("work2jobtitle >=", value, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleLessThan(String value) {
+            addCriterion("work2jobtitle <", value, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleLessThanOrEqualTo(String value) {
+            addCriterion("work2jobtitle <=", value, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleLike(String value) {
+            addCriterion("work2jobtitle like", value, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleNotLike(String value) {
+            addCriterion("work2jobtitle not like", value, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleIn(List<String> values) {
+            addCriterion("work2jobtitle in", values, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleNotIn(List<String> values) {
+            addCriterion("work2jobtitle not in", values, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleBetween(String value1, String value2) {
+            addCriterion("work2jobtitle between", value1, value2, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork2jobtitleNotBetween(String value1, String value2) {
+            addCriterion("work2jobtitle not between", value1, value2, "work2jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleIsNull() {
+            addCriterion("work3jobtitle is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleIsNotNull() {
+            addCriterion("work3jobtitle is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleEqualTo(String value) {
+            addCriterion("work3jobtitle =", value, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleNotEqualTo(String value) {
+            addCriterion("work3jobtitle <>", value, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleGreaterThan(String value) {
+            addCriterion("work3jobtitle >", value, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleGreaterThanOrEqualTo(String value) {
+            addCriterion("work3jobtitle >=", value, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleLessThan(String value) {
+            addCriterion("work3jobtitle <", value, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleLessThanOrEqualTo(String value) {
+            addCriterion("work3jobtitle <=", value, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleLike(String value) {
+            addCriterion("work3jobtitle like", value, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleNotLike(String value) {
+            addCriterion("work3jobtitle not like", value, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleIn(List<String> values) {
+            addCriterion("work3jobtitle in", values, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleNotIn(List<String> values) {
+            addCriterion("work3jobtitle not in", values, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleBetween(String value1, String value2) {
+            addCriterion("work3jobtitle between", value1, value2, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork3jobtitleNotBetween(String value1, String value2) {
+            addCriterion("work3jobtitle not between", value1, value2, "work3jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleIsNull() {
+            addCriterion("work4jobtitle is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleIsNotNull() {
+            addCriterion("work4jobtitle is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleEqualTo(String value) {
+            addCriterion("work4jobtitle =", value, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleNotEqualTo(String value) {
+            addCriterion("work4jobtitle <>", value, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleGreaterThan(String value) {
+            addCriterion("work4jobtitle >", value, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleGreaterThanOrEqualTo(String value) {
+            addCriterion("work4jobtitle >=", value, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleLessThan(String value) {
+            addCriterion("work4jobtitle <", value, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleLessThanOrEqualTo(String value) {
+            addCriterion("work4jobtitle <=", value, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleLike(String value) {
+            addCriterion("work4jobtitle like", value, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleNotLike(String value) {
+            addCriterion("work4jobtitle not like", value, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleIn(List<String> values) {
+            addCriterion("work4jobtitle in", values, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleNotIn(List<String> values) {
+            addCriterion("work4jobtitle not in", values, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleBetween(String value1, String value2) {
+            addCriterion("work4jobtitle between", value1, value2, "work4jobtitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andWork4jobtitleNotBetween(String value1, String value2) {
+            addCriterion("work4jobtitle not between", value1, value2, "work4jobtitle");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

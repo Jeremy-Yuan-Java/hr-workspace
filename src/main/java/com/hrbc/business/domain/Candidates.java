@@ -134,6 +134,36 @@ public class Candidates {
 
     private Integer workyears;
 
+    private String work2jobtitle;
+
+    private String work3jobtitle;
+
+    private String work4jobtitle;
+
+    public String getWork2jobtitle() {
+        return work2jobtitle;
+    }
+
+    public void setWork2jobtitle(String work2jobtitle) {
+        this.work2jobtitle = work2jobtitle;
+    }
+
+    public String getWork3jobtitle() {
+        return work3jobtitle;
+    }
+
+    public void setWork3jobtitle(String work3jobtitle) {
+        this.work3jobtitle = work3jobtitle;
+    }
+
+    public String getWork4jobtitle() {
+        return work4jobtitle;
+    }
+
+    public void setWork4jobtitle(String work4jobtitle) {
+        this.work4jobtitle = work4jobtitle;
+    }
+
     public Integer getId() {
         return id;
     }
