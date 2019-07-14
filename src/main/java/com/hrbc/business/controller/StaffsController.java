@@ -36,6 +36,7 @@ public class StaffsController {
 
     @PostMapping("save")
     public ResponseDTO save(@RequestBody Staffs entity) {
+        entity.setPicpath(null);
         service.save(entity);
         return new ResponseDTO(true, "success", entity.getId());
     }

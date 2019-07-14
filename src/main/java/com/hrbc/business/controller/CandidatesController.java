@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -34,6 +35,9 @@ public class CandidatesController {
 
     @PostMapping("save")
     public ResponseDTO save(@RequestBody CandidatesWithBLOBs entity) {
+        entity.setPicpath(null);
+        entity.setPostcard(null);
+        entity.setResumefile(null);
         service.save(entity);
         return new ResponseDTO(true, "success", entity.getId());
     }
@@ -73,7 +77,7 @@ public class CandidatesController {
         }
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        fileName = PathConf.SUFFIX_CAPIC.concat(id) + suffixName;
+        fileName = PathConf.SUFFIX_CAPIC.concat(id).concat(suffixName);
         File dest = new File(pathConf.getWholePathPic().concat(fileName));
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
