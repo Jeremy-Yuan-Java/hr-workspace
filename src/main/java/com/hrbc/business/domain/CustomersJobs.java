@@ -39,13 +39,9 @@ public class CustomersJobs {
 
     private String education;
 
-    private Integer majorid;
+    private String major;
 
-    private String majordesc;
-
-    private Integer majorid2;
-
-    private String majordesc2;
+    private String majorsub;
 
     private Integer salary;
 
@@ -68,6 +64,16 @@ public class CustomersJobs {
     private Date createtime;
 
     private Date updatetime;
+
+    private String createuser;
+
+    private String updateuser;
+
+    private String createstaff;
+
+    private String updatestaff;
+
+    private String remark;
 
     public Integer getId() {
         return id;
@@ -213,36 +219,20 @@ public class CustomersJobs {
         this.education = education == null ? null : education.trim();
     }
 
-    public Integer getMajorid() {
-        return majorid;
+    public String getMajor() {
+        return major;
     }
 
-    public void setMajorid(Integer majorid) {
-        this.majorid = majorid;
+    public void setMajor(String major) {
+        this.major = major == null ? null : major.trim();
     }
 
-    public String getMajordesc() {
-        return majordesc;
+    public String getMajorsub() {
+        return majorsub;
     }
 
-    public void setMajordesc(String majordesc) {
-        this.majordesc = majordesc == null ? null : majordesc.trim();
-    }
-
-    public Integer getMajorid2() {
-        return majorid2;
-    }
-
-    public void setMajorid2(Integer majorid2) {
-        this.majorid2 = majorid2;
-    }
-
-    public String getMajordesc2() {
-        return majordesc2;
-    }
-
-    public void setMajordesc2(String majordesc2) {
-        this.majordesc2 = majordesc2 == null ? null : majordesc2.trim();
+    public void setMajorsub(String majorsub) {
+        this.majorsub = majorsub == null ? null : majorsub.trim();
     }
 
     public Integer getSalary() {
@@ -331,5 +321,45 @@ public class CustomersJobs {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getCreateuser() {
+        return createuser;
+    }
+
+    public void setCreateuser(String createuser) {
+        this.createuser = createuser == null ? null : createuser.trim();
+    }
+
+    public String getUpdateuser() {
+        return updateuser;
+    }
+
+    public void setUpdateuser(String updateuser) {
+        this.updateuser = updateuser == null ? null : updateuser.trim();
+    }
+
+    public String getCreatestaff() {
+        return createstaff;
+    }
+
+    public void setCreatestaff(String createstaff) {
+        this.createstaff = createstaff == null ? null : createstaff.trim();
+    }
+
+    public String getUpdatestaff() {
+        return updatestaff;
+    }
+
+    public void setUpdatestaff(String updatestaff) {
+        this.updatestaff = updatestaff == null ? null : updatestaff.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

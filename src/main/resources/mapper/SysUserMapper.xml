@@ -12,6 +12,10 @@
     <result column="delflag" jdbcType="INTEGER" property="delflag" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="createuser" jdbcType="VARCHAR" property="createuser" />
+    <result column="updateuser" jdbcType="VARCHAR" property="updateuser" />
+    <result column="createstaff" jdbcType="VARCHAR" property="createstaff" />
+    <result column="updatestaff" jdbcType="VARCHAR" property="updatestaff" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,7 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username, cnname, pwd, accounttype, enname, state, delflag, createtime, updatetime
+    id, username, cnname, pwd, accounttype, enname, state, delflag, createtime, updatetime, 
+    createuser, updateuser, createstaff, updatestaff
   </sql>
   <select id="selectByExample" parameterType="com.hrbc.business.domain.SysUserExample" resultMap="BaseResultMap">
     select
@@ -118,12 +123,14 @@
     </selectKey>
     insert into sys_user (username, cnname, pwd, 
       accounttype, enname, state, 
-      delflag, createtime, updatetime
-      )
+      delflag, createtime, updatetime, 
+      createuser, updateuser, createstaff, 
+      updatestaff)
     values (#{username,jdbcType=VARCHAR}, #{cnname,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
       #{accounttype,jdbcType=INTEGER}, #{enname,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
-      #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}
-      )
+      #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{createuser,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, 
+      #{updatestaff,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.SysUser">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -158,6 +165,18 @@
       <if test="updatetime != null">
         updatetime,
       </if>
+      <if test="createuser != null">
+        createuser,
+      </if>
+      <if test="updateuser != null">
+        updateuser,
+      </if>
+      <if test="createstaff != null">
+        createstaff,
+      </if>
+      <if test="updatestaff != null">
+        updatestaff,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="username != null">
@@ -186,6 +205,18 @@
       </if>
       <if test="updatetime != null">
         #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null">
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createstaff != null">
+        #{createstaff,jdbcType=VARCHAR},
+      </if>
+      <if test="updatestaff != null">
+        #{updatestaff,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -228,6 +259,18 @@
       <if test="record.updatetime != null">
         updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.createuser != null">
+        createuser = #{record.createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null">
+        updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createstaff != null">
+        createstaff = #{record.createstaff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatestaff != null">
+        updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -244,7 +287,11 @@
       state = #{record.state,jdbcType=INTEGER},
       delflag = #{record.delflag,jdbcType=INTEGER},
       createtime = #{record.createtime,jdbcType=TIMESTAMP},
-      updatetime = #{record.updatetime,jdbcType=TIMESTAMP}
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      createuser = #{record.createuser,jdbcType=VARCHAR},
+      updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      createstaff = #{record.createstaff,jdbcType=VARCHAR},
+      updatestaff = #{record.updatestaff,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -279,6 +326,18 @@
       <if test="updatetime != null">
         updatetime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
+      <if test="createuser != null">
+        createuser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null">
+        updateuser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createstaff != null">
+        createstaff = #{createstaff,jdbcType=VARCHAR},
+      </if>
+      <if test="updatestaff != null">
+        updatestaff = #{updatestaff,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -292,7 +351,11 @@
       state = #{state,jdbcType=INTEGER},
       delflag = #{delflag,jdbcType=INTEGER},
       createtime = #{createtime,jdbcType=TIMESTAMP},
-      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      createuser = #{createuser,jdbcType=VARCHAR},
+      updateuser = #{updateuser,jdbcType=VARCHAR},
+      createstaff = #{createstaff,jdbcType=VARCHAR},
+      updatestaff = #{updatestaff,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -305,7 +368,11 @@
     state,
     delflag,
     createtime,
-    updatetime
+    updatetime,
+    createuser,
+    updateuser,
+    createstaff,
+    updatestaff
     )
     values
     <foreach collection="recordList" index="index" item="item" separator=",">
@@ -318,7 +385,11 @@
       #{item.state,jdbcType=INTEGER},
       #{item.delflag,jdbcType=INTEGER},
       #{item.createtime,jdbcType=TIMESTAMP},
-      #{item.updatetime,jdbcType=TIMESTAMP}
+      #{item.updatetime,jdbcType=TIMESTAMP},
+      #{item.createuser,jdbcType=VARCHAR},
+      #{item.updateuser,jdbcType=VARCHAR},
+      #{item.createstaff,jdbcType=VARCHAR},
+      #{item.updatestaff,jdbcType=VARCHAR}
       )
     </foreach>
   </insert>

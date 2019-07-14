@@ -69,6 +69,18 @@
     <result column="work2jobtitle" jdbcType="VARCHAR" property="work2jobtitle" />
     <result column="work3jobtitle" jdbcType="VARCHAR" property="work3jobtitle" />
     <result column="work4jobtitle" jdbcType="VARCHAR" property="work4jobtitle" />
+    <result column="work1desc" jdbcType="VARCHAR" property="work1desc" />
+    <result column="work1projs" jdbcType="VARCHAR" property="work1projs" />
+    <result column="work2desc" jdbcType="VARCHAR" property="work2desc" />
+    <result column="work2projs" jdbcType="VARCHAR" property="work2projs" />
+    <result column="work3desc" jdbcType="VARCHAR" property="work3desc" />
+    <result column="work3projs" jdbcType="VARCHAR" property="work3projs" />
+    <result column="work4desc" jdbcType="VARCHAR" property="work4desc" />
+    <result column="work4projs" jdbcType="VARCHAR" property="work4projs" />
+    <result column="createuser" jdbcType="VARCHAR" property="createuser" />
+    <result column="updateuser" jdbcType="VARCHAR" property="updateuser" />
+    <result column="createstaff" jdbcType="VARCHAR" property="createstaff" />
+    <result column="updatestaff" jdbcType="VARCHAR" property="updatestaff" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.CandidatesWithBLOBs">
     <result column="resumedetail" jdbcType="LONGVARBINARY" property="resumedetail" />
@@ -141,7 +153,9 @@
     edu2, edu2stdate, edu2eddate, edu3, edu3stdate, edu3eddate, work1, work1stdate, work1eddate, 
     work2, work2stdate, work2eddate, work3, work3stdate, work3eddate, work4, work4stdate, 
     work4eddate, certifications, educations, workexperiences, perprofile, personaliy, 
-    birthday, remark, married, workyears, work2jobtitle, work3jobtitle, work4jobtitle
+    birthday, remark, married, workyears, work2jobtitle, work3jobtitle, work4jobtitle, 
+    work1desc, work1projs, work2desc, work2projs, work3desc, work3projs, work4desc, work4projs, 
+    createuser, updateuser, createstaff, updatestaff
   </sql>
   <sql id="Blob_Column_List">
     resumedetail, resumedetail1, resumedetail2
@@ -228,6 +242,10 @@
       perprofile, personaliy, birthday, 
       remark, married, workyears, 
       work2jobtitle, work3jobtitle, work4jobtitle, 
+      work1desc, work1projs, work2desc, 
+      work2projs, work3desc, work3projs, 
+      work4desc, work4projs, createuser, 
+      updateuser, createstaff, updatestaff, 
       resumedetail, resumedetail1, 
       resumedetail2)
     values (#{username,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, 
@@ -252,6 +270,10 @@
       #{perprofile,jdbcType=VARCHAR}, #{personaliy,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=VARCHAR}, #{married,jdbcType=VARCHAR}, #{workyears,jdbcType=INTEGER}, 
       #{work2jobtitle,jdbcType=VARCHAR}, #{work3jobtitle,jdbcType=VARCHAR}, #{work4jobtitle,jdbcType=VARCHAR}, 
+      #{work1desc,jdbcType=VARCHAR}, #{work1projs,jdbcType=VARCHAR}, #{work2desc,jdbcType=VARCHAR}, 
+      #{work2projs,jdbcType=VARCHAR}, #{work3desc,jdbcType=VARCHAR}, #{work3projs,jdbcType=VARCHAR}, 
+      #{work4desc,jdbcType=VARCHAR}, #{work4projs,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, 
+      #{updateuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, 
       #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
       #{resumedetail2,jdbcType=LONGVARBINARY})
   </insert>
@@ -458,6 +480,42 @@
       </if>
       <if test="work4jobtitle != null">
         work4jobtitle,
+      </if>
+      <if test="work1desc != null">
+        work1desc,
+      </if>
+      <if test="work1projs != null">
+        work1projs,
+      </if>
+      <if test="work2desc != null">
+        work2desc,
+      </if>
+      <if test="work2projs != null">
+        work2projs,
+      </if>
+      <if test="work3desc != null">
+        work3desc,
+      </if>
+      <if test="work3projs != null">
+        work3projs,
+      </if>
+      <if test="work4desc != null">
+        work4desc,
+      </if>
+      <if test="work4projs != null">
+        work4projs,
+      </if>
+      <if test="createuser != null">
+        createuser,
+      </if>
+      <if test="updateuser != null">
+        updateuser,
+      </if>
+      <if test="createstaff != null">
+        createstaff,
+      </if>
+      <if test="updatestaff != null">
+        updatestaff,
       </if>
       <if test="resumedetail != null">
         resumedetail,
@@ -667,6 +725,42 @@
       </if>
       <if test="work4jobtitle != null">
         #{work4jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="work1desc != null">
+        #{work1desc,jdbcType=VARCHAR},
+      </if>
+      <if test="work1projs != null">
+        #{work1projs,jdbcType=VARCHAR},
+      </if>
+      <if test="work2desc != null">
+        #{work2desc,jdbcType=VARCHAR},
+      </if>
+      <if test="work2projs != null">
+        #{work2projs,jdbcType=VARCHAR},
+      </if>
+      <if test="work3desc != null">
+        #{work3desc,jdbcType=VARCHAR},
+      </if>
+      <if test="work3projs != null">
+        #{work3projs,jdbcType=VARCHAR},
+      </if>
+      <if test="work4desc != null">
+        #{work4desc,jdbcType=VARCHAR},
+      </if>
+      <if test="work4projs != null">
+        #{work4projs,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null">
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createstaff != null">
+        #{createstaff,jdbcType=VARCHAR},
+      </if>
+      <if test="updatestaff != null">
+        #{updatestaff,jdbcType=VARCHAR},
       </if>
       <if test="resumedetail != null">
         #{resumedetail,jdbcType=LONGVARBINARY},
@@ -889,6 +983,42 @@
       <if test="record.work4jobtitle != null">
         work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR},
       </if>
+      <if test="record.work1desc != null">
+        work1desc = #{record.work1desc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work1projs != null">
+        work1projs = #{record.work1projs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work2desc != null">
+        work2desc = #{record.work2desc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work2projs != null">
+        work2projs = #{record.work2projs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work3desc != null">
+        work3desc = #{record.work3desc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work3projs != null">
+        work3projs = #{record.work3projs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work4desc != null">
+        work4desc = #{record.work4desc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.work4projs != null">
+        work4projs = #{record.work4projs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createuser != null">
+        createuser = #{record.createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null">
+        updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createstaff != null">
+        createstaff = #{record.createstaff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatestaff != null">
+        updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
+      </if>
       <if test="record.resumedetail != null">
         resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
       </if>
@@ -972,6 +1102,18 @@
       work2jobtitle = #{record.work2jobtitle,jdbcType=VARCHAR},
       work3jobtitle = #{record.work3jobtitle,jdbcType=VARCHAR},
       work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR},
+      work1desc = #{record.work1desc,jdbcType=VARCHAR},
+      work1projs = #{record.work1projs,jdbcType=VARCHAR},
+      work2desc = #{record.work2desc,jdbcType=VARCHAR},
+      work2projs = #{record.work2projs,jdbcType=VARCHAR},
+      work3desc = #{record.work3desc,jdbcType=VARCHAR},
+      work3projs = #{record.work3projs,jdbcType=VARCHAR},
+      work4desc = #{record.work4desc,jdbcType=VARCHAR},
+      work4projs = #{record.work4projs,jdbcType=VARCHAR},
+      createuser = #{record.createuser,jdbcType=VARCHAR},
+      updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      createstaff = #{record.createstaff,jdbcType=VARCHAR},
+      updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
       resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{record.resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{record.resumedetail2,jdbcType=LONGVARBINARY}
@@ -1047,7 +1189,19 @@
       workyears = #{record.workyears,jdbcType=INTEGER},
       work2jobtitle = #{record.work2jobtitle,jdbcType=VARCHAR},
       work3jobtitle = #{record.work3jobtitle,jdbcType=VARCHAR},
-      work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR}
+      work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR},
+      work1desc = #{record.work1desc,jdbcType=VARCHAR},
+      work1projs = #{record.work1projs,jdbcType=VARCHAR},
+      work2desc = #{record.work2desc,jdbcType=VARCHAR},
+      work2projs = #{record.work2projs,jdbcType=VARCHAR},
+      work3desc = #{record.work3desc,jdbcType=VARCHAR},
+      work3projs = #{record.work3projs,jdbcType=VARCHAR},
+      work4desc = #{record.work4desc,jdbcType=VARCHAR},
+      work4projs = #{record.work4projs,jdbcType=VARCHAR},
+      createuser = #{record.createuser,jdbcType=VARCHAR},
+      updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      createstaff = #{record.createstaff,jdbcType=VARCHAR},
+      updatestaff = #{record.updatestaff,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -1253,6 +1407,42 @@
       <if test="work4jobtitle != null">
         work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR},
       </if>
+      <if test="work1desc != null">
+        work1desc = #{work1desc,jdbcType=VARCHAR},
+      </if>
+      <if test="work1projs != null">
+        work1projs = #{work1projs,jdbcType=VARCHAR},
+      </if>
+      <if test="work2desc != null">
+        work2desc = #{work2desc,jdbcType=VARCHAR},
+      </if>
+      <if test="work2projs != null">
+        work2projs = #{work2projs,jdbcType=VARCHAR},
+      </if>
+      <if test="work3desc != null">
+        work3desc = #{work3desc,jdbcType=VARCHAR},
+      </if>
+      <if test="work3projs != null">
+        work3projs = #{work3projs,jdbcType=VARCHAR},
+      </if>
+      <if test="work4desc != null">
+        work4desc = #{work4desc,jdbcType=VARCHAR},
+      </if>
+      <if test="work4projs != null">
+        work4projs = #{work4projs,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        createuser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null">
+        updateuser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createstaff != null">
+        createstaff = #{createstaff,jdbcType=VARCHAR},
+      </if>
+      <if test="updatestaff != null">
+        updatestaff = #{updatestaff,jdbcType=VARCHAR},
+      </if>
       <if test="resumedetail != null">
         resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
       </if>
@@ -1333,6 +1523,18 @@
       work2jobtitle = #{work2jobtitle,jdbcType=VARCHAR},
       work3jobtitle = #{work3jobtitle,jdbcType=VARCHAR},
       work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR},
+      work1desc = #{work1desc,jdbcType=VARCHAR},
+      work1projs = #{work1projs,jdbcType=VARCHAR},
+      work2desc = #{work2desc,jdbcType=VARCHAR},
+      work2projs = #{work2projs,jdbcType=VARCHAR},
+      work3desc = #{work3desc,jdbcType=VARCHAR},
+      work3projs = #{work3projs,jdbcType=VARCHAR},
+      work4desc = #{work4desc,jdbcType=VARCHAR},
+      work4projs = #{work4projs,jdbcType=VARCHAR},
+      createuser = #{createuser,jdbcType=VARCHAR},
+      updateuser = #{updateuser,jdbcType=VARCHAR},
+      createstaff = #{createstaff,jdbcType=VARCHAR},
+      updatestaff = #{updatestaff,jdbcType=VARCHAR},
       resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{resumedetail2,jdbcType=LONGVARBINARY}
@@ -1405,7 +1607,19 @@
       workyears = #{workyears,jdbcType=INTEGER},
       work2jobtitle = #{work2jobtitle,jdbcType=VARCHAR},
       work3jobtitle = #{work3jobtitle,jdbcType=VARCHAR},
-      work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR}
+      work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR},
+      work1desc = #{work1desc,jdbcType=VARCHAR},
+      work1projs = #{work1projs,jdbcType=VARCHAR},
+      work2desc = #{work2desc,jdbcType=VARCHAR},
+      work2projs = #{work2projs,jdbcType=VARCHAR},
+      work3desc = #{work3desc,jdbcType=VARCHAR},
+      work3projs = #{work3projs,jdbcType=VARCHAR},
+      work4desc = #{work4desc,jdbcType=VARCHAR},
+      work4projs = #{work4projs,jdbcType=VARCHAR},
+      createuser = #{createuser,jdbcType=VARCHAR},
+      updateuser = #{updateuser,jdbcType=VARCHAR},
+      createstaff = #{createstaff,jdbcType=VARCHAR},
+      updatestaff = #{updatestaff,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -1476,6 +1690,18 @@
     work2jobtitle,
     work3jobtitle,
     work4jobtitle,
+    work1desc,
+    work1projs,
+    work2desc,
+    work2projs,
+    work3desc,
+    work3projs,
+    work4desc,
+    work4projs,
+    createuser,
+    updateuser,
+    createstaff,
+    updatestaff,
     resumedetail,
     resumedetail1,
     resumedetail2
@@ -1549,6 +1775,18 @@
       #{item.work2jobtitle,jdbcType=VARCHAR},
       #{item.work3jobtitle,jdbcType=VARCHAR},
       #{item.work4jobtitle,jdbcType=VARCHAR},
+      #{item.work1desc,jdbcType=VARCHAR},
+      #{item.work1projs,jdbcType=VARCHAR},
+      #{item.work2desc,jdbcType=VARCHAR},
+      #{item.work2projs,jdbcType=VARCHAR},
+      #{item.work3desc,jdbcType=VARCHAR},
+      #{item.work3projs,jdbcType=VARCHAR},
+      #{item.work4desc,jdbcType=VARCHAR},
+      #{item.work4projs,jdbcType=VARCHAR},
+      #{item.createuser,jdbcType=VARCHAR},
+      #{item.updateuser,jdbcType=VARCHAR},
+      #{item.createstaff,jdbcType=VARCHAR},
+      #{item.updatestaff,jdbcType=VARCHAR},
       #{item.resumedetail,jdbcType=LONGVARBINARY},
       #{item.resumedetail1,jdbcType=LONGVARBINARY},
       #{item.resumedetail2,jdbcType=LONGVARBINARY}

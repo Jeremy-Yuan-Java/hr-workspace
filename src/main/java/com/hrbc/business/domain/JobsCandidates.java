@@ -1,5 +1,7 @@
 package com.hrbc.business.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class JobsCandidates {
@@ -20,10 +22,18 @@ public class JobsCandidates {
     private Integer state;
 
     private Integer delflag;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createtime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updatetime;
+
+    private String createuser;
+
+    private String updateuser;
+
+    private String createstaff;
+
+    private String updatestaff;
 
     private byte[] communicaterecs;
 
@@ -113,6 +123,38 @@ public class JobsCandidates {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getCreateuser() {
+        return createuser;
+    }
+
+    public void setCreateuser(String createuser) {
+        this.createuser = createuser == null ? null : createuser.trim();
+    }
+
+    public String getUpdateuser() {
+        return updateuser;
+    }
+
+    public void setUpdateuser(String updateuser) {
+        this.updateuser = updateuser == null ? null : updateuser.trim();
+    }
+
+    public String getCreatestaff() {
+        return createstaff;
+    }
+
+    public void setCreatestaff(String createstaff) {
+        this.createstaff = createstaff == null ? null : createstaff.trim();
+    }
+
+    public String getUpdatestaff() {
+        return updatestaff;
+    }
+
+    public void setUpdatestaff(String updatestaff) {
+        this.updatestaff = updatestaff == null ? null : updatestaff.trim();
     }
 
     public byte[] getCommunicaterecs() {

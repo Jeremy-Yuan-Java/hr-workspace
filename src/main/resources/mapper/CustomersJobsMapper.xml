@@ -33,6 +33,11 @@
     <result column="publishtime" jdbcType="TIMESTAMP" property="publishtime" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="createuser" jdbcType="VARCHAR" property="createuser" />
+    <result column="updateuser" jdbcType="VARCHAR" property="updateuser" />
+    <result column="createstaff" jdbcType="VARCHAR" property="createstaff" />
+    <result column="updatestaff" jdbcType="VARCHAR" property="updatestaff" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -96,7 +101,8 @@
     id, jobno, jobdesc, jobresource, jobstate, opsteam, opuser, opusername, hardkpi, 
     dept, leader, cno, cname, contactuser, phoneno, email, jobtitle, education, major, 
     majorsub, salary, salarymin, salarymax, workbase, expectcompany, tags, state, delflag, 
-    publishtime, createtime, updatetime
+    publishtime, createtime, updatetime, createuser, updateuser, createstaff, updatestaff, 
+    remark
   </sql>
   <select id="selectByExample" parameterType="com.hrbc.business.domain.CustomersJobsExample" resultMap="BaseResultMap">
     select
@@ -149,8 +155,9 @@
       majorsub, salary, salarymin, 
       salarymax, workbase, expectcompany, 
       tags, state, delflag, 
-      publishtime, createtime, updatetime
-      )
+      publishtime, createtime, updatetime, 
+      createuser, updateuser, createstaff, 
+      updatestaff, remark)
     values (#{jobno,jdbcType=VARCHAR}, #{jobdesc,jdbcType=VARCHAR}, #{jobresource,jdbcType=VARCHAR}, 
       #{jobstate,jdbcType=VARCHAR}, #{opsteam,jdbcType=VARCHAR}, #{opuser,jdbcType=VARCHAR}, 
       #{opusername,jdbcType=VARCHAR}, #{hardkpi,jdbcType=VARCHAR}, #{dept,jdbcType=VARCHAR}, 
@@ -160,8 +167,9 @@
       #{majorsub,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, #{salarymin,jdbcType=INTEGER}, 
       #{salarymax,jdbcType=INTEGER}, #{workbase,jdbcType=VARCHAR}, #{expectcompany,jdbcType=VARCHAR}, 
       #{tags,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
-      #{publishtime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}
-      )
+      #{publishtime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{createuser,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, 
+      #{updatestaff,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.CustomersJobs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -259,6 +267,21 @@
       <if test="updatetime != null">
         updatetime,
       </if>
+      <if test="createuser != null">
+        createuser,
+      </if>
+      <if test="updateuser != null">
+        updateuser,
+      </if>
+      <if test="createstaff != null">
+        createstaff,
+      </if>
+      <if test="updatestaff != null">
+        updatestaff,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="jobno != null">
@@ -350,6 +373,21 @@
       </if>
       <if test="updatetime != null">
         #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null">
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createstaff != null">
+        #{createstaff,jdbcType=VARCHAR},
+      </if>
+      <if test="updatestaff != null">
+        #{updatestaff,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -455,6 +493,21 @@
       <if test="record.updatetime != null">
         updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.createuser != null">
+        createuser = #{record.createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null">
+        updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createstaff != null">
+        createstaff = #{record.createstaff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatestaff != null">
+        updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -492,7 +545,12 @@
       delflag = #{record.delflag,jdbcType=INTEGER},
       publishtime = #{record.publishtime,jdbcType=TIMESTAMP},
       createtime = #{record.createtime,jdbcType=TIMESTAMP},
-      updatetime = #{record.updatetime,jdbcType=TIMESTAMP}
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      createuser = #{record.createuser,jdbcType=VARCHAR},
+      updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      createstaff = #{record.createstaff,jdbcType=VARCHAR},
+      updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -590,6 +648,21 @@
       <if test="updatetime != null">
         updatetime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
+      <if test="createuser != null">
+        createuser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null">
+        updateuser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createstaff != null">
+        createstaff = #{createstaff,jdbcType=VARCHAR},
+      </if>
+      <if test="updatestaff != null">
+        updatestaff = #{updatestaff,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -624,7 +697,12 @@
       delflag = #{delflag,jdbcType=INTEGER},
       publishtime = #{publishtime,jdbcType=TIMESTAMP},
       createtime = #{createtime,jdbcType=TIMESTAMP},
-      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      createuser = #{createuser,jdbcType=VARCHAR},
+      updateuser = #{updateuser,jdbcType=VARCHAR},
+      createstaff = #{createstaff,jdbcType=VARCHAR},
+      updatestaff = #{updatestaff,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -658,7 +736,12 @@
     delflag,
     publishtime,
     createtime,
-    updatetime
+    updatetime,
+    createuser,
+    updateuser,
+    createstaff,
+    updatestaff,
+    remark
     )
     values
     <foreach collection="recordList" index="index" item="item" separator=",">
@@ -692,7 +775,12 @@
       #{item.delflag,jdbcType=INTEGER},
       #{item.publishtime,jdbcType=TIMESTAMP},
       #{item.createtime,jdbcType=TIMESTAMP},
-      #{item.updatetime,jdbcType=TIMESTAMP}
+      #{item.updatetime,jdbcType=TIMESTAMP},
+      #{item.createuser,jdbcType=VARCHAR},
+      #{item.updateuser,jdbcType=VARCHAR},
+      #{item.createstaff,jdbcType=VARCHAR},
+      #{item.updatestaff,jdbcType=VARCHAR},
+      #{item.remark,jdbcType=VARCHAR}
       )
     </foreach>
   </insert>

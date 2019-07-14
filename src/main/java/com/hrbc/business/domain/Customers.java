@@ -1,6 +1,5 @@
 package com.hrbc.business.domain;
 
-import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -45,10 +44,20 @@ public class Customers {
     private String major;
 
     private String majorsub;
-    private String communicaterec;
+
+    private String createuser;
+
+    private String updateuser;
+
+    private String createstaff;
+
+    private String updatestaff;
+
+    private String remark;
+
+    private String customerdesc;
 
     private byte[] followrec;
-    private JSONArray follows;
 
     public Integer getId() {
         return id;
@@ -210,39 +219,59 @@ public class Customers {
         this.majorsub = majorsub == null ? null : majorsub.trim();
     }
 
+    public String getCreateuser() {
+        return createuser;
+    }
+
+    public void setCreateuser(String createuser) {
+        this.createuser = createuser == null ? null : createuser.trim();
+    }
+
+    public String getUpdateuser() {
+        return updateuser;
+    }
+
+    public void setUpdateuser(String updateuser) {
+        this.updateuser = updateuser == null ? null : updateuser.trim();
+    }
+
+    public String getCreatestaff() {
+        return createstaff;
+    }
+
+    public void setCreatestaff(String createstaff) {
+        this.createstaff = createstaff == null ? null : createstaff.trim();
+    }
+
+    public String getUpdatestaff() {
+        return updatestaff;
+    }
+
+    public void setUpdatestaff(String updatestaff) {
+        this.updatestaff = updatestaff == null ? null : updatestaff.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getCustomerdesc() {
+        return customerdesc;
+    }
+
+    public void setCustomerdesc(String customerdesc) {
+        this.customerdesc = customerdesc == null ? null : customerdesc.trim();
+    }
+
     public byte[] getFollowrec() {
         return followrec;
     }
 
     public void setFollowrec(byte[] followrec) {
         this.followrec = followrec;
-    }
-
-    public String getCommunicaterec() {
-        return communicaterec;
-    }
-
-    public void setCommunicaterec(String communicaterec) {
-        this.communicaterec = communicaterec;
-    }
-
-    /**
-     * 不要轻易改动
-     * @return
-     */
-    public JSONArray getFollows() {
-        JSONArray array = null;
-        if (followrec == null) {
-            array = JSONArray.parseArray("[]");
-        } else {
-
-            array = JSONArray.parseArray(new String(followrec));
-        }
-        followrec = null;
-        return array;
-    }
-
-    public void setFollows(JSONArray follows) {
-        this.follows = follows;
     }
 }
