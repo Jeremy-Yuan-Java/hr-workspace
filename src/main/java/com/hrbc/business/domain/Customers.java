@@ -1,5 +1,6 @@
 package com.hrbc.business.domain;
 
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -58,6 +59,8 @@ public class Customers {
     private String customerdesc;
 
     private byte[] followrec;
+
+    private String communicaterec;
 
     public Integer getId() {
         return id;
@@ -273,5 +276,31 @@ public class Customers {
 
     public void setFollowrec(byte[] followrec) {
         this.followrec = followrec;
+    }
+
+    public String getCommunicaterec() {
+        return communicaterec;
+    }
+
+    public void setCommunicaterec(String communicaterec) {
+        this.communicaterec = communicaterec;
+    }
+
+    private JSONArray follows;
+
+    public JSONArray getFollows() {
+        JSONArray array = null;
+        if (followrec == null) {
+            array = JSONArray.parseArray("[]");
+        } else {
+
+            array = JSONArray.parseArray(new String(followrec));
+        }
+        followrec = null;
+        return array;
+    }
+
+    public void setFollows(JSONArray follows) {
+        this.follows = follows;
     }
 }
