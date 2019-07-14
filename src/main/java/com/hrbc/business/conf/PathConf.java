@@ -16,10 +16,11 @@ public class PathConf {
      * 员工照片文件名前缀
      */
     public static String SUFFIX_STAFFPIC = "st";
+    public static String SUFFIX_CAPIC = "ca";
     /**
      * 候选人照片文件名前缀
      */
-    public static String SUFFIX_CAPIC = "ca";
+    public static String SUFFIX_CAPOSTCART = "ca_pc";
     /**
      * 员工简历文件名前缀
      */

@@ -31,7 +31,10 @@ public class AuthController {
     public ResponseDTO logout() {
         return new ResponseDTO(true, "success", "");
     }
-
+    @RequestMapping(value = "api/auth/tokeninvalid", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseDTO tokeninvalid() {
+        return new ResponseDTO(false, "Token  Is Invalid , Please Login", "tokeninvalid");
+    }
     @GetMapping("/")
     public ResponseDTO ping() {
         return new ResponseDTO(true, "success", null);

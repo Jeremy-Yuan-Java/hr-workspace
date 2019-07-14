@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.UUID;
 
 @CrossOrigin
@@ -68,7 +69,7 @@ public class StaffsController {
     }
 
 
-    @PostMapping(value = "/pic")
+    @PostMapping(value = "/upload/pic")
     public ResponseDTO fileUpload(@RequestParam(value = "file") MultipartFile file,@RequestParam(value = "id") String id, Model model, HttpServletRequest request) {
         if (file.isEmpty()||StringUtils.isEmpty(id)) {
             System.out.println("文件为空/数据为空");
@@ -80,7 +81,11 @@ public class StaffsController {
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
         }else {
-            dest.deleteOnExit();
+            try {
+                Files.delete(dest.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         try {
             file.transferTo(dest);
@@ -94,7 +99,7 @@ public class StaffsController {
         }
 
 
-        return new ResponseDTO(true,"",fileName);
+        return new ResponseDTO(true,"",PathConf.ACCESS_PATH_PIC.concat(fileName));
     }
 
 }

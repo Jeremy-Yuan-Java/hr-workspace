@@ -1,6 +1,7 @@
 package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Candidates;
 import com.hrbc.business.domain.CandidatesExample;
 import com.hrbc.business.domain.CandidatesWithBLOBs;
@@ -72,6 +73,9 @@ public class CandidatesServiceImpl implements CandidatesService {
                 example.setOffset((page - 1) * size);
                 example.setLimit(size);
                 list = mapper.selectByExample(example);
+                list.forEach(s -> {
+                    s.setPicpath(PathConf.ACCESS_PATH_PIC+s.getPicpath());
+                });
             }
         }
 

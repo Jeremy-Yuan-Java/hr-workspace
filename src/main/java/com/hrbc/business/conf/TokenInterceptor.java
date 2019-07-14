@@ -20,8 +20,15 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (HttpMethod.OPTIONS.name().equals(request.getMethod())) {
             return true;
         }
+        if (request.getRequestURI().indexOf(PathConf.ACCESS_PATH)>=0) {
+            return true;
+        }
         String token = request.getHeader("USERTOKEN");
+        if(StringUtils.isEmpty(token)&&request.getRequestURI().indexOf("upload")>=0){
+            token = request.getParameter("key");
+        }
         if (StringUtils.isEmpty(token)) {
+            request.getRequestDispatcher("/api/auth/tokeninvalid").forward(request,response);
             return false;
         } else {
 
@@ -30,6 +37,7 @@ public class TokenInterceptor implements HandlerInterceptor {
              * 如果用户过期 就跳转到token过期进行重新登录
              */
             if (StringUtils.isEmpty(user)) {
+                request.getRequestDispatcher("/api/auth/tokeninvalid").forward(request,response);
                 return false;
             } else {
                 JwtToken.setUserLocal(user);

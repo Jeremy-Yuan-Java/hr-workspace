@@ -12,7 +12,7 @@ public class TokenInterceptorConf implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(new TokenInterceptor()).addPathPatterns("/**").excludePathPatterns("/api/auth/login","/api/auth/logout");
+        registry.addInterceptor(new TokenInterceptor()).addPathPatterns("/**").excludePathPatterns("/api/auth/login","/api/auth/logout","/api/auth/tokeninvalid");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 }

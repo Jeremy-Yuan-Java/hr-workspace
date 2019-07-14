@@ -1,5 +1,6 @@
 package com.hrbc.business.controller;
 
+import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Candidates;
 import com.hrbc.business.domain.CandidatesWithBLOBs;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
@@ -7,13 +8,22 @@ import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.service.CandidatesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 @CrossOrigin
 @RestController
 @RequestMapping(value = "api/candidates", produces = {"application/json;charset=UTF-8"})
 public class CandidatesController {
-
+    @Autowired
+    PathConf pathConf;
     @Autowired
     private CandidatesService service;
 
@@ -55,5 +65,39 @@ public class CandidatesController {
         }
         return new ResponseDTO(true, "success", id);
     }
+
+    @PostMapping(value = "/upload/pic")
+    public ResponseDTO fileUpload(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "id") String id, Model model, HttpServletRequest request) {
+        if (file.isEmpty() || StringUtils.isEmpty(id)) {
+            System.out.println("文件为空/数据为空");
+        }
+        String fileName = file.getOriginalFilename();
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        fileName = PathConf.SUFFIX_CAPIC.concat(id) + suffixName;
+        File dest = new File(pathConf.getWholePathPic().concat(fileName));
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
+        } else {
+            try {
+                Files.delete(dest.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            file.transferTo(dest);
+
+            CandidatesWithBLOBs candidates = new CandidatesWithBLOBs();
+            candidates.setId(Integer.parseInt(id));
+            candidates.setPicpath(fileName);
+            service.save(candidates);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return new ResponseDTO(true, "", PathConf.ACCESS_PATH_PIC.concat(fileName));
+    }
+
 
 }
