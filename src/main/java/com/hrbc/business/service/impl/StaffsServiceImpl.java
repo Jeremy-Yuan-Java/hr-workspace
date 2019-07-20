@@ -36,7 +36,7 @@ public class StaffsServiceImpl implements StaffsService {
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
             int i = mapper.insertSelective(entity);
-            String no = String.format("%08d", entity.getId());
+            String no = String.format("%06d", entity.getId());
             Staffs n = new Staffs();
             n.setStaffno(no);
             n.setId(entity.getId());

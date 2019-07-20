@@ -1,5 +1,7 @@
 package com.hrbc.business.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class CustomersJobs {
@@ -56,10 +58,13 @@ public class CustomersJobs {
     private Integer state;
 
     private Integer delflag;
+    @JsonFormat(pattern = "yyyy-MM-dd")
 
     private Date publishtime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
 
     private Date createtime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
 
     private Date updatetime;
 
