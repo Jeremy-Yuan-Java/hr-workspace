@@ -10,11 +10,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class FileWebAppConf implements WebMvcConfigurer {
-    @Autowired
-    private PathConf pathConf;
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(PathConf.ACCESS_PATH.concat("**")).addResourceLocations("file:"+pathConf.getFilerootpath());
+        System.out.println(PathConf.SAVE_PATH_ROOT);
+        registry.addResourceHandler(PathConf.ACCESS_PATH.concat("**")).addResourceLocations("file:" + PathConf.SAVE_PATH_ROOT);
     }
 }

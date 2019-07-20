@@ -17,14 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.UUID;
 
 @CrossOrigin
 @RestController
 @RequestMapping(value = "api/candidates", produces = {"application/json;charset=UTF-8"})
 public class CandidatesController {
-    @Autowired
-    PathConf pathConf;
+
     @Autowired
     private CandidatesService service;
 
@@ -71,36 +69,64 @@ public class CandidatesController {
     }
 
     @PostMapping(value = "/upload/pic")
-    public ResponseDTO fileUpload(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "id") String id, Model model, HttpServletRequest request) {
-        if (file.isEmpty() || StringUtils.isEmpty(id)) {
+    public ResponseDTO fileUpload(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "id") String id, @RequestParam(value = "type") String type, Model model, HttpServletRequest request) {
+
+        if (file.isEmpty() || StringUtils.isEmpty(id) || StringUtils.isEmpty(type)) {
             System.out.println("文件为空/数据为空");
         }
         String fileName = file.getOriginalFilename();
+        File dest = null;
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        fileName = PathConf.SUFFIX_CAPIC.concat(id).concat(suffixName);
-        File dest = new File(pathConf.getWholePathPic().concat(fileName));
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
-        } else {
+        // 1 代表上传头像 2 代表上传明信片 3 代表上传 简历
+        if ("1".equalsIgnoreCase(type)) {
+            fileName = PathConf.SUFFIX_CAPIC.concat(id).concat(suffixName);
+            dest = new File(PathConf.getSavePathPic().concat(fileName));
+
+        } else if ("2".equalsIgnoreCase(type)) {
+            fileName = PathConf.SUFFIX_CAPOSTCART.concat(id).concat(suffixName);
+            dest = new File(PathConf.getSavePathPostcard().concat(fileName));
+
+        } else if ("3".equalsIgnoreCase(type)) {
+            fileName = PathConf.SUFFIX_CARESUME.concat(id).concat(suffixName);
+            dest = new File(PathConf.getSavePathResume().concat(fileName));
+
+
+        }
+        if (dest != null) {
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            } else {
+                try {
+                    Files.delete(dest.toPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             try {
-                Files.delete(dest.toPath());
+                file.transferTo(dest);
+
+                CandidatesWithBLOBs candidates = new CandidatesWithBLOBs();
+                candidates.setId(Integer.parseInt(id));
+                if ("1".equalsIgnoreCase(type)) {
+                    candidates.setPicpath(fileName);
+
+                } else if ("2".equalsIgnoreCase(type)) {
+                    candidates.setPostcard(fileName);
+
+                } else if ("3".equalsIgnoreCase(type)) {
+                    candidates.setResumefile(fileName);
+                    candidates.setResumestate(1);
+
+                } else {
+                    return new ResponseDTO(false, "上传失败", null);
+                }
+                service.save(candidates);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        try {
-            file.transferTo(dest);
 
-            CandidatesWithBLOBs candidates = new CandidatesWithBLOBs();
-            candidates.setId(Integer.parseInt(id));
-            candidates.setPicpath(fileName);
-            service.save(candidates);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        return new ResponseDTO(true, "", PathConf.ACCESS_PATH_PIC.concat(fileName));
+        return new ResponseDTO(true, "", null);
     }
 
 

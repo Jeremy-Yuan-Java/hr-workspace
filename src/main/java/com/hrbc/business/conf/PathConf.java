@@ -26,31 +26,30 @@ public class PathConf {
      */
     public static String SUFFIX_CARESUME = "resume";
 
-    @Value("${file.rootpath}")
-    private String filerootpath;
+    public static String SAVE_PATH_ROOT;
     private static String PIC = "pic/";
     private static String RESUME = "resumes/";
+    private static String POSTCARD = "postcard/";
 
-    public static String ACCESS_PATH_PIC = ACCESS_PATH+PIC;
-    public static String ACCESS_PATH_RESUME = ACCESS_PATH+RESUME;
+    public static String ACCESS_PATH_PIC = ACCESS_PATH + PIC;
+    public static String ACCESS_PATH_RESUME = ACCESS_PATH + RESUME;
+    public static String ACCESS_PATH_POSTCARD = ACCESS_PATH + POSTCARD;
 
-
-    public String getFilerootpath() {
-        return filerootpath;
-    }
-
+    @Value("${file.rootpath}")
     public void setFilerootpath(String filerootpath) {
-        this.filerootpath = filerootpath;
+        SAVE_PATH_ROOT = filerootpath;
     }
 
 
-    public String getWholePathPic() {
-        return filerootpath + PIC;
+    public static String getSavePathPic() {
+        return SAVE_PATH_ROOT + PIC;
     }
 
-    public String getWholePathResumes() {
-        return filerootpath + RESUME;
+    public static String getSavePathResume() {
+        return SAVE_PATH_ROOT + RESUME;
     }
 
-
+    public static String getSavePathPostcard() {
+        return SAVE_PATH_ROOT + POSTCARD;
+    }
 }

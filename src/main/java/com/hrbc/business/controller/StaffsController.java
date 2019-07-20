@@ -1,6 +1,5 @@
 package com.hrbc.business.controller;
 
-import com.hrbc.business.common.Constants;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Staffs;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
@@ -17,14 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.UUID;
 
 @CrossOrigin
 @RestController
 @RequestMapping(value = "api/staffs", produces = {"application/json;charset=UTF-8"})
 public class StaffsController {
-    @Autowired
-    PathConf pathConf;
+
 
     @Autowired
     private StaffsService service;
@@ -71,17 +68,17 @@ public class StaffsController {
 
 
     @PostMapping(value = "/upload/pic")
-    public ResponseDTO fileUpload(@RequestParam(value = "file") MultipartFile file,@RequestParam(value = "id") String id, Model model, HttpServletRequest request) {
-        if (file.isEmpty()||StringUtils.isEmpty(id)) {
+    public ResponseDTO fileUpload(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "id") String id, Model model, HttpServletRequest request) {
+        if (file.isEmpty() || StringUtils.isEmpty(id)) {
             System.out.println("文件为空/数据为空");
         }
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         fileName = PathConf.SUFFIX_STAFFPIC.concat(id) + suffixName;
-        File dest = new File(pathConf.getWholePathPic().concat(fileName));
+        File dest = new File(PathConf.getSavePathPic().concat(fileName));
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
-        }else {
+        } else {
             try {
                 Files.delete(dest.toPath());
             } catch (IOException e) {
@@ -99,8 +96,7 @@ public class StaffsController {
             e.printStackTrace();
         }
 
-
-        return new ResponseDTO(true,"",PathConf.ACCESS_PATH_PIC.concat(fileName));
+        return new ResponseDTO(true, "", PathConf.ACCESS_PATH_PIC.concat(fileName));
     }
 
 }

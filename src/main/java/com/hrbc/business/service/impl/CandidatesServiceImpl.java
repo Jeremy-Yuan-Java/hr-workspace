@@ -1,6 +1,7 @@
 package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Candidates;
 import com.hrbc.business.domain.CandidatesExample;
@@ -30,8 +31,10 @@ public class CandidatesServiceImpl implements CandidatesService {
     public int save(CandidatesWithBLOBs entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
+            entity.setCreateuser(JwtToken.getUser());
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
+            entity.setUpdateuser(JwtToken.getUser());
             return mapper.insertSelective(entity);
 
         }
@@ -74,7 +77,18 @@ public class CandidatesServiceImpl implements CandidatesService {
                 example.setLimit(size);
                 list = mapper.selectByExample(example);
                 list.forEach(s -> {
-                    s.setPicpath(PathConf.ACCESS_PATH_PIC+s.getPicpath());
+                    if (!StringUtils.isEmpty(s.getPicpath())) {
+
+                        s.setPicpath(PathConf.ACCESS_PATH_PIC + s.getPicpath());
+                    }
+                    if (!StringUtils.isEmpty(s.getPostcard())) {
+
+                        s.setPostcard(PathConf.ACCESS_PATH_POSTCARD + s.getPostcard());
+                    }
+                    if (!StringUtils.isEmpty(s.getResumefile())) {
+
+                        s.setResumefile(PathConf.ACCESS_PATH_RESUME + s.getResumefile());
+                    }
                 });
             }
         }

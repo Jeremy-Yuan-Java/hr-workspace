@@ -1,6 +1,7 @@
 package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Customers;
 import com.hrbc.business.domain.Staffs;
@@ -30,6 +31,8 @@ public class StaffsServiceImpl implements StaffsService {
     public int save(Staffs entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
+            entity.setCreateuser(JwtToken.getUser());
+
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
             int i = mapper.insertSelective(entity);
@@ -37,6 +40,7 @@ public class StaffsServiceImpl implements StaffsService {
             Staffs n = new Staffs();
             n.setStaffno(no);
             n.setId(entity.getId());
+            entity.setUpdateuser(JwtToken.getUser());
             mapper.updateByPrimaryKeySelective(n);
             return i;
 
@@ -111,7 +115,10 @@ public class StaffsServiceImpl implements StaffsService {
                 example.setLimit(size);
                 list = mapper.selectByExample(example);
                 list.forEach(s -> {
-                    s.setPicpath(PathConf.ACCESS_PATH_PIC+s.getPicpath());
+                    if(org.apache.commons.lang3.StringUtils.isNoneBlank(s.getPicpath())){
+
+                        s.setPicpath(PathConf.ACCESS_PATH_PIC+s.getPicpath());
+                    }
                 });
             }
         }
