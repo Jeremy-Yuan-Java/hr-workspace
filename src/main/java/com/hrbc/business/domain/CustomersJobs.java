@@ -51,8 +51,6 @@ public class CustomersJobs {
 
     private String workbase;
 
-    private String expectcompany;
-
     private String tags;
 
     private Integer state;
@@ -77,13 +75,15 @@ public class CustomersJobs {
 
     private String fulltexts;
 
-    public String getFulltexts() {
-        return fulltexts;
-    }
+    private Integer cid;
 
-    public void setFulltexts(String fulltexts) {
-        this.fulltexts = fulltexts;
-    }
+    private String targetcompany;
+
+    private String interviewer;
+
+    private String interviewqs;
+
+    private String interviewflow;
 
     public Integer getId() {
         return id;
@@ -277,14 +277,6 @@ public class CustomersJobs {
         this.workbase = workbase == null ? null : workbase.trim();
     }
 
-    public String getExpectcompany() {
-        return expectcompany;
-    }
-
-    public void setExpectcompany(String expectcompany) {
-        this.expectcompany = expectcompany == null ? null : expectcompany.trim();
-    }
-
     public String getTags() {
         return tags;
     }
@@ -371,5 +363,53 @@ public class CustomersJobs {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getFulltexts() {
+        return fulltexts;
+    }
+
+    public void setFulltexts(String fulltexts) {
+        this.fulltexts = fulltexts == null ? null : fulltexts.trim();
+    }
+
+    public Integer getCid() {
+        return cid;
+    }
+
+    public void setCid(Integer cid) {
+        this.cid = cid;
+    }
+
+    public String getTargetcompany() {
+        return targetcompany;
+    }
+
+    public void setTargetcompany(String targetcompany) {
+        this.targetcompany = targetcompany == null ? null : targetcompany.trim();
+    }
+
+    public String getInterviewer() {
+        return interviewer;
+    }
+
+    public void setInterviewer(String interviewer) {
+        this.interviewer = interviewer == null ? null : interviewer.trim();
+    }
+
+    public String getInterviewqs() {
+        return interviewqs;
+    }
+
+    public void setInterviewqs(String interviewqs) {
+        this.interviewqs = interviewqs == null ? null : interviewqs.trim();
+    }
+
+    public String getInterviewflow() {
+        return interviewflow;
+    }
+
+    public void setInterviewflow(String interviewflow) {
+        this.interviewflow = interviewflow == null ? null : interviewflow.trim();
     }
 }

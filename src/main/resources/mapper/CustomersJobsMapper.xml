@@ -26,7 +26,6 @@
     <result column="salarymin" jdbcType="INTEGER" property="salarymin" />
     <result column="salarymax" jdbcType="INTEGER" property="salarymax" />
     <result column="workbase" jdbcType="VARCHAR" property="workbase" />
-    <result column="expectcompany" jdbcType="VARCHAR" property="expectcompany" />
     <result column="tags" jdbcType="VARCHAR" property="tags" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="delflag" jdbcType="INTEGER" property="delflag" />
@@ -39,6 +38,11 @@
     <result column="updatestaff" jdbcType="VARCHAR" property="updatestaff" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="fulltexts" jdbcType="VARCHAR" property="fulltexts" />
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="targetcompany" jdbcType="VARCHAR" property="targetcompany" />
+    <result column="interviewer" jdbcType="VARCHAR" property="interviewer" />
+    <result column="interviewqs" jdbcType="VARCHAR" property="interviewqs" />
+    <result column="interviewflow" jdbcType="VARCHAR" property="interviewflow" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -101,9 +105,9 @@
   <sql id="Base_Column_List">
     id, jobno, jobdesc, jobresource, jobstate, opsteam, opuser, opusername, hardkpi, 
     dept, leader, cno, cname, contactuser, phoneno, email, jobtitle, education, major, 
-    majorsub, salary, salarymin, salarymax, workbase, expectcompany, tags, state, delflag, 
-    publishtime, createtime, updatetime, createuser, updateuser, createstaff, updatestaff, 
-    remark, fulltexts
+    majorsub, salary, salarymin, salarymax, workbase, tags, state, delflag, publishtime, 
+    createtime, updatetime, createuser, updateuser, createstaff, updatestaff, remark, 
+    fulltexts, cid, targetcompany, interviewer, interviewqs, interviewflow
   </sql>
   <select id="selectByExample" parameterType="com.hrbc.business.domain.CustomersJobsExample" resultMap="BaseResultMap">
     select
@@ -154,12 +158,13 @@
       contactuser, phoneno, email, 
       jobtitle, education, major, 
       majorsub, salary, salarymin, 
-      salarymax, workbase, expectcompany, 
-      tags, state, delflag, 
-      publishtime, createtime, updatetime, 
-      createuser, updateuser, createstaff, 
-      updatestaff, remark, fulltexts
-      )
+      salarymax, workbase, tags, 
+      state, delflag, publishtime, 
+      createtime, updatetime, createuser, 
+      updateuser, createstaff, updatestaff, 
+      remark, fulltexts, cid, 
+      targetcompany, interviewer, interviewqs, 
+      interviewflow)
     values (#{jobno,jdbcType=VARCHAR}, #{jobdesc,jdbcType=VARCHAR}, #{jobresource,jdbcType=VARCHAR}, 
       #{jobstate,jdbcType=VARCHAR}, #{opsteam,jdbcType=VARCHAR}, #{opuser,jdbcType=VARCHAR}, 
       #{opusername,jdbcType=VARCHAR}, #{hardkpi,jdbcType=VARCHAR}, #{dept,jdbcType=VARCHAR}, 
@@ -167,12 +172,13 @@
       #{contactuser,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{jobtitle,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
       #{majorsub,jdbcType=VARCHAR}, #{salary,jdbcType=INTEGER}, #{salarymin,jdbcType=INTEGER}, 
-      #{salarymax,jdbcType=INTEGER}, #{workbase,jdbcType=VARCHAR}, #{expectcompany,jdbcType=VARCHAR}, 
-      #{tags,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
-      #{publishtime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
-      #{createuser,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, 
-      #{updatestaff,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{fulltexts,jdbcType=VARCHAR}
-      )
+      #{salarymax,jdbcType=INTEGER}, #{workbase,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{publishtime,jdbcType=TIMESTAMP}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, 
+      #{updateuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{fulltexts,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER}, 
+      #{targetcompany,jdbcType=VARCHAR}, #{interviewer,jdbcType=VARCHAR}, #{interviewqs,jdbcType=VARCHAR}, 
+      #{interviewflow,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.CustomersJobs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -249,9 +255,6 @@
       <if test="workbase != null">
         workbase,
       </if>
-      <if test="expectcompany != null">
-        expectcompany,
-      </if>
       <if test="tags != null">
         tags,
       </if>
@@ -287,6 +290,21 @@
       </if>
       <if test="fulltexts != null">
         fulltexts,
+      </if>
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="targetcompany != null">
+        targetcompany,
+      </if>
+      <if test="interviewer != null">
+        interviewer,
+      </if>
+      <if test="interviewqs != null">
+        interviewqs,
+      </if>
+      <if test="interviewflow != null">
+        interviewflow,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -359,9 +377,6 @@
       <if test="workbase != null">
         #{workbase,jdbcType=VARCHAR},
       </if>
-      <if test="expectcompany != null">
-        #{expectcompany,jdbcType=VARCHAR},
-      </if>
       <if test="tags != null">
         #{tags,jdbcType=VARCHAR},
       </if>
@@ -397,6 +412,21 @@
       </if>
       <if test="fulltexts != null">
         #{fulltexts,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="targetcompany != null">
+        #{targetcompany,jdbcType=VARCHAR},
+      </if>
+      <if test="interviewer != null">
+        #{interviewer,jdbcType=VARCHAR},
+      </if>
+      <if test="interviewqs != null">
+        #{interviewqs,jdbcType=VARCHAR},
+      </if>
+      <if test="interviewflow != null">
+        #{interviewflow,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -481,9 +511,6 @@
       <if test="record.workbase != null">
         workbase = #{record.workbase,jdbcType=VARCHAR},
       </if>
-      <if test="record.expectcompany != null">
-        expectcompany = #{record.expectcompany,jdbcType=VARCHAR},
-      </if>
       <if test="record.tags != null">
         tags = #{record.tags,jdbcType=VARCHAR},
       </if>
@@ -520,6 +547,21 @@
       <if test="record.fulltexts != null">
         fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
       </if>
+      <if test="record.cid != null">
+        cid = #{record.cid,jdbcType=INTEGER},
+      </if>
+      <if test="record.targetcompany != null">
+        targetcompany = #{record.targetcompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interviewer != null">
+        interviewer = #{record.interviewer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interviewqs != null">
+        interviewqs = #{record.interviewqs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interviewflow != null">
+        interviewflow = #{record.interviewflow,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -551,7 +593,6 @@
       salarymin = #{record.salarymin,jdbcType=INTEGER},
       salarymax = #{record.salarymax,jdbcType=INTEGER},
       workbase = #{record.workbase,jdbcType=VARCHAR},
-      expectcompany = #{record.expectcompany,jdbcType=VARCHAR},
       tags = #{record.tags,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=INTEGER},
       delflag = #{record.delflag,jdbcType=INTEGER},
@@ -563,7 +604,12 @@
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
-      fulltexts = #{record.fulltexts,jdbcType=VARCHAR}
+      fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
+      cid = #{record.cid,jdbcType=INTEGER},
+      targetcompany = #{record.targetcompany,jdbcType=VARCHAR},
+      interviewer = #{record.interviewer,jdbcType=VARCHAR},
+      interviewqs = #{record.interviewqs,jdbcType=VARCHAR},
+      interviewflow = #{record.interviewflow,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -640,9 +686,6 @@
       <if test="workbase != null">
         workbase = #{workbase,jdbcType=VARCHAR},
       </if>
-      <if test="expectcompany != null">
-        expectcompany = #{expectcompany,jdbcType=VARCHAR},
-      </if>
       <if test="tags != null">
         tags = #{tags,jdbcType=VARCHAR},
       </if>
@@ -679,6 +722,21 @@
       <if test="fulltexts != null">
         fulltexts = #{fulltexts,jdbcType=VARCHAR},
       </if>
+      <if test="cid != null">
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="targetcompany != null">
+        targetcompany = #{targetcompany,jdbcType=VARCHAR},
+      </if>
+      <if test="interviewer != null">
+        interviewer = #{interviewer,jdbcType=VARCHAR},
+      </if>
+      <if test="interviewqs != null">
+        interviewqs = #{interviewqs,jdbcType=VARCHAR},
+      </if>
+      <if test="interviewflow != null">
+        interviewflow = #{interviewflow,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -707,7 +765,6 @@
       salarymin = #{salarymin,jdbcType=INTEGER},
       salarymax = #{salarymax,jdbcType=INTEGER},
       workbase = #{workbase,jdbcType=VARCHAR},
-      expectcompany = #{expectcompany,jdbcType=VARCHAR},
       tags = #{tags,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
       delflag = #{delflag,jdbcType=INTEGER},
@@ -719,7 +776,12 @@
       createstaff = #{createstaff,jdbcType=VARCHAR},
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
-      fulltexts = #{fulltexts,jdbcType=VARCHAR}
+      fulltexts = #{fulltexts,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=INTEGER},
+      targetcompany = #{targetcompany,jdbcType=VARCHAR},
+      interviewer = #{interviewer,jdbcType=VARCHAR},
+      interviewqs = #{interviewqs,jdbcType=VARCHAR},
+      interviewflow = #{interviewflow,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -747,7 +809,6 @@
     salarymin,
     salarymax,
     workbase,
-    expectcompany,
     tags,
     state,
     delflag,
@@ -759,7 +820,12 @@
     createstaff,
     updatestaff,
     remark,
-    fulltexts
+    fulltexts,
+    cid,
+    targetcompany,
+    interviewer,
+    interviewqs,
+    interviewflow
     )
     values
     <foreach collection="recordList" index="index" item="item" separator=",">
@@ -787,7 +853,6 @@
       #{item.salarymin,jdbcType=INTEGER},
       #{item.salarymax,jdbcType=INTEGER},
       #{item.workbase,jdbcType=VARCHAR},
-      #{item.expectcompany,jdbcType=VARCHAR},
       #{item.tags,jdbcType=VARCHAR},
       #{item.state,jdbcType=INTEGER},
       #{item.delflag,jdbcType=INTEGER},
@@ -799,7 +864,12 @@
       #{item.createstaff,jdbcType=VARCHAR},
       #{item.updatestaff,jdbcType=VARCHAR},
       #{item.remark,jdbcType=VARCHAR},
-      #{item.fulltexts,jdbcType=VARCHAR}
+      #{item.fulltexts,jdbcType=VARCHAR},
+      #{item.cid,jdbcType=INTEGER},
+      #{item.targetcompany,jdbcType=VARCHAR},
+      #{item.interviewer,jdbcType=VARCHAR},
+      #{item.interviewqs,jdbcType=VARCHAR},
+      #{item.interviewflow,jdbcType=VARCHAR}
       )
     </foreach>
   </insert>
