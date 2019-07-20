@@ -5374,6 +5374,76 @@ public class CandidatesExample {
             addCriterion("updatestaff not between", value1, value2, "updatestaff");
             return (Criteria) this;
         }
+
+        public Criteria andFulltextsIsNull() {
+            addCriterion("fulltexts is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsIsNotNull() {
+            addCriterion("fulltexts is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsEqualTo(String value) {
+            addCriterion("fulltexts =", value, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsNotEqualTo(String value) {
+            addCriterion("fulltexts <>", value, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsGreaterThan(String value) {
+            addCriterion("fulltexts >", value, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsGreaterThanOrEqualTo(String value) {
+            addCriterion("fulltexts >=", value, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsLessThan(String value) {
+            addCriterion("fulltexts <", value, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsLessThanOrEqualTo(String value) {
+            addCriterion("fulltexts <=", value, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsLike(String value) {
+            addCriterion("fulltexts like", value, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsNotLike(String value) {
+            addCriterion("fulltexts not like", value, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsIn(List<String> values) {
+            addCriterion("fulltexts in", values, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsNotIn(List<String> values) {
+            addCriterion("fulltexts not in", values, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsBetween(String value1, String value2) {
+            addCriterion("fulltexts between", value1, value2, "fulltexts");
+            return (Criteria) this;
+        }
+
+        public Criteria andFulltextsNotBetween(String value1, String value2) {
+            addCriterion("fulltexts not between", value1, value2, "fulltexts");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

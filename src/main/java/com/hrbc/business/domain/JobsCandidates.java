@@ -37,6 +37,16 @@ public class JobsCandidates {
 
     private byte[] communicaterecs;
 
+    private String fulltexts;
+
+    public String getFulltexts() {
+        return fulltexts;
+    }
+
+    public void setFulltexts(String fulltexts) {
+        this.fulltexts = fulltexts;
+    }
+
     public Integer getId() {
         return id;
     }

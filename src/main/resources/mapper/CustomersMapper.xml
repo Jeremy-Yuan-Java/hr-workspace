@@ -28,6 +28,7 @@
     <result column="updatestaff" jdbcType="VARCHAR" property="updatestaff" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="customerdesc" jdbcType="VARCHAR" property="customerdesc" />
+    <result column="fulltexts" jdbcType="VARCHAR" property="fulltexts" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.Customers">
     <result column="followrec" jdbcType="LONGVARBINARY" property="followrec" />
@@ -93,7 +94,8 @@
   <sql id="Base_Column_List">
     id, cno, cname, opsstaffname, opsstaffno, contactuser, phoneno, phonenobak, email, 
     emailbak, wechat, jobtitle, businessstate, verify, state, delflag, createtime, updatetime, 
-    major, majorsub, createuser, updateuser, createstaff, updatestaff, remark, customerdesc
+    major, majorsub, createuser, updateuser, createstaff, updatestaff, remark, customerdesc, 
+    fulltexts
   </sql>
   <sql id="Blob_Column_List">
     followrec
@@ -166,7 +168,8 @@
       createtime, updatetime, major, 
       majorsub, createuser, updateuser, 
       createstaff, updatestaff, remark, 
-      customerdesc, followrec)
+      customerdesc, fulltexts, followrec
+      )
     values (#{cno,jdbcType=VARCHAR}, #{cname,jdbcType=VARCHAR}, #{opsstaffname,jdbcType=VARCHAR}, 
       #{opsstaffno,jdbcType=VARCHAR}, #{contactuser,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
       #{phonenobak,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{emailbak,jdbcType=VARCHAR}, 
@@ -175,7 +178,8 @@
       #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{major,jdbcType=VARCHAR}, 
       #{majorsub,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
       #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{customerdesc,jdbcType=VARCHAR}, #{followrec,jdbcType=LONGVARBINARY})
+      #{customerdesc,jdbcType=VARCHAR}, #{fulltexts,jdbcType=VARCHAR}, #{followrec,jdbcType=LONGVARBINARY}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.Customers">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -258,6 +262,9 @@
       <if test="customerdesc != null">
         customerdesc,
       </if>
+      <if test="fulltexts != null">
+        fulltexts,
+      </if>
       <if test="followrec != null">
         followrec,
       </if>
@@ -337,6 +344,9 @@
       </if>
       <if test="customerdesc != null">
         #{customerdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="fulltexts != null">
+        #{fulltexts,jdbcType=VARCHAR},
       </if>
       <if test="followrec != null">
         #{followrec,jdbcType=LONGVARBINARY},
@@ -430,6 +440,9 @@
       <if test="record.customerdesc != null">
         customerdesc = #{record.customerdesc,jdbcType=VARCHAR},
       </if>
+      <if test="record.fulltexts != null">
+        fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
+      </if>
       <if test="record.followrec != null">
         followrec = #{record.followrec,jdbcType=LONGVARBINARY},
       </if>
@@ -466,6 +479,7 @@
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       customerdesc = #{record.customerdesc,jdbcType=VARCHAR},
+      fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
       followrec = #{record.followrec,jdbcType=LONGVARBINARY}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -498,7 +512,8 @@
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
-      customerdesc = #{record.customerdesc,jdbcType=VARCHAR}
+      customerdesc = #{record.customerdesc,jdbcType=VARCHAR},
+      fulltexts = #{record.fulltexts,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -581,6 +596,9 @@
       <if test="customerdesc != null">
         customerdesc = #{customerdesc,jdbcType=VARCHAR},
       </if>
+      <if test="fulltexts != null">
+        fulltexts = #{fulltexts,jdbcType=VARCHAR},
+      </if>
       <if test="followrec != null">
         followrec = #{followrec,jdbcType=LONGVARBINARY},
       </if>
@@ -614,6 +632,7 @@
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       customerdesc = #{customerdesc,jdbcType=VARCHAR},
+      fulltexts = #{fulltexts,jdbcType=VARCHAR},
       followrec = #{followrec,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -643,7 +662,8 @@
       createstaff = #{createstaff,jdbcType=VARCHAR},
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
-      customerdesc = #{customerdesc,jdbcType=VARCHAR}
+      customerdesc = #{customerdesc,jdbcType=VARCHAR},
+      fulltexts = #{fulltexts,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -673,6 +693,7 @@
     updatestaff,
     remark,
     customerdesc,
+    fulltexts,
     followrec
     )
     values
@@ -703,6 +724,7 @@
       #{item.updatestaff,jdbcType=VARCHAR},
       #{item.remark,jdbcType=VARCHAR},
       #{item.customerdesc,jdbcType=VARCHAR},
+      #{item.fulltexts,jdbcType=VARCHAR},
       #{item.followrec,jdbcType=LONGVARBINARY}
       )
     </foreach>

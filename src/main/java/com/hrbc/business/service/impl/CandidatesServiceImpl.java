@@ -32,12 +32,93 @@ public class CandidatesServiceImpl implements CandidatesService {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             entity.setCreateuser(JwtToken.getUser());
-            return mapper.updateByPrimaryKeySelective(entity);
+            int i = mapper.updateByPrimaryKeySelective(entity);
+            //更新全文检索
+            entity = mapper.selectByPrimaryKey(entity.getId());
+            packFulltext(entity);
+            CandidatesWithBLOBs candidates = new CandidatesWithBLOBs();
+            candidates.setFulltexts(entity.getFulltexts());
+            candidates.setId(entity.getId());
+            mapper.updateByPrimaryKeySelective(candidates);
+            return i;
         } else {
             entity.setUpdateuser(JwtToken.getUser());
+            packFulltext(entity);
             return mapper.insertSelective(entity);
 
         }
+    }
+
+    private void packFulltext(CandidatesWithBLOBs entity) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (StringUtils.isEmpty(entity.getUsername())) {
+            stringBuilder.append(entity.getUsername()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getCertifications())) {
+            stringBuilder.append(entity.getCertifications()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getDegree())) {
+            stringBuilder.append(entity.getDegree()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getEmail())) {
+            stringBuilder.append(entity.getEmail()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getPhoneno())) {
+            stringBuilder.append(entity.getPhoneno()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getExpectjob())) {
+            stringBuilder.append(entity.getExpectjob()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getExpectworkbase())) {
+            stringBuilder.append(entity.getExpectworkbase()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getTags())) {
+            stringBuilder.append(entity.getTags()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getJobtitle())) {
+            stringBuilder.append(entity.getJobtitle()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getGender())) {
+            stringBuilder.append(entity.getGender()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getEdu1())) {
+            stringBuilder.append(entity.getEdu1()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getEdu2())) {
+            stringBuilder.append(entity.getEdu2()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getEdu3())) {
+            stringBuilder.append(entity.getEdu3()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getWork1())) {
+            stringBuilder.append(entity.getWork1()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getWork2())) {
+            stringBuilder.append(entity.getWork2()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getWork3())) {
+            stringBuilder.append(entity.getWork3()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getWork4())) {
+            stringBuilder.append(entity.getWork4()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getWork1projs())) {
+            stringBuilder.append(entity.getWork1projs()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getWork2projs())) {
+            stringBuilder.append(entity.getWork2projs()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getWork3projs())) {
+            stringBuilder.append(entity.getWork3projs()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getWork4projs())) {
+            stringBuilder.append(entity.getWork4projs()).append(",");
+        }
+        if (StringUtils.isEmpty(entity.getRemark())) {
+            stringBuilder.append(entity.getRemark()).append(",");
+        }
+        entity.setFulltexts(stringBuilder.substring(0, 2999));
+
     }
 
     @Override
@@ -69,6 +150,39 @@ public class CandidatesServiceImpl implements CandidatesService {
                     example.getOredCriteria().get(0).andDelflagEqualTo(dto.getDelflag());
 
                 }
+                if (StringUtils.isEmpty(dto.getUsername())) {
+                    example.getOredCriteria().get(0).andUsernameEqualTo(dto.getUsername());
+                }
+                if (StringUtils.isEmpty(dto.getPhoneno())) {
+                    example.getOredCriteria().get(0).andPhonenobakEqualTo(dto.getPhoneno());
+                }
+                if (StringUtils.isEmpty(dto.getEmail())) {
+                    example.getOredCriteria().get(0).andEmailEqualTo(dto.getEmail());
+                }
+                if (StringUtils.isEmpty(dto.getExpectworkbase())) {
+                    example.getOredCriteria().get(0).andUsernameEqualTo(dto.getExpectworkbase());
+                }
+
+                if (StringUtils.isEmpty(dto.getJobtitle())) {
+                    example.getOredCriteria().get(0).andJobtitleLike("%" + dto.getJobtitle() + "%");
+                }
+
+                if (StringUtils.isEmpty(dto.getWork1())) {
+                    example.getOredCriteria().get(0).andJobtitleLike("%" + dto.getWork1() + "%");
+                }
+
+                if (StringUtils.isEmpty(dto.getEdu1())) {
+                    example.getOredCriteria().get(0).andJobtitleLike("%" + dto.getEdu1() + "%");
+                }
+                if (StringUtils.isEmpty(dto.getFulltexts())) {
+                    example.getOredCriteria().get(0).andFulltextsLike("%" + dto.getFulltexts() + "%");
+                }
+
+                if (StringUtils.isEmpty(dto.getWorkyears())) {
+                    example.getOredCriteria().get(0).andWorkyearsGreaterThan(dto.getWorkyears());
+                }
+
+
             }
             count = mapper.countByExample(example);
 

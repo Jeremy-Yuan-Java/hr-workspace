@@ -17,6 +17,7 @@
     <result column="updateuser" jdbcType="VARCHAR" property="updateuser" />
     <result column="createstaff" jdbcType="VARCHAR" property="createstaff" />
     <result column="updatestaff" jdbcType="VARCHAR" property="updatestaff" />
+    <result column="fulltexts" jdbcType="VARCHAR" property="fulltexts" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.JobsCandidates">
     <result column="communicaterecs" jdbcType="LONGVARBINARY" property="communicaterecs" />
@@ -81,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, candidateid, candidatename, optime, opuser, opusername, remark, state, delflag, 
-    createtime, updatetime, createuser, updateuser, createstaff, updatestaff
+    createtime, updatetime, createuser, updateuser, createstaff, updatestaff, fulltexts
   </sql>
   <sql id="Blob_Column_List">
     communicaterecs
@@ -150,14 +151,14 @@
       opuser, opusername, remark, 
       state, delflag, createtime, 
       updatetime, createuser, updateuser, 
-      createstaff, updatestaff, communicaterecs
-      )
+      createstaff, updatestaff, fulltexts, 
+      communicaterecs)
     values (#{candidateid,jdbcType=INTEGER}, #{candidatename,jdbcType=VARCHAR}, #{optime,jdbcType=TIMESTAMP}, 
       #{opuser,jdbcType=INTEGER}, #{opusername,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
       #{updatetime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
-      #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, #{communicaterecs,jdbcType=LONGVARBINARY}
-      )
+      #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, #{fulltexts,jdbcType=VARCHAR}, 
+      #{communicaterecs,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.JobsCandidates">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -207,6 +208,9 @@
       <if test="updatestaff != null">
         updatestaff,
       </if>
+      <if test="fulltexts != null">
+        fulltexts,
+      </if>
       <if test="communicaterecs != null">
         communicaterecs,
       </if>
@@ -253,6 +257,9 @@
       </if>
       <if test="updatestaff != null">
         #{updatestaff,jdbcType=VARCHAR},
+      </if>
+      <if test="fulltexts != null">
+        #{fulltexts,jdbcType=VARCHAR},
       </if>
       <if test="communicaterecs != null">
         #{communicaterecs,jdbcType=LONGVARBINARY},
@@ -313,6 +320,9 @@
       <if test="record.updatestaff != null">
         updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
       </if>
+      <if test="record.fulltexts != null">
+        fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
+      </if>
       <if test="record.communicaterecs != null">
         communicaterecs = #{record.communicaterecs,jdbcType=LONGVARBINARY},
       </if>
@@ -338,6 +348,7 @@
       updateuser = #{record.updateuser,jdbcType=VARCHAR},
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
+      fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
       communicaterecs = #{record.communicaterecs,jdbcType=LONGVARBINARY}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -359,7 +370,8 @@
       createuser = #{record.createuser,jdbcType=VARCHAR},
       updateuser = #{record.updateuser,jdbcType=VARCHAR},
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
-      updatestaff = #{record.updatestaff,jdbcType=VARCHAR}
+      updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
+      fulltexts = #{record.fulltexts,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -409,6 +421,9 @@
       <if test="updatestaff != null">
         updatestaff = #{updatestaff,jdbcType=VARCHAR},
       </if>
+      <if test="fulltexts != null">
+        fulltexts = #{fulltexts,jdbcType=VARCHAR},
+      </if>
       <if test="communicaterecs != null">
         communicaterecs = #{communicaterecs,jdbcType=LONGVARBINARY},
       </if>
@@ -431,6 +446,7 @@
       updateuser = #{updateuser,jdbcType=VARCHAR},
       createstaff = #{createstaff,jdbcType=VARCHAR},
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
+      fulltexts = #{fulltexts,jdbcType=VARCHAR},
       communicaterecs = #{communicaterecs,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -449,7 +465,8 @@
       createuser = #{createuser,jdbcType=VARCHAR},
       updateuser = #{updateuser,jdbcType=VARCHAR},
       createstaff = #{createstaff,jdbcType=VARCHAR},
-      updatestaff = #{updatestaff,jdbcType=VARCHAR}
+      updatestaff = #{updatestaff,jdbcType=VARCHAR},
+      fulltexts = #{fulltexts,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -468,6 +485,7 @@
     updateuser,
     createstaff,
     updatestaff,
+    fulltexts,
     communicaterecs
     )
     values
@@ -487,6 +505,7 @@
       #{item.updateuser,jdbcType=VARCHAR},
       #{item.createstaff,jdbcType=VARCHAR},
       #{item.updatestaff,jdbcType=VARCHAR},
+      #{item.fulltexts,jdbcType=VARCHAR},
       #{item.communicaterecs,jdbcType=LONGVARBINARY}
       )
     </foreach>

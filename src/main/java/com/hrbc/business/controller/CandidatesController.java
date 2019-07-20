@@ -6,6 +6,7 @@ import com.hrbc.business.domain.CandidatesWithBLOBs;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
+import com.hrbc.business.mapper.CandidatesMapper;
 import com.hrbc.business.service.CandidatesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -25,6 +26,8 @@ public class CandidatesController {
 
     @Autowired
     private CandidatesService service;
+    @Autowired
+    private CandidatesMapper mapper;
 
     @GetMapping("get/{id}")
     public Candidates get(@PathVariable Integer id) {
@@ -120,7 +123,7 @@ public class CandidatesController {
                 } else {
                     return new ResponseDTO(false, "上传失败", null);
                 }
-                service.save(candidates);
+                mapper.updateByPrimaryKeySelective(candidates);
             } catch (IOException e) {
                 e.printStackTrace();
             }
