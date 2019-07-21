@@ -37,11 +37,13 @@ public class CustomersServiceImpl implements CustomersService {
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
             int i = mapper.insertSelective(entity);
-            String no = String.format("%06d", entity.getId());
-            Customers n = new Customers();
-            n.setCno(no);
-            n.setId(entity.getId());
-            mapper.updateByPrimaryKeySelective(n);
+            if(StringUtils.isEmpty(entity.getCno())) {
+                String no = String.format("%06d", entity.getId());
+                Customers n = new Customers();
+                n.setCno(no);
+                n.setId(entity.getId());
+                mapper.updateByPrimaryKeySelective(n);
+            }
             return i;
 
         }

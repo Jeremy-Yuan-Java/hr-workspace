@@ -1,13 +1,18 @@
 package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.domain.CustomersJobs;
 import com.hrbc.business.domain.CustomersJobsExample;
+import com.hrbc.business.domain.CustomersJobsTeam;
+import com.hrbc.business.domain.CustomersJobsTeamExample;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
 import com.hrbc.business.mapper.CustomersJobsMapper;
+import com.hrbc.business.mapper.CustomersJobsTeamMapper;
 import com.hrbc.business.service.CustomersJobsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +20,15 @@ import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomersJobsServiceImpl implements CustomersJobsService {
     @Autowired
     private CustomersJobsMapper mapper;
+    @Autowired
+    private CustomersJobsTeamMapper teamMapper;
 
     @Override
     public CustomersJobs get(Integer id) {
@@ -33,22 +42,56 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
             int i = mapper.updateByPrimaryKeySelective(entity);
             //更新全文检索
             updateFulltext(entity, 2);
+            updateOpsTeam(entity, 2);
             return i;
         } else {
             updateFulltext(entity, 1);
             int i = mapper.insertSelective(entity);
-            String no = String.format("%06d", entity.getId());
-            CustomersJobs n = new CustomersJobs();
-            n.setJobno(no);
-            n.setId(entity.getId());
-            entity.setUpdateuser(JwtToken.getUser());
-            mapper.updateByPrimaryKeySelective(n);
+            if (StringUtils.isEmpty(entity.getJobno())) {
+                String no = String.format("%06d", entity.getId());
+                CustomersJobs n = new CustomersJobs();
+                n.setJobno(no);
+                n.setId(entity.getId());
+                entity.setUpdateuser(JwtToken.getUser());
+                mapper.updateByPrimaryKeySelective(n);
+            }
+            updateOpsTeam(entity, 1);
             return i;
 
 
         }
     }
 
+    private void updateOpsTeam(CustomersJobs entity, int op) {
+        if (entity.getId() == null) {
+            return;
+        }
+
+        Set<Integer> users = Sets.newHashSet();
+
+        if (!StringUtils.isEmpty(entity.getOpsteam())) {
+            List<String> team = Lists.newArrayList(entity.getOpsteam().split(","));
+            users.addAll(team.stream().map(n -> Integer.parseInt(n)).collect(Collectors.toList()));
+
+        }
+        if (!StringUtils.isEmpty(entity.getOpuser())) {
+            users.add(Integer.parseInt(entity.getOpuser()));
+        }
+        if (users.size() > 0) {
+            List<CustomersJobsTeam> list = users.stream().map(sid -> {
+                CustomersJobsTeam team = new CustomersJobsTeam();
+                team.setCreatetime(new Date());
+                team.setJobid(entity.getId());
+                team.setStaffid(sid);
+                return team;
+            }).collect(Collectors.toList());
+            CustomersJobsTeamExample example = new CustomersJobsTeamExample();
+            example.createCriteria().andJobidEqualTo(entity.getId());
+            teamMapper.deleteByExample(example);
+            teamMapper.batchInsert(list);
+        }
+
+    }
 
     private void updateFulltext(CustomersJobs entity, int op) {
         if (op == 2) {
@@ -167,6 +210,10 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
                     example.getOredCriteria().get(0).andDelflagEqualTo(dto.getDelflag());
 
                 }
+                if (!StringUtils.isEmpty(dto.getJobno())) {
+                    example.getOredCriteria().get(0).andJobnoEqualTo(dto.getJobno());
+                }
+
                 if (!StringUtils.isEmpty(dto.getJobdesc())) {
                     example.getOredCriteria().get(0).andJobdescLike("%" + dto.getJobdesc() + "%");
                 }

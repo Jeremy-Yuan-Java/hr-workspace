@@ -34,7 +34,10 @@ public class StaffsController {
     @PostMapping("save")
     public ResponseDTO save(@RequestBody Staffs entity) {
         entity.setPicpath(null);
-        service.save(entity);
+        int i = service.save(entity);
+        if (i == -1) {
+            return new ResponseDTO(false, "系统账户存在", null);
+        }
         return new ResponseDTO(true, "success", entity.getId());
     }
 

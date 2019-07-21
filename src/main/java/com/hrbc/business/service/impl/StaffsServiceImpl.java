@@ -3,14 +3,17 @@ package com.hrbc.business.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.PathConf;
-import com.hrbc.business.domain.Customers;
 import com.hrbc.business.domain.Staffs;
 import com.hrbc.business.domain.StaffsExample;
+import com.hrbc.business.domain.SysUser;
+import com.hrbc.business.domain.SysUserExample;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
 import com.hrbc.business.mapper.StaffsMapper;
+import com.hrbc.business.mapper.SysUserMapper;
 import com.hrbc.business.service.StaffsService;
+import com.hrbc.business.util.MD5Encode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -21,6 +24,9 @@ import java.util.List;
 public class StaffsServiceImpl implements StaffsService {
     @Autowired
     private StaffsMapper mapper;
+
+    @Autowired
+    private SysUserMapper userMapper;
 
     @Override
     public Staffs get(Integer id) {
@@ -35,13 +41,39 @@ public class StaffsServiceImpl implements StaffsService {
 
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
-            int i = mapper.insertSelective(entity);
-            String no = String.format("%06d", entity.getId());
-            Staffs n = new Staffs();
-            n.setStaffno(no);
-            n.setId(entity.getId());
-            entity.setUpdateuser(JwtToken.getUser());
-            mapper.updateByPrimaryKeySelective(n);
+            int i = 0;
+            if(!StringUtils.isEmpty(entity.getUsername())){
+                SysUserExample example = new SysUserExample();
+                example.createCriteria().andUsernameEqualTo(entity.getUsername());
+                long exist = userMapper.countByExample(example);
+                if(exist>0){
+                    return -1;
+                }else{
+                    SysUser sysUser = new SysUser();
+                    sysUser.setUsername(entity.getUsername());
+                    sysUser.setCnname(entity.getStaffname());
+                    sysUser.setPwd(MD5Encode.md5("123456", entity.getUsername()));
+                    if(userMapper.insertSelective(sysUser)>0){
+                        i = mapper.insertSelective(entity);
+                        if (StringUtils.isEmpty(entity.getStaffno())) {
+
+                            String no = String.format("%06d", entity.getId());
+                            Staffs n = new Staffs();
+                            n.setStaffno(no);
+                            n.setId(entity.getId());
+                            entity.setUpdateuser(JwtToken.getUser());
+                            mapper.updateByPrimaryKeySelective(n);
+
+
+                        }
+                    }
+
+
+                }
+
+            }
+
+
             return i;
 
         }
@@ -115,9 +147,9 @@ public class StaffsServiceImpl implements StaffsService {
                 example.setLimit(size);
                 list = mapper.selectByExample(example);
                 list.forEach(s -> {
-                    if(org.apache.commons.lang3.StringUtils.isNoneBlank(s.getPicpath())){
+                    if (org.apache.commons.lang3.StringUtils.isNoneBlank(s.getPicpath())) {
 
-                        s.setPicpath(PathConf.ACCESS_PATH_PIC+s.getPicpath());
+                        s.setPicpath(PathConf.ACCESS_PATH_PIC + s.getPicpath());
                     }
                 });
             }
