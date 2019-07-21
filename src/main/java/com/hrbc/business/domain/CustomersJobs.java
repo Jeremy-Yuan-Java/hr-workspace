@@ -309,7 +309,7 @@ public class CustomersJobs {
     public Date getPublishtime() {
         return publishtime;
     }
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public void setPublishtime(Date publishtime) {
         this.publishtime = publishtime;
     }

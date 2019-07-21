@@ -30,8 +30,12 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
     public int save(CustomersJobs entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
-            return mapper.updateByPrimaryKeySelective(entity);
+            int i = mapper.updateByPrimaryKeySelective(entity);
+            //更新全文检索
+            updateFulltext(entity, 2);
+            return i;
         } else {
+            updateFulltext(entity, 1);
             int i = mapper.insertSelective(entity);
             String no = String.format("%06d", entity.getId());
             CustomersJobs n = new CustomersJobs();
@@ -43,6 +47,92 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
 
 
         }
+    }
+
+
+    private void updateFulltext(CustomersJobs entity, int op) {
+        if (op == 2) {
+
+            entity = mapper.selectByPrimaryKey(entity.getId());
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        if (!StringUtils.isEmpty(entity.getJobdesc())) {
+            stringBuilder.append(entity.getJobdesc()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getJobno())) {
+            stringBuilder.append(entity.getJobno()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getJobresource())) {
+            stringBuilder.append(entity.getJobresource()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getJobstate())) {
+            stringBuilder.append(entity.getJobstate()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getPhoneno())) {
+            stringBuilder.append(entity.getPhoneno()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getOpuser())) {
+            stringBuilder.append(entity.getOpuser()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getOpsteam())) {
+            stringBuilder.append(entity.getOpsteam()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getCno())) {
+            stringBuilder.append(entity.getCno()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getCname())) {
+            stringBuilder.append(entity.getCname()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getTargetcompany())) {
+            stringBuilder.append(entity.getTargetcompany()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getWorkbase())) {
+            stringBuilder.append(entity.getWorkbase()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getMajor())) {
+            stringBuilder.append(entity.getMajor()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getContactuser())) {
+            stringBuilder.append(entity.getContactuser()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getEmail())) {
+            stringBuilder.append(entity.getEmail()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getInterviewflow())) {
+            stringBuilder.append(entity.getInterviewflow()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getInterviewqs())) {
+            stringBuilder.append(entity.getInterviewqs()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getInterviewer())) {
+            stringBuilder.append(entity.getInterviewer()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getOpusername())) {
+            stringBuilder.append(entity.getOpusername()).append(",");
+        }
+        if (!StringUtils.isEmpty(entity.getPublishtime())) {
+            stringBuilder.append(entity.getPublishtime()).append(",");
+        }
+
+        if (!StringUtils.isEmpty(entity.getRemark())) {
+            stringBuilder.append(entity.getRemark()).append(",");
+        }
+        String full = stringBuilder.toString();
+        if (full.length() > 2999) {
+            entity.setFulltexts(full.substring(0, 2999));
+        } else {
+            entity.setFulltexts(full);
+
+        }
+        if (op == 2) {
+            CustomersJobs dto = new CustomersJobs();
+            dto.setFulltexts(entity.getFulltexts());
+            dto.setId(entity.getId());
+            mapper.updateByPrimaryKeySelective(dto);
+        }
+
+
     }
 
     @Override
@@ -103,6 +193,9 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
                 }
                 if (dto.getSalarymax() != null) {
                     example.getOredCriteria().get(0).andSalaryminLessThanOrEqualTo(dto.getSalarymax());
+                }
+                if (!StringUtils.isEmpty(dto.getFulltexts())) {
+                    example.getOredCriteria().get(0).andFulltextsLike("%" + dto.getFulltexts() + "%");
                 }
 
 
