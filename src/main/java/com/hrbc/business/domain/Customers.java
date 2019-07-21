@@ -64,6 +64,16 @@ public class Customers {
 
     private String fulltexts;
 
+    private Integer opsstaffid;
+
+    public Integer getOpsstaffid() {
+        return opsstaffid;
+    }
+
+    public void setOpsstaffid(Integer opsstaffid) {
+        this.opsstaffid = opsstaffid;
+    }
+
     public String getFulltexts() {
         return fulltexts;
     }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -65,6 +66,9 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
             }
             if (params.getQuery() != null) {
                 dto = JSONObject.toJavaObject(params.getQuery(), CustomersJobs.class);
+                Date publishtimest = params.getQuery().getDate("publishtimest");
+                Date publishtimeed = params.getQuery().getDate("publishtimeed");
+
                 example.createCriteria();
                 if (dto.getDelflag() == null) {
                     example.getOredCriteria().get(0).andDelflagEqualTo(DelFlagE.NO.code);
@@ -73,6 +77,35 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
                     example.getOredCriteria().get(0).andDelflagEqualTo(dto.getDelflag());
 
                 }
+                if (!StringUtils.isEmpty(dto.getJobdesc())) {
+                    example.getOredCriteria().get(0).andJobdescLike("%" + dto.getJobdesc() + "%");
+                }
+                if (!StringUtils.isEmpty(dto.getMajor())) {
+                    example.getOredCriteria().get(0).andMajorLike("%" + dto.getMajor() + "%");
+                }
+                if (!StringUtils.isEmpty(dto.getWorkbase())) {
+                    example.getOredCriteria().get(0).andWorkbaseEqualTo(dto.getWorkbase());
+                }
+                if (!StringUtils.isEmpty(dto.getTargetcompany())) {
+                    example.getOredCriteria().get(0).andTargetcompanyLike("%" + dto.getTargetcompany() + "%");
+                }
+
+                if (publishtimest != null) {
+                    example.getOredCriteria().get(0).andPublishtimeGreaterThanOrEqualTo(publishtimest);
+                }
+                if (publishtimeed != null) {
+                    example.getOredCriteria().get(0).andPublishtimeLessThanOrEqualTo(publishtimeed);
+                }
+
+
+                if (dto.getSalarymin() != null) {
+                    example.getOredCriteria().get(0).andSalarymaxGreaterThanOrEqualTo(dto.getSalarymin());
+                }
+                if (dto.getSalarymax() != null) {
+                    example.getOredCriteria().get(0).andSalaryminLessThanOrEqualTo(dto.getSalarymax());
+                }
+
+
             }
             count = mapper.countByExample(example);
 

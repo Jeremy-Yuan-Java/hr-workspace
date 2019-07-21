@@ -1964,6 +1964,66 @@ public class CustomersExample {
             addCriterion("fulltexts not between", value1, value2, "fulltexts");
             return (Criteria) this;
         }
+
+        public Criteria andOpsstaffidIsNull() {
+            addCriterion("opsstaffid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidIsNotNull() {
+            addCriterion("opsstaffid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidEqualTo(Integer value) {
+            addCriterion("opsstaffid =", value, "opsstaffid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidNotEqualTo(Integer value) {
+            addCriterion("opsstaffid <>", value, "opsstaffid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidGreaterThan(Integer value) {
+            addCriterion("opsstaffid >", value, "opsstaffid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("opsstaffid >=", value, "opsstaffid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidLessThan(Integer value) {
+            addCriterion("opsstaffid <", value, "opsstaffid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidLessThanOrEqualTo(Integer value) {
+            addCriterion("opsstaffid <=", value, "opsstaffid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidIn(List<Integer> values) {
+            addCriterion("opsstaffid in", values, "opsstaffid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidNotIn(List<Integer> values) {
+            addCriterion("opsstaffid not in", values, "opsstaffid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidBetween(Integer value1, Integer value2) {
+            addCriterion("opsstaffid between", value1, value2, "opsstaffid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpsstaffidNotBetween(Integer value1, Integer value2) {
+            addCriterion("opsstaffid not between", value1, value2, "opsstaffid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
