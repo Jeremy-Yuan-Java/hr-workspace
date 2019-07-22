@@ -19,7 +19,7 @@ public enum JobFlowE {
     保用期离职(11),
     过保用期(12),
     协商延长保用期(13),
-    完成(14);
+    背调否决(14);
     public int code;
 
     private JobFlowE(int code) {
