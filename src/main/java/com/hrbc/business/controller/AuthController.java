@@ -1,11 +1,15 @@
 package com.hrbc.business.controller;
 
+import com.google.common.collect.Maps;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.domain.SysUser;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
 /**
  * @author huangyongchao
  */
@@ -21,7 +25,10 @@ public class AuthController {
         if (sysUserService.verify(entity) > 0) {
             String token = JwtToken.generToken(entity.getUsername(), entity.getUsername());
             JwtToken.setUserLocal(entity.getUsername());
-            return new ResponseDTO(true, "success", token);
+            Map<String, String> user = Maps.newHashMap();
+            user.put("token", token);
+            user.put("cname", entity.getCnname());
+            return new ResponseDTO(true, "success", user);
         } else {
             return new ResponseDTO(false, "error", null);
         }

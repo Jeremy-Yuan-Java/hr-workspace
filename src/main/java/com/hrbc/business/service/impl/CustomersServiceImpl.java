@@ -32,7 +32,11 @@ public class CustomersServiceImpl implements CustomersService {
 
     @Override
     public int save(Customers entity) {
-
+        CustomersExample example = new CustomersExample();
+        example.createCriteria().andCnameEqualTo(entity.getCname());
+        if(mapper.countByExample(example)>0){
+            return -2;
+        }
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             return mapper.updateByPrimaryKeySelective(entity);
         } else {

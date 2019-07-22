@@ -1,21 +1,12 @@
 package com.hrbc.business.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.domain.Customers;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.service.CustomersService;
-import com.hrbc.business.util.Patten;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.DateFormat;
-import java.util.Date;
 
 @CrossOrigin
 @RestController
@@ -32,7 +23,10 @@ public class CustomersController {
 
     @PostMapping("save")
     public ResponseDTO save(@RequestBody Customers entity) {
-        service.save(entity);
+        int res = service.save(entity);
+        if (res == -2) {
+            return new ResponseDTO(false, "客户名称已经存在", null);
+        }
         return new ResponseDTO(true, "success", entity.getId());
     }
 
@@ -50,7 +44,6 @@ public class CustomersController {
     }
 
 
-
     @PostMapping("loadPage")
     public PageResultDTO loadPage(@RequestBody PageQueryParamDTO params) {
 
@@ -61,7 +54,7 @@ public class CustomersController {
     @GetMapping("remove/{id}")
     public ResponseDTO remove(@PathVariable Integer id) {
         if (id != null) {
-			Customers dto = new Customers();
+            Customers dto = new Customers();
             dto.setId(id);
             service.remove(dto);
         }
@@ -71,7 +64,7 @@ public class CustomersController {
     @GetMapping("state/{id}/{state}")
     public ResponseDTO changeState(@PathVariable Integer id, @PathVariable Integer state) {
         if (state != null) {
-			Customers dto = new Customers();
+            Customers dto = new Customers();
             dto.setId(id);
             dto.setState(state);
             service.changeState(dto);

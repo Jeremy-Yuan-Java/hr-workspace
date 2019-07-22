@@ -13,6 +13,7 @@ import com.hrbc.business.util.MD5Encode;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -26,9 +27,16 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public int verify(SysUser entity) {
         SysUserExample example = new SysUserExample();
-        example.createCriteria().andUsernameEqualTo(entity.getUsername()).andStateEqualTo(StateE.VALID.code);
-
-        return 1;
+        example.createCriteria().andUsernameEqualTo(entity.getUsername())
+                .andStateEqualTo(StateE.VALID.code).andPwdEqualTo(MD5Encode.md5(entity.getPwd(), entity.getUsername()));
+        List<SysUser>  sysUsers = mapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(sysUsers)){
+            return 0;
+        }else{
+            entity.setCnname(sysUsers.get(0).getCnname());
+            entity.setId(sysUsers.get(0).getId());
+            return 1;
+        }
     }
 
     @Override

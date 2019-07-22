@@ -1,6 +1,7 @@
 package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hrbc.business.common.Constants;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Staffs;
@@ -42,18 +43,18 @@ public class StaffsServiceImpl implements StaffsService {
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
             int i = 0;
-            if(!StringUtils.isEmpty(entity.getUsername())){
+            if (!StringUtils.isEmpty(entity.getUsername())) {
                 SysUserExample example = new SysUserExample();
                 example.createCriteria().andUsernameEqualTo(entity.getUsername());
                 long exist = userMapper.countByExample(example);
-                if(exist>0){
+                if (exist > 0) {
                     return -1;
-                }else{
+                } else {
                     SysUser sysUser = new SysUser();
                     sysUser.setUsername(entity.getUsername());
                     sysUser.setCnname(entity.getStaffname());
-                    sysUser.setPwd(MD5Encode.md5("123456", entity.getUsername()));
-                    if(userMapper.insertSelective(sysUser)>0){
+                    sysUser.setPwd(MD5Encode.md5(Constants.DEFAULT_PWD, entity.getUsername()));
+                    if (userMapper.insertSelective(sysUser) > 0) {
                         i = mapper.insertSelective(entity);
                         if (StringUtils.isEmpty(entity.getStaffno())) {
 
