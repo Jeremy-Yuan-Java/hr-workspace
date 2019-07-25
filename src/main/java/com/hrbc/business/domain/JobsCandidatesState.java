@@ -13,7 +13,7 @@ public class JobsCandidatesState {
 
     private Date optime;
 
-    private Integer opuser;
+    private String opuser;
 
     private String opusername;
 
@@ -101,11 +101,11 @@ public class JobsCandidatesState {
         this.optime = optime;
     }
 
-    public Integer getOpuser() {
+    public String getOpuser() {
         return opuser;
     }
 
-    public void setOpuser(Integer opuser) {
+    public void setOpuser(String opuser) {
         this.opuser = opuser;
     }
 

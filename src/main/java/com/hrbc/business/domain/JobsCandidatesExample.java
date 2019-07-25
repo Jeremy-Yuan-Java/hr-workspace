@@ -385,52 +385,62 @@ public class JobsCandidatesExample {
             return (Criteria) this;
         }
 
-        public Criteria andOpuserEqualTo(Integer value) {
+        public Criteria andOpuserEqualTo(String value) {
             addCriterion("opuser =", value, "opuser");
             return (Criteria) this;
         }
 
-        public Criteria andOpuserNotEqualTo(Integer value) {
+        public Criteria andOpuserNotEqualTo(String value) {
             addCriterion("opuser <>", value, "opuser");
             return (Criteria) this;
         }
 
-        public Criteria andOpuserGreaterThan(Integer value) {
+        public Criteria andOpuserGreaterThan(String value) {
             addCriterion("opuser >", value, "opuser");
             return (Criteria) this;
         }
 
-        public Criteria andOpuserGreaterThanOrEqualTo(Integer value) {
+        public Criteria andOpuserGreaterThanOrEqualTo(String value) {
             addCriterion("opuser >=", value, "opuser");
             return (Criteria) this;
         }
 
-        public Criteria andOpuserLessThan(Integer value) {
+        public Criteria andOpuserLessThan(String value) {
             addCriterion("opuser <", value, "opuser");
             return (Criteria) this;
         }
 
-        public Criteria andOpuserLessThanOrEqualTo(Integer value) {
+        public Criteria andOpuserLessThanOrEqualTo(String value) {
             addCriterion("opuser <=", value, "opuser");
             return (Criteria) this;
         }
 
-        public Criteria andOpuserIn(List<Integer> values) {
+        public Criteria andOpuserLike(String value) {
+            addCriterion("opuser like", value, "opuser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpuserNotLike(String value) {
+            addCriterion("opuser not like", value, "opuser");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpuserIn(List<String> values) {
             addCriterion("opuser in", values, "opuser");
             return (Criteria) this;
         }
 
-        public Criteria andOpuserNotIn(List<Integer> values) {
+        public Criteria andOpuserNotIn(List<String> values) {
             addCriterion("opuser not in", values, "opuser");
             return (Criteria) this;
         }
 
-        public Criteria andOpuserBetween(Integer value1, Integer value2) {
+        public Criteria andOpuserBetween(String value1, String value2) {
             addCriterion("opuser between", value1, value2, "opuser");
             return (Criteria) this;
         }
 
-        public Criteria andOpuserNotBetween(Integer value1, Integer value2) {
+        public Criteria andOpuserNotBetween(String value1, String value2) {
             addCriterion("opuser not between", value1, value2, "opuser");
             return (Criteria) this;
         }

@@ -6,6 +6,7 @@ import com.hrbc.business.domain.*;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
+import com.hrbc.business.domain.enums.JobFlowE;
 import com.hrbc.business.mapper.CandidatesMapper;
 import com.hrbc.business.mapper.CustomersJobsMapper;
 import com.hrbc.business.mapper.JobsCandidatesMapper;
@@ -64,15 +65,19 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
             entity.setUpdateuser(username);
             entity.setCreateuser(username);
             entity.setOpusername(username);
-
+            entity.setOpuser(username);
+            entity.setState(JobFlowE.匹配职位.code);
             int r = mapper.insertSelective(entity);
-            if(r>0){
+            if (r > 0) {
                 JobsCandidatesState state = new JobsCandidatesState();
 
                 state.setText1(entity.getRemark());
                 state.setJcid(entity.getId());
                 state.setOpusername(username);
-                stateMapper.insert(state);
+                entity.setOpuser(username);
+                state.setFlowstate(JobFlowE.匹配职位.code);
+                state.setFlowstatedesc(JobFlowE.匹配职位.toString());
+                stateMapper.insertSelective(state);
             }
             return r;
 

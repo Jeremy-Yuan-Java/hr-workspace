@@ -1,12 +1,16 @@
 package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hrbc.business.common.JwtToken;
+import com.hrbc.business.domain.Staffs;
+import com.hrbc.business.domain.StaffsExample;
 import com.hrbc.business.domain.SysUser;
 import com.hrbc.business.domain.SysUserExample;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
 import com.hrbc.business.domain.enums.StateE;
+import com.hrbc.business.mapper.StaffsMapper;
 import com.hrbc.business.mapper.SysUserMapper;
 import com.hrbc.business.service.SysUserService;
 import com.hrbc.business.util.MD5Encode;
@@ -22,7 +26,8 @@ import java.util.List;
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMapper mapper;
-
+    @Autowired
+    private StaffsMapper staffsMapper;
 
     @Override
     public int verify(SysUser entity) {
@@ -33,8 +38,22 @@ public class SysUserServiceImpl implements SysUserService {
         if(CollectionUtils.isEmpty(sysUsers)){
             return 0;
         }else{
+
             entity.setCnname(sysUsers.get(0).getCnname());
             entity.setId(sysUsers.get(0).getId());
+
+            try {
+                StaffsExample example1 = new StaffsExample();
+                example1.createCriteria().andUsernameEqualTo(entity.getUsername());
+                List<Staffs> list = staffsMapper.selectByExample(example1);
+                if(!CollectionUtils.isEmpty(list)){
+                    JwtToken.CURRENTSTAFFMAP.put(entity.getUsername(), list.get(0));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
             return 1;
         }
     }

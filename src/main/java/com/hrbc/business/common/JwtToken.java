@@ -1,6 +1,8 @@
 package com.hrbc.business.common;
 
 
+import com.google.common.collect.Maps;
+import com.hrbc.business.domain.Staffs;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +15,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
+
 /**
  * @author huangyongchao
  */
@@ -24,13 +28,16 @@ public class JwtToken {
     public final static long keeptime = 1000 * 60 * 60 * 24 * 1;
 
     private static ThreadLocal<String> USER_LOCAL = new ThreadLocal<>();
-
+    public static Map<String, Staffs> CURRENTSTAFFMAP = Maps.newHashMap();
     public static void setUserLocal(String user) {
         USER_LOCAL.set(user);
     }
 
     public static String getUser() {
         return USER_LOCAL.get();
+    }
+    public static String getUserName() {
+        return CURRENTSTAFFMAP.get(USER_LOCAL.get()).getStaffname();
     }
 
     public static String generToken(String id, String username) {

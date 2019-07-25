@@ -25,4 +25,9 @@ public enum JobFlowE {
     private JobFlowE(int code) {
         this.code = code;
     }
+
+    public static void main(String[] args) {
+
+        System.out.println(JobFlowE.OFFER确认.toString());
+    }
 }

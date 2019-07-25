@@ -1,5 +1,7 @@
 package com.hrbc.business.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class JobsCandidates {
@@ -8,10 +10,11 @@ public class JobsCandidates {
     private Integer candidateid;
 
     private String candidatename;
+    @JsonFormat(pattern = "yyyy-MM-dd")
 
     private Date optime;
 
-    private Integer opuser;
+    private String opuser;
 
     private String opusername;
 
@@ -20,8 +23,10 @@ public class JobsCandidates {
     private Integer state;
 
     private Integer delflag;
+    @JsonFormat(pattern = "yyyy-MM-dd")
 
     private Date createtime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
 
     private Date updatetime;
 
@@ -77,11 +82,11 @@ public class JobsCandidates {
         this.optime = optime;
     }
 
-    public Integer getOpuser() {
+    public String getOpuser() {
         return opuser;
     }
 
-    public void setOpuser(Integer opuser) {
+    public void setOpuser(String opuser) {
         this.opuser = opuser;
     }
 

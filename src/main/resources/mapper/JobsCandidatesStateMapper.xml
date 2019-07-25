@@ -7,7 +7,7 @@
     <result column="flowstate" jdbcType="INTEGER" property="flowstate" />
     <result column="flowstatedesc" jdbcType="VARCHAR" property="flowstatedesc" />
     <result column="optime" jdbcType="TIMESTAMP" property="optime" />
-    <result column="opuser" jdbcType="INTEGER" property="opuser" />
+    <result column="opuser" jdbcType="VARCHAR" property="opuser" />
     <result column="opusername" jdbcType="VARCHAR" property="opusername" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="state" jdbcType="INTEGER" property="state" />
@@ -171,7 +171,7 @@
       date4, ischeck, isapprove, 
       communicaterecs)
     values (#{jcid,jdbcType=INTEGER}, #{flowstate,jdbcType=INTEGER}, #{flowstatedesc,jdbcType=VARCHAR}, 
-      #{optime,jdbcType=TIMESTAMP}, #{opuser,jdbcType=INTEGER}, #{opusername,jdbcType=VARCHAR}, 
+      #{optime,jdbcType=TIMESTAMP}, #{opuser,jdbcType=VARCHAR}, #{opusername,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
       #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, 
       #{updateuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, 
@@ -286,7 +286,7 @@
         #{optime,jdbcType=TIMESTAMP},
       </if>
       <if test="opuser != null">
-        #{opuser,jdbcType=INTEGER},
+        #{opuser,jdbcType=VARCHAR},
       </if>
       <if test="opusername != null">
         #{opusername,jdbcType=VARCHAR},
@@ -384,7 +384,7 @@
         optime = #{record.optime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.opuser != null">
-        opuser = #{record.opuser,jdbcType=INTEGER},
+        opuser = #{record.opuser,jdbcType=VARCHAR},
       </if>
       <if test="record.opusername != null">
         opusername = #{record.opusername,jdbcType=VARCHAR},
@@ -467,7 +467,7 @@
       flowstate = #{record.flowstate,jdbcType=INTEGER},
       flowstatedesc = #{record.flowstatedesc,jdbcType=VARCHAR},
       optime = #{record.optime,jdbcType=TIMESTAMP},
-      opuser = #{record.opuser,jdbcType=INTEGER},
+      opuser = #{record.opuser,jdbcType=VARCHAR},
       opusername = #{record.opusername,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=INTEGER},
@@ -502,7 +502,7 @@
       flowstate = #{record.flowstate,jdbcType=INTEGER},
       flowstatedesc = #{record.flowstatedesc,jdbcType=VARCHAR},
       optime = #{record.optime,jdbcType=TIMESTAMP},
-      opuser = #{record.opuser,jdbcType=INTEGER},
+      opuser = #{record.opuser,jdbcType=VARCHAR},
       opusername = #{record.opusername,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=INTEGER},
@@ -545,7 +545,7 @@
         optime = #{optime,jdbcType=TIMESTAMP},
       </if>
       <if test="opuser != null">
-        opuser = #{opuser,jdbcType=INTEGER},
+        opuser = #{opuser,jdbcType=VARCHAR},
       </if>
       <if test="opusername != null">
         opusername = #{opusername,jdbcType=VARCHAR},
@@ -625,7 +625,7 @@
       flowstate = #{flowstate,jdbcType=INTEGER},
       flowstatedesc = #{flowstatedesc,jdbcType=VARCHAR},
       optime = #{optime,jdbcType=TIMESTAMP},
-      opuser = #{opuser,jdbcType=INTEGER},
+      opuser = #{opuser,jdbcType=VARCHAR},
       opusername = #{opusername,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
@@ -657,7 +657,7 @@
       flowstate = #{flowstate,jdbcType=INTEGER},
       flowstatedesc = #{flowstatedesc,jdbcType=VARCHAR},
       optime = #{optime,jdbcType=TIMESTAMP},
-      opuser = #{opuser,jdbcType=INTEGER},
+      opuser = #{opuser,jdbcType=VARCHAR},
       opusername = #{opusername,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
@@ -720,7 +720,7 @@
       #{item.flowstate,jdbcType=INTEGER},
       #{item.flowstatedesc,jdbcType=VARCHAR},
       #{item.optime,jdbcType=TIMESTAMP},
-      #{item.opuser,jdbcType=INTEGER},
+      #{item.opuser,jdbcType=VARCHAR},
       #{item.opusername,jdbcType=VARCHAR},
       #{item.remark,jdbcType=VARCHAR},
       #{item.state,jdbcType=INTEGER},
