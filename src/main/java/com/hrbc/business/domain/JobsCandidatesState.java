@@ -5,6 +5,8 @@ import java.util.Date;
 public class JobsCandidatesState {
     private Integer id;
 
+    private Integer jcid;
+
     private Integer flowstate;
 
     private String flowstatedesc;
@@ -65,6 +67,14 @@ public class JobsCandidatesState {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getJcid() {
+        return jcid;
+    }
+
+    public void setJcid(Integer jcid) {
+        this.jcid = jcid;
     }
 
     public Integer getFlowstate() {

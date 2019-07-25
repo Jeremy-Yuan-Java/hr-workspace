@@ -21,6 +21,7 @@
     <result column="jobtitle" jdbcType="VARCHAR" property="jobtitle" />
     <result column="lastcompany" jdbcType="VARCHAR" property="lastcompany" />
     <result column="phoneno" jdbcType="VARCHAR" property="phoneno" />
+    <result column="jobid" jdbcType="INTEGER" property="jobid" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.JobsCandidates">
     <result column="communicaterecs" jdbcType="LONGVARBINARY" property="communicaterecs" />
@@ -86,7 +87,7 @@
   <sql id="Base_Column_List">
     id, candidateid, candidatename, optime, opuser, opusername, remark, state, delflag, 
     createtime, updatetime, createuser, updateuser, createstaff, updatestaff, fulltexts, 
-    jobtitle, lastcompany, phoneno
+    jobtitle, lastcompany, phoneno, jobid
   </sql>
   <sql id="Blob_Column_List">
     communicaterecs
@@ -157,14 +158,14 @@
       updatetime, createuser, updateuser, 
       createstaff, updatestaff, fulltexts, 
       jobtitle, lastcompany, phoneno, 
-      communicaterecs)
+      jobid, communicaterecs)
     values (#{candidateid,jdbcType=INTEGER}, #{candidatename,jdbcType=VARCHAR}, #{optime,jdbcType=TIMESTAMP}, 
       #{opuser,jdbcType=INTEGER}, #{opusername,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
       #{updatetime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
       #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, #{fulltexts,jdbcType=VARCHAR}, 
       #{jobtitle,jdbcType=VARCHAR}, #{lastcompany,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
-      #{communicaterecs,jdbcType=LONGVARBINARY})
+      #{jobid,jdbcType=INTEGER}, #{communicaterecs,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.JobsCandidates">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -226,6 +227,9 @@
       <if test="phoneno != null">
         phoneno,
       </if>
+      <if test="jobid != null">
+        jobid,
+      </if>
       <if test="communicaterecs != null">
         communicaterecs,
       </if>
@@ -284,6 +288,9 @@
       </if>
       <if test="phoneno != null">
         #{phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="jobid != null">
+        #{jobid,jdbcType=INTEGER},
       </if>
       <if test="communicaterecs != null">
         #{communicaterecs,jdbcType=LONGVARBINARY},
@@ -356,6 +363,9 @@
       <if test="record.phoneno != null">
         phoneno = #{record.phoneno,jdbcType=VARCHAR},
       </if>
+      <if test="record.jobid != null">
+        jobid = #{record.jobid,jdbcType=INTEGER},
+      </if>
       <if test="record.communicaterecs != null">
         communicaterecs = #{record.communicaterecs,jdbcType=LONGVARBINARY},
       </if>
@@ -385,6 +395,7 @@
       jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
       lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
       phoneno = #{record.phoneno,jdbcType=VARCHAR},
+      jobid = #{record.jobid,jdbcType=INTEGER},
       communicaterecs = #{record.communicaterecs,jdbcType=LONGVARBINARY}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -410,7 +421,8 @@
       fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
       jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
       lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
-      phoneno = #{record.phoneno,jdbcType=VARCHAR}
+      phoneno = #{record.phoneno,jdbcType=VARCHAR},
+      jobid = #{record.jobid,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -472,6 +484,9 @@
       <if test="phoneno != null">
         phoneno = #{phoneno,jdbcType=VARCHAR},
       </if>
+      <if test="jobid != null">
+        jobid = #{jobid,jdbcType=INTEGER},
+      </if>
       <if test="communicaterecs != null">
         communicaterecs = #{communicaterecs,jdbcType=LONGVARBINARY},
       </if>
@@ -498,6 +513,7 @@
       jobtitle = #{jobtitle,jdbcType=VARCHAR},
       lastcompany = #{lastcompany,jdbcType=VARCHAR},
       phoneno = #{phoneno,jdbcType=VARCHAR},
+      jobid = #{jobid,jdbcType=INTEGER},
       communicaterecs = #{communicaterecs,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -520,7 +536,8 @@
       fulltexts = #{fulltexts,jdbcType=VARCHAR},
       jobtitle = #{jobtitle,jdbcType=VARCHAR},
       lastcompany = #{lastcompany,jdbcType=VARCHAR},
-      phoneno = #{phoneno,jdbcType=VARCHAR}
+      phoneno = #{phoneno,jdbcType=VARCHAR},
+      jobid = #{jobid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -543,6 +560,7 @@
     jobtitle,
     lastcompany,
     phoneno,
+    jobid,
     communicaterecs
     )
     values
@@ -566,6 +584,7 @@
       #{item.jobtitle,jdbcType=VARCHAR},
       #{item.lastcompany,jdbcType=VARCHAR},
       #{item.phoneno,jdbcType=VARCHAR},
+      #{item.jobid,jdbcType=INTEGER},
       #{item.communicaterecs,jdbcType=LONGVARBINARY}
       )
     </foreach>

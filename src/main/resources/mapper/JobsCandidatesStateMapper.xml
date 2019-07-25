@@ -3,6 +3,7 @@
 <mapper namespace="com.hrbc.business.mapper.JobsCandidatesStateMapper">
   <resultMap id="BaseResultMap" type="com.hrbc.business.domain.JobsCandidatesState">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="jcid" jdbcType="INTEGER" property="jcid" />
     <result column="flowstate" jdbcType="INTEGER" property="flowstate" />
     <result column="flowstatedesc" jdbcType="VARCHAR" property="flowstatedesc" />
     <result column="optime" jdbcType="TIMESTAMP" property="optime" />
@@ -92,7 +93,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, flowstate, flowstatedesc, optime, opuser, opusername, remark, state, delflag, 
+    id, jcid, flowstate, flowstatedesc, optime, opuser, opusername, remark, state, delflag, 
     createtime, updatetime, createuser, updateuser, createstaff, updatestaff, fulltexts, 
     text1, text2, text3, text4, text5, date1, date2, date3, date4, ischeck, isapprove
   </sql>
@@ -159,26 +160,26 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into jobs_candidates_state (flowstate, flowstatedesc, optime, 
-      opuser, opusername, remark, 
-      state, delflag, createtime, 
-      updatetime, createuser, updateuser, 
-      createstaff, updatestaff, fulltexts, 
-      text1, text2, text3, 
-      text4, text5, date1, 
-      date2, date3, date4, 
-      ischeck, isapprove, communicaterecs
-      )
-    values (#{flowstate,jdbcType=INTEGER}, #{flowstatedesc,jdbcType=VARCHAR}, #{optime,jdbcType=TIMESTAMP}, 
-      #{opuser,jdbcType=INTEGER}, #{opusername,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{updatetime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
-      #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, #{fulltexts,jdbcType=VARCHAR}, 
-      #{text1,jdbcType=VARCHAR}, #{text2,jdbcType=VARCHAR}, #{text3,jdbcType=VARCHAR}, 
-      #{text4,jdbcType=VARCHAR}, #{text5,jdbcType=VARCHAR}, #{date1,jdbcType=TIMESTAMP}, 
-      #{date2,jdbcType=TIMESTAMP}, #{date3,jdbcType=TIMESTAMP}, #{date4,jdbcType=TIMESTAMP}, 
-      #{ischeck,jdbcType=INTEGER}, #{isapprove,jdbcType=INTEGER}, #{communicaterecs,jdbcType=LONGVARBINARY}
-      )
+    insert into jobs_candidates_state (jcid, flowstate, flowstatedesc, 
+      optime, opuser, opusername, 
+      remark, state, delflag, 
+      createtime, updatetime, createuser, 
+      updateuser, createstaff, updatestaff, 
+      fulltexts, text1, text2, 
+      text3, text4, text5, 
+      date1, date2, date3, 
+      date4, ischeck, isapprove, 
+      communicaterecs)
+    values (#{jcid,jdbcType=INTEGER}, #{flowstate,jdbcType=INTEGER}, #{flowstatedesc,jdbcType=VARCHAR}, 
+      #{optime,jdbcType=TIMESTAMP}, #{opuser,jdbcType=INTEGER}, #{opusername,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, 
+      #{updateuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, 
+      #{fulltexts,jdbcType=VARCHAR}, #{text1,jdbcType=VARCHAR}, #{text2,jdbcType=VARCHAR}, 
+      #{text3,jdbcType=VARCHAR}, #{text4,jdbcType=VARCHAR}, #{text5,jdbcType=VARCHAR}, 
+      #{date1,jdbcType=TIMESTAMP}, #{date2,jdbcType=TIMESTAMP}, #{date3,jdbcType=TIMESTAMP}, 
+      #{date4,jdbcType=TIMESTAMP}, #{ischeck,jdbcType=INTEGER}, #{isapprove,jdbcType=INTEGER}, 
+      #{communicaterecs,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.JobsCandidatesState">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -186,6 +187,9 @@
     </selectKey>
     insert into jobs_candidates_state
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jcid != null">
+        jcid,
+      </if>
       <if test="flowstate != null">
         flowstate,
       </if>
@@ -269,6 +273,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jcid != null">
+        #{jcid,jdbcType=INTEGER},
+      </if>
       <if test="flowstate != null">
         #{flowstate,jdbcType=INTEGER},
       </if>
@@ -364,6 +371,9 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.jcid != null">
+        jcid = #{record.jcid,jdbcType=INTEGER},
+      </if>
       <if test="record.flowstate != null">
         flowstate = #{record.flowstate,jdbcType=INTEGER},
       </if>
@@ -453,6 +463,7 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update jobs_candidates_state
     set id = #{record.id,jdbcType=INTEGER},
+      jcid = #{record.jcid,jdbcType=INTEGER},
       flowstate = #{record.flowstate,jdbcType=INTEGER},
       flowstatedesc = #{record.flowstatedesc,jdbcType=VARCHAR},
       optime = #{record.optime,jdbcType=TIMESTAMP},
@@ -487,6 +498,7 @@
   <update id="updateByExample" parameterType="map">
     update jobs_candidates_state
     set id = #{record.id,jdbcType=INTEGER},
+      jcid = #{record.jcid,jdbcType=INTEGER},
       flowstate = #{record.flowstate,jdbcType=INTEGER},
       flowstatedesc = #{record.flowstatedesc,jdbcType=VARCHAR},
       optime = #{record.optime,jdbcType=TIMESTAMP},
@@ -520,6 +532,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.JobsCandidatesState">
     update jobs_candidates_state
     <set>
+      <if test="jcid != null">
+        jcid = #{jcid,jdbcType=INTEGER},
+      </if>
       <if test="flowstate != null">
         flowstate = #{flowstate,jdbcType=INTEGER},
       </if>
@@ -606,7 +621,8 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hrbc.business.domain.JobsCandidatesState">
     update jobs_candidates_state
-    set flowstate = #{flowstate,jdbcType=INTEGER},
+    set jcid = #{jcid,jdbcType=INTEGER},
+      flowstate = #{flowstate,jdbcType=INTEGER},
       flowstatedesc = #{flowstatedesc,jdbcType=VARCHAR},
       optime = #{optime,jdbcType=TIMESTAMP},
       opuser = #{opuser,jdbcType=INTEGER},
@@ -637,7 +653,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.JobsCandidatesState">
     update jobs_candidates_state
-    set flowstate = #{flowstate,jdbcType=INTEGER},
+    set jcid = #{jcid,jdbcType=INTEGER},
+      flowstate = #{flowstate,jdbcType=INTEGER},
       flowstatedesc = #{flowstatedesc,jdbcType=VARCHAR},
       optime = #{optime,jdbcType=TIMESTAMP},
       opuser = #{opuser,jdbcType=INTEGER},
@@ -667,6 +684,7 @@
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
     insert into jobs_candidates_state (
+    jcid,
     flowstate,
     flowstatedesc,
     optime,
@@ -698,6 +716,7 @@
     values
     <foreach collection="recordList" index="index" item="item" separator=",">
       (
+      #{item.jcid,jdbcType=INTEGER},
       #{item.flowstate,jdbcType=INTEGER},
       #{item.flowstatedesc,jdbcType=VARCHAR},
       #{item.optime,jdbcType=TIMESTAMP},

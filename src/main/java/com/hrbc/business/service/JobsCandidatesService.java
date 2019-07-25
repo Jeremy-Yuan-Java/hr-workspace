@@ -11,6 +11,7 @@ public interface JobsCandidatesService {
     public JobsCandidates get(Integer id);
 
     public int save(JobsCandidates entity);
+    public int add(JobsCandidates entity);
 
     public PageResultDTO loadPage(PageQueryParamDTO params);
 

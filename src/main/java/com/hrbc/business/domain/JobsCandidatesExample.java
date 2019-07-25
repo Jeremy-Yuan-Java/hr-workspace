@@ -1374,6 +1374,66 @@ public class JobsCandidatesExample {
             addCriterion("phoneno not between", value1, value2, "phoneno");
             return (Criteria) this;
         }
+
+        public Criteria andJobidIsNull() {
+            addCriterion("jobid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidIsNotNull() {
+            addCriterion("jobid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidEqualTo(Integer value) {
+            addCriterion("jobid =", value, "jobid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidNotEqualTo(Integer value) {
+            addCriterion("jobid <>", value, "jobid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidGreaterThan(Integer value) {
+            addCriterion("jobid >", value, "jobid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("jobid >=", value, "jobid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidLessThan(Integer value) {
+            addCriterion("jobid <", value, "jobid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidLessThanOrEqualTo(Integer value) {
+            addCriterion("jobid <=", value, "jobid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidIn(List<Integer> values) {
+            addCriterion("jobid in", values, "jobid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidNotIn(List<Integer> values) {
+            addCriterion("jobid not in", values, "jobid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidBetween(Integer value1, Integer value2) {
+            addCriterion("jobid between", value1, value2, "jobid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJobidNotBetween(Integer value1, Integer value2) {
+            addCriterion("jobid not between", value1, value2, "jobid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -185,6 +185,66 @@ public class JobsCandidatesStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andJcidIsNull() {
+            addCriterion("jcid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidIsNotNull() {
+            addCriterion("jcid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidEqualTo(Integer value) {
+            addCriterion("jcid =", value, "jcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidNotEqualTo(Integer value) {
+            addCriterion("jcid <>", value, "jcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidGreaterThan(Integer value) {
+            addCriterion("jcid >", value, "jcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("jcid >=", value, "jcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidLessThan(Integer value) {
+            addCriterion("jcid <", value, "jcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidLessThanOrEqualTo(Integer value) {
+            addCriterion("jcid <=", value, "jcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidIn(List<Integer> values) {
+            addCriterion("jcid in", values, "jcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidNotIn(List<Integer> values) {
+            addCriterion("jcid not in", values, "jcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidBetween(Integer value1, Integer value2) {
+            addCriterion("jcid between", value1, value2, "jcid");
+            return (Criteria) this;
+        }
+
+        public Criteria andJcidNotBetween(Integer value1, Integer value2) {
+            addCriterion("jcid not between", value1, value2, "jcid");
+            return (Criteria) this;
+        }
+
         public Criteria andFlowstateIsNull() {
             addCriterion("flowstate is null");
             return (Criteria) this;
