@@ -14,6 +14,7 @@ import com.hrbc.business.mapper.JobsCandidatesStateMapper;
 import com.hrbc.business.service.JobsCandidatesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class})
     public int add(JobsCandidates entity) {
         String username = JwtToken.getUser();
         CustomersJobs jobs = jobsMapper.selectByPrimaryKey(entity.getJobid());
@@ -64,7 +66,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
             entity.setPhoneno(candidates.getPhoneno());
             entity.setUpdateuser(username);
             entity.setCreateuser(username);
-            entity.setOpusername(username);
+            entity.setOpusername(JwtToken.getUserName(username));
             entity.setOpuser(username);
             entity.setState(JobFlowE.匹配职位.code);
             int r = mapper.insertSelective(entity);
@@ -73,7 +75,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
 
                 state.setText1(entity.getRemark());
                 state.setJcid(entity.getId());
-                state.setOpusername(username);
+                state.setOpusername(JwtToken.getUserName(username));
                 entity.setOpuser(username);
                 state.setFlowstate(JobFlowE.匹配职位.code);
                 state.setFlowstatedesc(JobFlowE.匹配职位.toString());
@@ -113,7 +115,9 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
                 }
                 if (dto.getDelflag() != null) {
                     example.getOredCriteria().get(0).andDelflagEqualTo(dto.getDelflag());
-
+                }
+                if (dto.getJobid() != null) {
+                    example.getOredCriteria().get(0).andJobidEqualTo(dto.getJobid());
                 }
             }
             count = mapper.countByExample(example);

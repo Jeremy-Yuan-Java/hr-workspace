@@ -1,21 +1,30 @@
 package com.hrbc.business.common;
 
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hrbc.business.domain.Staffs;
+import com.hrbc.business.domain.StaffsExample;
+import com.hrbc.business.domain.enums.DelFlagE;
+import com.hrbc.business.mapper.StaffsMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import javax.annotation.PostConstruct;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author huangyongchao
@@ -23,12 +32,16 @@ import java.util.Map;
 @Component
 public class JwtToken {
 
+    @Autowired
+    private StaffsMapper staffsMapper;
+
     public static String ISSUER = "GCQ";
     public static String sercetKey = "gcqsys";
     public final static long keeptime = 1000 * 60 * 60 * 24 * 1;
 
     private static ThreadLocal<String> USER_LOCAL = new ThreadLocal<>();
     public static Map<String, Staffs> CURRENTSTAFFMAP = Maps.newHashMap();
+
     public static void setUserLocal(String user) {
         USER_LOCAL.set(user);
     }
@@ -36,8 +49,9 @@ public class JwtToken {
     public static String getUser() {
         return USER_LOCAL.get();
     }
-    public static String getUserName() {
-        return CURRENTSTAFFMAP.get(USER_LOCAL.get()).getStaffname();
+
+    public static String getUserName(String username) {
+        return CURRENTSTAFFMAP.get(username).getStaffname();
     }
 
     public static String generToken(String id, String username) {
@@ -121,6 +135,19 @@ public class JwtToken {
             return null;
         }
         return claims.getSubject();
+    }
+
+    @PostConstruct
+    public void init() {
+        StaffsExample example = new StaffsExample();
+        example.createCriteria().andDelflagEqualTo(DelFlagE.NO.code);
+        example.setLimit(2000);
+        example.setOffset(0);
+
+        List<Staffs> list = staffsMapper.selectByExample(example);
+        Optional.of(list).orElse(Lists.newArrayList()).stream().filter(n -> !StringUtils.isEmpty(n.getUsername())).forEach(n -> {
+            CURRENTSTAFFMAP.put(n.getUsername(), n);
+        });
     }
 
     public static void main(String[] args) throws Exception {
