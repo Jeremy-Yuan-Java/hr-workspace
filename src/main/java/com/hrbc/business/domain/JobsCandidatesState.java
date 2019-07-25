@@ -1,16 +1,14 @@
 package com.hrbc.business.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
-public class JobsCandidates {
+public class JobsCandidatesState {
     private Integer id;
 
-    private Integer candidateid;
+    private Integer flowstate;
 
-    private String candidatename;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    private String flowstatedesc;
+
     private Date optime;
 
     private Integer opuser;
@@ -22,10 +20,8 @@ public class JobsCandidates {
     private Integer state;
 
     private Integer delflag;
-    @JsonFormat(pattern = "yyyy-MM-dd")
 
     private Date createtime;
-    @JsonFormat(pattern = "yyyy-MM-dd")
 
     private Date updatetime;
 
@@ -39,11 +35,27 @@ public class JobsCandidates {
 
     private String fulltexts;
 
-    private String jobtitle;
+    private String text1;
 
-    private String lastcompany;
+    private String text2;
 
-    private String phoneno;
+    private String text3;
+
+    private String text4;
+
+    private String text5;
+
+    private Date date1;
+
+    private Date date2;
+
+    private Date date3;
+
+    private Date date4;
+
+    private Integer ischeck;
+
+    private Integer isapprove;
 
     private byte[] communicaterecs;
 
@@ -55,20 +67,20 @@ public class JobsCandidates {
         this.id = id;
     }
 
-    public Integer getCandidateid() {
-        return candidateid;
+    public Integer getFlowstate() {
+        return flowstate;
     }
 
-    public void setCandidateid(Integer candidateid) {
-        this.candidateid = candidateid;
+    public void setFlowstate(Integer flowstate) {
+        this.flowstate = flowstate;
     }
 
-    public String getCandidatename() {
-        return candidatename;
+    public String getFlowstatedesc() {
+        return flowstatedesc;
     }
 
-    public void setCandidatename(String candidatename) {
-        this.candidatename = candidatename == null ? null : candidatename.trim();
+    public void setFlowstatedesc(String flowstatedesc) {
+        this.flowstatedesc = flowstatedesc == null ? null : flowstatedesc.trim();
     }
 
     public Date getOptime() {
@@ -175,28 +187,92 @@ public class JobsCandidates {
         this.fulltexts = fulltexts == null ? null : fulltexts.trim();
     }
 
-    public String getJobtitle() {
-        return jobtitle;
+    public String getText1() {
+        return text1;
     }
 
-    public void setJobtitle(String jobtitle) {
-        this.jobtitle = jobtitle == null ? null : jobtitle.trim();
+    public void setText1(String text1) {
+        this.text1 = text1 == null ? null : text1.trim();
     }
 
-    public String getLastcompany() {
-        return lastcompany;
+    public String getText2() {
+        return text2;
     }
 
-    public void setLastcompany(String lastcompany) {
-        this.lastcompany = lastcompany == null ? null : lastcompany.trim();
+    public void setText2(String text2) {
+        this.text2 = text2 == null ? null : text2.trim();
     }
 
-    public String getPhoneno() {
-        return phoneno;
+    public String getText3() {
+        return text3;
     }
 
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno == null ? null : phoneno.trim();
+    public void setText3(String text3) {
+        this.text3 = text3 == null ? null : text3.trim();
+    }
+
+    public String getText4() {
+        return text4;
+    }
+
+    public void setText4(String text4) {
+        this.text4 = text4 == null ? null : text4.trim();
+    }
+
+    public String getText5() {
+        return text5;
+    }
+
+    public void setText5(String text5) {
+        this.text5 = text5 == null ? null : text5.trim();
+    }
+
+    public Date getDate1() {
+        return date1;
+    }
+
+    public void setDate1(Date date1) {
+        this.date1 = date1;
+    }
+
+    public Date getDate2() {
+        return date2;
+    }
+
+    public void setDate2(Date date2) {
+        this.date2 = date2;
+    }
+
+    public Date getDate3() {
+        return date3;
+    }
+
+    public void setDate3(Date date3) {
+        this.date3 = date3;
+    }
+
+    public Date getDate4() {
+        return date4;
+    }
+
+    public void setDate4(Date date4) {
+        this.date4 = date4;
+    }
+
+    public Integer getIscheck() {
+        return ischeck;
+    }
+
+    public void setIscheck(Integer ischeck) {
+        this.ischeck = ischeck;
+    }
+
+    public Integer getIsapprove() {
+        return isapprove;
+    }
+
+    public void setIsapprove(Integer isapprove) {
+        this.isapprove = isapprove;
     }
 
     public byte[] getCommunicaterecs() {

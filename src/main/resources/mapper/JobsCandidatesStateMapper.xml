@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hrbc.business.mapper.JobsCandidatesMapper">
-  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.JobsCandidates">
+<mapper namespace="com.hrbc.business.mapper.JobsCandidatesStateMapper">
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.JobsCandidatesState">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="candidateid" jdbcType="INTEGER" property="candidateid" />
-    <result column="candidatename" jdbcType="VARCHAR" property="candidatename" />
+    <result column="flowstate" jdbcType="INTEGER" property="flowstate" />
+    <result column="flowstatedesc" jdbcType="VARCHAR" property="flowstatedesc" />
     <result column="optime" jdbcType="TIMESTAMP" property="optime" />
     <result column="opuser" jdbcType="INTEGER" property="opuser" />
     <result column="opusername" jdbcType="VARCHAR" property="opusername" />
@@ -18,11 +18,19 @@
     <result column="createstaff" jdbcType="VARCHAR" property="createstaff" />
     <result column="updatestaff" jdbcType="VARCHAR" property="updatestaff" />
     <result column="fulltexts" jdbcType="VARCHAR" property="fulltexts" />
-    <result column="jobtitle" jdbcType="VARCHAR" property="jobtitle" />
-    <result column="lastcompany" jdbcType="VARCHAR" property="lastcompany" />
-    <result column="phoneno" jdbcType="VARCHAR" property="phoneno" />
+    <result column="text1" jdbcType="VARCHAR" property="text1" />
+    <result column="text2" jdbcType="VARCHAR" property="text2" />
+    <result column="text3" jdbcType="VARCHAR" property="text3" />
+    <result column="text4" jdbcType="VARCHAR" property="text4" />
+    <result column="text5" jdbcType="VARCHAR" property="text5" />
+    <result column="date1" jdbcType="TIMESTAMP" property="date1" />
+    <result column="date2" jdbcType="TIMESTAMP" property="date2" />
+    <result column="date3" jdbcType="TIMESTAMP" property="date3" />
+    <result column="date4" jdbcType="TIMESTAMP" property="date4" />
+    <result column="ischeck" jdbcType="INTEGER" property="ischeck" />
+    <result column="isapprove" jdbcType="INTEGER" property="isapprove" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.JobsCandidates">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.JobsCandidatesState">
     <result column="communicaterecs" jdbcType="LONGVARBINARY" property="communicaterecs" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -84,14 +92,14 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, candidateid, candidatename, optime, opuser, opusername, remark, state, delflag, 
+    id, flowstate, flowstatedesc, optime, opuser, opusername, remark, state, delflag, 
     createtime, updatetime, createuser, updateuser, createstaff, updatestaff, fulltexts, 
-    jobtitle, lastcompany, phoneno
+    text1, text2, text3, text4, text5, date1, date2, date3, date4, ischeck, isapprove
   </sql>
   <sql id="Blob_Column_List">
     communicaterecs
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.hrbc.business.domain.JobsCandidatesExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="com.hrbc.business.domain.JobsCandidatesStateExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
@@ -99,7 +107,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from jobs_candidates
+    from jobs_candidates_state
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -107,13 +115,13 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.hrbc.business.domain.JobsCandidatesExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.hrbc.business.domain.JobsCandidatesStateExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from jobs_candidates
+    from jobs_candidates_state
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -134,49 +142,55 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from jobs_candidates
+    from jobs_candidates_state
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from jobs_candidates
+    delete from jobs_candidates_state
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.JobsCandidatesExample">
-    delete from jobs_candidates
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.JobsCandidatesStateExample">
+    delete from jobs_candidates_state
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hrbc.business.domain.JobsCandidates">
+  <insert id="insert" parameterType="com.hrbc.business.domain.JobsCandidatesState">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into jobs_candidates (candidateid, candidatename, optime, 
+    insert into jobs_candidates_state (flowstate, flowstatedesc, optime, 
       opuser, opusername, remark, 
       state, delflag, createtime, 
       updatetime, createuser, updateuser, 
       createstaff, updatestaff, fulltexts, 
-      jobtitle, lastcompany, phoneno, 
-      communicaterecs)
-    values (#{candidateid,jdbcType=INTEGER}, #{candidatename,jdbcType=VARCHAR}, #{optime,jdbcType=TIMESTAMP}, 
+      text1, text2, text3, 
+      text4, text5, date1, 
+      date2, date3, date4, 
+      ischeck, isapprove, communicaterecs
+      )
+    values (#{flowstate,jdbcType=INTEGER}, #{flowstatedesc,jdbcType=VARCHAR}, #{optime,jdbcType=TIMESTAMP}, 
       #{opuser,jdbcType=INTEGER}, #{opusername,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{state,jdbcType=INTEGER}, #{delflag,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
       #{updatetime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
       #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, #{fulltexts,jdbcType=VARCHAR}, 
-      #{jobtitle,jdbcType=VARCHAR}, #{lastcompany,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
-      #{communicaterecs,jdbcType=LONGVARBINARY})
+      #{text1,jdbcType=VARCHAR}, #{text2,jdbcType=VARCHAR}, #{text3,jdbcType=VARCHAR}, 
+      #{text4,jdbcType=VARCHAR}, #{text5,jdbcType=VARCHAR}, #{date1,jdbcType=TIMESTAMP}, 
+      #{date2,jdbcType=TIMESTAMP}, #{date3,jdbcType=TIMESTAMP}, #{date4,jdbcType=TIMESTAMP}, 
+      #{ischeck,jdbcType=INTEGER}, #{isapprove,jdbcType=INTEGER}, #{communicaterecs,jdbcType=LONGVARBINARY}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.hrbc.business.domain.JobsCandidates">
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.JobsCandidatesState">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into jobs_candidates
+    insert into jobs_candidates_state
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="candidateid != null">
-        candidateid,
+      <if test="flowstate != null">
+        flowstate,
       </if>
-      <if test="candidatename != null">
-        candidatename,
+      <if test="flowstatedesc != null">
+        flowstatedesc,
       </if>
       <if test="optime != null">
         optime,
@@ -217,25 +231,49 @@
       <if test="fulltexts != null">
         fulltexts,
       </if>
-      <if test="jobtitle != null">
-        jobtitle,
+      <if test="text1 != null">
+        text1,
       </if>
-      <if test="lastcompany != null">
-        lastcompany,
+      <if test="text2 != null">
+        text2,
       </if>
-      <if test="phoneno != null">
-        phoneno,
+      <if test="text3 != null">
+        text3,
+      </if>
+      <if test="text4 != null">
+        text4,
+      </if>
+      <if test="text5 != null">
+        text5,
+      </if>
+      <if test="date1 != null">
+        date1,
+      </if>
+      <if test="date2 != null">
+        date2,
+      </if>
+      <if test="date3 != null">
+        date3,
+      </if>
+      <if test="date4 != null">
+        date4,
+      </if>
+      <if test="ischeck != null">
+        ischeck,
+      </if>
+      <if test="isapprove != null">
+        isapprove,
       </if>
       <if test="communicaterecs != null">
         communicaterecs,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="candidateid != null">
-        #{candidateid,jdbcType=INTEGER},
+      <if test="flowstate != null">
+        #{flowstate,jdbcType=INTEGER},
       </if>
-      <if test="candidatename != null">
-        #{candidatename,jdbcType=VARCHAR},
+      <if test="flowstatedesc != null">
+        #{flowstatedesc,jdbcType=VARCHAR},
       </if>
       <if test="optime != null">
         #{optime,jdbcType=TIMESTAMP},
@@ -276,37 +314,61 @@
       <if test="fulltexts != null">
         #{fulltexts,jdbcType=VARCHAR},
       </if>
-      <if test="jobtitle != null">
-        #{jobtitle,jdbcType=VARCHAR},
+      <if test="text1 != null">
+        #{text1,jdbcType=VARCHAR},
       </if>
-      <if test="lastcompany != null">
-        #{lastcompany,jdbcType=VARCHAR},
+      <if test="text2 != null">
+        #{text2,jdbcType=VARCHAR},
       </if>
-      <if test="phoneno != null">
-        #{phoneno,jdbcType=VARCHAR},
+      <if test="text3 != null">
+        #{text3,jdbcType=VARCHAR},
+      </if>
+      <if test="text4 != null">
+        #{text4,jdbcType=VARCHAR},
+      </if>
+      <if test="text5 != null">
+        #{text5,jdbcType=VARCHAR},
+      </if>
+      <if test="date1 != null">
+        #{date1,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date2 != null">
+        #{date2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date3 != null">
+        #{date3,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date4 != null">
+        #{date4,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ischeck != null">
+        #{ischeck,jdbcType=INTEGER},
+      </if>
+      <if test="isapprove != null">
+        #{isapprove,jdbcType=INTEGER},
       </if>
       <if test="communicaterecs != null">
         #{communicaterecs,jdbcType=LONGVARBINARY},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.hrbc.business.domain.JobsCandidatesExample" resultType="java.lang.Long">
-    select count(*) from jobs_candidates
+  <select id="countByExample" parameterType="com.hrbc.business.domain.JobsCandidatesStateExample" resultType="java.lang.Long">
+    select count(*) from jobs_candidates_state
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update jobs_candidates
+    update jobs_candidates_state
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.candidateid != null">
-        candidateid = #{record.candidateid,jdbcType=INTEGER},
+      <if test="record.flowstate != null">
+        flowstate = #{record.flowstate,jdbcType=INTEGER},
       </if>
-      <if test="record.candidatename != null">
-        candidatename = #{record.candidatename,jdbcType=VARCHAR},
+      <if test="record.flowstatedesc != null">
+        flowstatedesc = #{record.flowstatedesc,jdbcType=VARCHAR},
       </if>
       <if test="record.optime != null">
         optime = #{record.optime,jdbcType=TIMESTAMP},
@@ -347,14 +409,38 @@
       <if test="record.fulltexts != null">
         fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
       </if>
-      <if test="record.jobtitle != null">
-        jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
+      <if test="record.text1 != null">
+        text1 = #{record.text1,jdbcType=VARCHAR},
       </if>
-      <if test="record.lastcompany != null">
-        lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
+      <if test="record.text2 != null">
+        text2 = #{record.text2,jdbcType=VARCHAR},
       </if>
-      <if test="record.phoneno != null">
-        phoneno = #{record.phoneno,jdbcType=VARCHAR},
+      <if test="record.text3 != null">
+        text3 = #{record.text3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.text4 != null">
+        text4 = #{record.text4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.text5 != null">
+        text5 = #{record.text5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date1 != null">
+        date1 = #{record.date1,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.date2 != null">
+        date2 = #{record.date2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.date3 != null">
+        date3 = #{record.date3,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.date4 != null">
+        date4 = #{record.date4,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ischeck != null">
+        ischeck = #{record.ischeck,jdbcType=INTEGER},
+      </if>
+      <if test="record.isapprove != null">
+        isapprove = #{record.isapprove,jdbcType=INTEGER},
       </if>
       <if test="record.communicaterecs != null">
         communicaterecs = #{record.communicaterecs,jdbcType=LONGVARBINARY},
@@ -365,10 +451,10 @@
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
-    update jobs_candidates
+    update jobs_candidates_state
     set id = #{record.id,jdbcType=INTEGER},
-      candidateid = #{record.candidateid,jdbcType=INTEGER},
-      candidatename = #{record.candidatename,jdbcType=VARCHAR},
+      flowstate = #{record.flowstate,jdbcType=INTEGER},
+      flowstatedesc = #{record.flowstatedesc,jdbcType=VARCHAR},
       optime = #{record.optime,jdbcType=TIMESTAMP},
       opuser = #{record.opuser,jdbcType=INTEGER},
       opusername = #{record.opusername,jdbcType=VARCHAR},
@@ -382,19 +468,27 @@
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
       fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
-      jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
-      lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
-      phoneno = #{record.phoneno,jdbcType=VARCHAR},
+      text1 = #{record.text1,jdbcType=VARCHAR},
+      text2 = #{record.text2,jdbcType=VARCHAR},
+      text3 = #{record.text3,jdbcType=VARCHAR},
+      text4 = #{record.text4,jdbcType=VARCHAR},
+      text5 = #{record.text5,jdbcType=VARCHAR},
+      date1 = #{record.date1,jdbcType=TIMESTAMP},
+      date2 = #{record.date2,jdbcType=TIMESTAMP},
+      date3 = #{record.date3,jdbcType=TIMESTAMP},
+      date4 = #{record.date4,jdbcType=TIMESTAMP},
+      ischeck = #{record.ischeck,jdbcType=INTEGER},
+      isapprove = #{record.isapprove,jdbcType=INTEGER},
       communicaterecs = #{record.communicaterecs,jdbcType=LONGVARBINARY}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update jobs_candidates
+    update jobs_candidates_state
     set id = #{record.id,jdbcType=INTEGER},
-      candidateid = #{record.candidateid,jdbcType=INTEGER},
-      candidatename = #{record.candidatename,jdbcType=VARCHAR},
+      flowstate = #{record.flowstate,jdbcType=INTEGER},
+      flowstatedesc = #{record.flowstatedesc,jdbcType=VARCHAR},
       optime = #{record.optime,jdbcType=TIMESTAMP},
       opuser = #{record.opuser,jdbcType=INTEGER},
       opusername = #{record.opusername,jdbcType=VARCHAR},
@@ -408,21 +502,29 @@
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
       fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
-      jobtitle = #{record.jobtitle,jdbcType=VARCHAR},
-      lastcompany = #{record.lastcompany,jdbcType=VARCHAR},
-      phoneno = #{record.phoneno,jdbcType=VARCHAR}
+      text1 = #{record.text1,jdbcType=VARCHAR},
+      text2 = #{record.text2,jdbcType=VARCHAR},
+      text3 = #{record.text3,jdbcType=VARCHAR},
+      text4 = #{record.text4,jdbcType=VARCHAR},
+      text5 = #{record.text5,jdbcType=VARCHAR},
+      date1 = #{record.date1,jdbcType=TIMESTAMP},
+      date2 = #{record.date2,jdbcType=TIMESTAMP},
+      date3 = #{record.date3,jdbcType=TIMESTAMP},
+      date4 = #{record.date4,jdbcType=TIMESTAMP},
+      ischeck = #{record.ischeck,jdbcType=INTEGER},
+      isapprove = #{record.isapprove,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.JobsCandidates">
-    update jobs_candidates
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.JobsCandidatesState">
+    update jobs_candidates_state
     <set>
-      <if test="candidateid != null">
-        candidateid = #{candidateid,jdbcType=INTEGER},
+      <if test="flowstate != null">
+        flowstate = #{flowstate,jdbcType=INTEGER},
       </if>
-      <if test="candidatename != null">
-        candidatename = #{candidatename,jdbcType=VARCHAR},
+      <if test="flowstatedesc != null">
+        flowstatedesc = #{flowstatedesc,jdbcType=VARCHAR},
       </if>
       <if test="optime != null">
         optime = #{optime,jdbcType=TIMESTAMP},
@@ -463,14 +565,38 @@
       <if test="fulltexts != null">
         fulltexts = #{fulltexts,jdbcType=VARCHAR},
       </if>
-      <if test="jobtitle != null">
-        jobtitle = #{jobtitle,jdbcType=VARCHAR},
+      <if test="text1 != null">
+        text1 = #{text1,jdbcType=VARCHAR},
       </if>
-      <if test="lastcompany != null">
-        lastcompany = #{lastcompany,jdbcType=VARCHAR},
+      <if test="text2 != null">
+        text2 = #{text2,jdbcType=VARCHAR},
       </if>
-      <if test="phoneno != null">
-        phoneno = #{phoneno,jdbcType=VARCHAR},
+      <if test="text3 != null">
+        text3 = #{text3,jdbcType=VARCHAR},
+      </if>
+      <if test="text4 != null">
+        text4 = #{text4,jdbcType=VARCHAR},
+      </if>
+      <if test="text5 != null">
+        text5 = #{text5,jdbcType=VARCHAR},
+      </if>
+      <if test="date1 != null">
+        date1 = #{date1,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date2 != null">
+        date2 = #{date2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date3 != null">
+        date3 = #{date3,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date4 != null">
+        date4 = #{date4,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ischeck != null">
+        ischeck = #{ischeck,jdbcType=INTEGER},
+      </if>
+      <if test="isapprove != null">
+        isapprove = #{isapprove,jdbcType=INTEGER},
       </if>
       <if test="communicaterecs != null">
         communicaterecs = #{communicaterecs,jdbcType=LONGVARBINARY},
@@ -478,10 +604,10 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hrbc.business.domain.JobsCandidates">
-    update jobs_candidates
-    set candidateid = #{candidateid,jdbcType=INTEGER},
-      candidatename = #{candidatename,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hrbc.business.domain.JobsCandidatesState">
+    update jobs_candidates_state
+    set flowstate = #{flowstate,jdbcType=INTEGER},
+      flowstatedesc = #{flowstatedesc,jdbcType=VARCHAR},
       optime = #{optime,jdbcType=TIMESTAMP},
       opuser = #{opuser,jdbcType=INTEGER},
       opusername = #{opusername,jdbcType=VARCHAR},
@@ -495,16 +621,24 @@
       createstaff = #{createstaff,jdbcType=VARCHAR},
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
       fulltexts = #{fulltexts,jdbcType=VARCHAR},
-      jobtitle = #{jobtitle,jdbcType=VARCHAR},
-      lastcompany = #{lastcompany,jdbcType=VARCHAR},
-      phoneno = #{phoneno,jdbcType=VARCHAR},
+      text1 = #{text1,jdbcType=VARCHAR},
+      text2 = #{text2,jdbcType=VARCHAR},
+      text3 = #{text3,jdbcType=VARCHAR},
+      text4 = #{text4,jdbcType=VARCHAR},
+      text5 = #{text5,jdbcType=VARCHAR},
+      date1 = #{date1,jdbcType=TIMESTAMP},
+      date2 = #{date2,jdbcType=TIMESTAMP},
+      date3 = #{date3,jdbcType=TIMESTAMP},
+      date4 = #{date4,jdbcType=TIMESTAMP},
+      ischeck = #{ischeck,jdbcType=INTEGER},
+      isapprove = #{isapprove,jdbcType=INTEGER},
       communicaterecs = #{communicaterecs,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.JobsCandidates">
-    update jobs_candidates
-    set candidateid = #{candidateid,jdbcType=INTEGER},
-      candidatename = #{candidatename,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.JobsCandidatesState">
+    update jobs_candidates_state
+    set flowstate = #{flowstate,jdbcType=INTEGER},
+      flowstatedesc = #{flowstatedesc,jdbcType=VARCHAR},
       optime = #{optime,jdbcType=TIMESTAMP},
       opuser = #{opuser,jdbcType=INTEGER},
       opusername = #{opusername,jdbcType=VARCHAR},
@@ -518,15 +652,23 @@
       createstaff = #{createstaff,jdbcType=VARCHAR},
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
       fulltexts = #{fulltexts,jdbcType=VARCHAR},
-      jobtitle = #{jobtitle,jdbcType=VARCHAR},
-      lastcompany = #{lastcompany,jdbcType=VARCHAR},
-      phoneno = #{phoneno,jdbcType=VARCHAR}
+      text1 = #{text1,jdbcType=VARCHAR},
+      text2 = #{text2,jdbcType=VARCHAR},
+      text3 = #{text3,jdbcType=VARCHAR},
+      text4 = #{text4,jdbcType=VARCHAR},
+      text5 = #{text5,jdbcType=VARCHAR},
+      date1 = #{date1,jdbcType=TIMESTAMP},
+      date2 = #{date2,jdbcType=TIMESTAMP},
+      date3 = #{date3,jdbcType=TIMESTAMP},
+      date4 = #{date4,jdbcType=TIMESTAMP},
+      ischeck = #{ischeck,jdbcType=INTEGER},
+      isapprove = #{isapprove,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
-    insert into jobs_candidates (
-    candidateid,
-    candidatename,
+    insert into jobs_candidates_state (
+    flowstate,
+    flowstatedesc,
     optime,
     opuser,
     opusername,
@@ -540,16 +682,24 @@
     createstaff,
     updatestaff,
     fulltexts,
-    jobtitle,
-    lastcompany,
-    phoneno,
+    text1,
+    text2,
+    text3,
+    text4,
+    text5,
+    date1,
+    date2,
+    date3,
+    date4,
+    ischeck,
+    isapprove,
     communicaterecs
     )
     values
     <foreach collection="recordList" index="index" item="item" separator=",">
       (
-      #{item.candidateid,jdbcType=INTEGER},
-      #{item.candidatename,jdbcType=VARCHAR},
+      #{item.flowstate,jdbcType=INTEGER},
+      #{item.flowstatedesc,jdbcType=VARCHAR},
       #{item.optime,jdbcType=TIMESTAMP},
       #{item.opuser,jdbcType=INTEGER},
       #{item.opusername,jdbcType=VARCHAR},
@@ -563,9 +713,17 @@
       #{item.createstaff,jdbcType=VARCHAR},
       #{item.updatestaff,jdbcType=VARCHAR},
       #{item.fulltexts,jdbcType=VARCHAR},
-      #{item.jobtitle,jdbcType=VARCHAR},
-      #{item.lastcompany,jdbcType=VARCHAR},
-      #{item.phoneno,jdbcType=VARCHAR},
+      #{item.text1,jdbcType=VARCHAR},
+      #{item.text2,jdbcType=VARCHAR},
+      #{item.text3,jdbcType=VARCHAR},
+      #{item.text4,jdbcType=VARCHAR},
+      #{item.text5,jdbcType=VARCHAR},
+      #{item.date1,jdbcType=TIMESTAMP},
+      #{item.date2,jdbcType=TIMESTAMP},
+      #{item.date3,jdbcType=TIMESTAMP},
+      #{item.date4,jdbcType=TIMESTAMP},
+      #{item.ischeck,jdbcType=INTEGER},
+      #{item.isapprove,jdbcType=INTEGER},
       #{item.communicaterecs,jdbcType=LONGVARBINARY}
       )
     </foreach>
