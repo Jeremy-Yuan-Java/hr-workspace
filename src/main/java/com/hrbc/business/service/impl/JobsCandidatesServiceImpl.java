@@ -119,6 +119,10 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
                 if (dto.getJobid() != null) {
                     example.getOredCriteria().get(0).andJobidEqualTo(dto.getJobid());
                 }
+
+                if (dto.getState() != null) {
+                    example.getOredCriteria().get(0).andStateEqualTo(dto.getState());
+                }
             }
             count = mapper.countByExample(example);
 
