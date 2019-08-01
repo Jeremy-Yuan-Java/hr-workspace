@@ -3,6 +3,7 @@ package com.hrbc.business.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class JobsCandidates {
     private Integer id;
@@ -26,8 +27,7 @@ public class JobsCandidates {
     @JsonFormat(pattern = "yyyy-MM-dd")
 
     private Date createtime;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
     private String createuser;
@@ -49,6 +49,8 @@ public class JobsCandidates {
     private Integer jobid;
 
     private byte[] communicaterecs;
+
+    List<JobsCandidatesState> jcList;
 
     public Integer getId() {
         return id;
@@ -216,5 +218,13 @@ public class JobsCandidates {
 
     public void setCommunicaterecs(byte[] communicaterecs) {
         this.communicaterecs = communicaterecs;
+    }
+
+    public List<JobsCandidatesState> getJcList() {
+        return jcList;
+    }
+
+    public void setJcList(List<JobsCandidatesState> jcList) {
+        this.jcList = jcList;
     }
 }

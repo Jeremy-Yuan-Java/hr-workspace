@@ -1,6 +1,7 @@
 package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.domain.*;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
@@ -12,12 +13,16 @@ import com.hrbc.business.mapper.CustomersJobsMapper;
 import com.hrbc.business.mapper.JobsCandidatesMapper;
 import com.hrbc.business.mapper.JobsCandidatesStateMapper;
 import com.hrbc.business.service.JobsCandidatesService;
+import jdk.nashorn.internal.runtime.options.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class JobsCandidatesServiceImpl implements JobsCandidatesService {
@@ -130,6 +135,15 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
                 example.setOffset((page - 1) * size);
                 example.setLimit(size);
                 list = mapper.selectByExample(example);
+
+                JobsCandidatesStateExample stateExample = new JobsCandidatesStateExample();
+                List<Integer> jcids = list.stream().map(n -> n.getId()).collect(Collectors.toList());
+                stateExample.createCriteria().andJcidIn(jcids);
+                List<JobsCandidatesState> listJc = stateMapper.selectByExample(stateExample);
+                Map<Integer, List<JobsCandidatesState>> jcmap = Optional.of(listJc).orElse(Lists.newArrayList()).stream().collect(Collectors.groupingBy(JobsCandidatesState::getJcid));
+                list.forEach(n -> n.setJcList(jcmap.get(n.getId())));
+
+
             }
         }
 

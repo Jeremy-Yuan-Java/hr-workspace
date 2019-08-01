@@ -1,5 +1,7 @@
 package com.hrbc.business.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class JobsCandidatesState {
@@ -10,7 +12,7 @@ public class JobsCandidatesState {
     private Integer flowstate;
 
     private String flowstatedesc;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date optime;
 
     private String opuser;
