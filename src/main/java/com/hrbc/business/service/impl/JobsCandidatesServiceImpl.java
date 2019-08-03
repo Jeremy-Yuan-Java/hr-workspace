@@ -188,7 +188,11 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
         if (stateMapper.countByExample(example) > 0) {
             return -1;
         }
+        String username = JwtToken.getUser();
+        String name = JwtToken.getUserName(JwtToken.getUser());
 
+        state.setOpuser(username);
+        state.setOpusername(name);
         int i = stateMapper.insertSelective(state);
         if (i > 0) {
             JobsCandidates jobsCandidates = new JobsCandidates();
