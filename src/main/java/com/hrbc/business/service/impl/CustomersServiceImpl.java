@@ -34,6 +34,9 @@ public class CustomersServiceImpl implements CustomersService {
     public int save(Customers entity) {
         CustomersExample example = new CustomersExample();
         example.createCriteria().andCnameEqualTo(entity.getCname());
+        if(entity.getId()!=null){
+            example.getOredCriteria().get(0).andIdNotEqualTo(entity.getId());
+        }
         if(mapper.countByExample(example)>0){
             return -2;
         }

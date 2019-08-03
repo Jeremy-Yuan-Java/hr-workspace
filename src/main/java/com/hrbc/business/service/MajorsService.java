@@ -20,4 +20,6 @@ public interface MajorsService {
 
     public List<Majors> query(MajorsExample example);
 
-    }
+    public void generateJSON();
+
+}
