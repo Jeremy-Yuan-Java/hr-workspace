@@ -48,6 +48,8 @@ public class SysUserServiceImpl implements SysUserService {
                 List<Staffs> list = staffsMapper.selectByExample(example1);
                 if(!CollectionUtils.isEmpty(list)){
                     JwtToken.CURRENTSTAFFMAP.put(entity.getUsername(), list.get(0));
+                    entity.setCnname(list.get(0).getStaffname());
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -78,8 +80,16 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public int changePWD(SysUser dto) {
-        dto.setPwd(Md5Crypt.md5Crypt(dto.getPwd().getBytes(), dto.getUsername()));
-        return mapper.updateByPrimaryKeySelective(dto);
+        String username = JwtToken.getUser();
+        SysUserExample example = new SysUserExample();
+        example.createCriteria().andUsernameEqualTo(username);
+        List<SysUser> list = mapper.selectByExample(example);
+        if(!CollectionUtils.isEmpty(list)){
+            dto.setPwd(MD5Encode.md5(dto.getPwd(), username));
+            dto.setId(list.get(0).getId());
+            return mapper.updateByPrimaryKeySelective(dto);
+        }
+        return 0;
 
     }
 
