@@ -24,7 +24,7 @@ public class CandidatetagsController {
     @PostMapping("save")
     public ResponseDTO save(@RequestBody Candidatetags entity) {
         service.save(entity);
-        return new ResponseDTO(true, "success", entity.getTag());
+        return new ResponseDTO(true, "操作成功", entity.getTag());
     }
 
     @PostMapping("loadPage")
@@ -40,7 +40,7 @@ public class CandidatetagsController {
 			Candidatetags dto = new Candidatetags();
             service.remove(dto);
         }
-        return new ResponseDTO(true, "success", id);
+        return new ResponseDTO(true, "操作成功", id);
     }
 
     @GetMapping("state/{id}/{state}")
@@ -50,7 +50,7 @@ public class CandidatetagsController {
             dto.setState(state);
             service.changeState(dto);
         }
-        return new ResponseDTO(true, "success", id);
+        return new ResponseDTO(true, "操作成功", id);
     }
 
 }

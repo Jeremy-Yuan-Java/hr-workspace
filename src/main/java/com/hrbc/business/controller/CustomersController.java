@@ -27,20 +27,20 @@ public class CustomersController {
         if (res == -2) {
             return new ResponseDTO(false, "客户名称已经存在", null);
         }
-        return new ResponseDTO(true, "success", entity.getId());
+        return new ResponseDTO(true, "操作成功", entity.getId());
     }
 
     @PostMapping("changeopsuser")
     public ResponseDTO changeopsuser(@RequestBody Customers entity) {
         service.changeOpsUser(entity);
-        return new ResponseDTO(true, "success", entity.getId());
+        return new ResponseDTO(true, "操作成功", entity.getId());
     }
 
 
     @PostMapping("communicate")
     public ResponseDTO communicate(@RequestBody Customers entity) {
         service.saveCommunicate(entity);
-        return new ResponseDTO(true, "success", entity.getId());
+        return new ResponseDTO(true, "操作成功", entity.getId());
     }
 
 
@@ -58,7 +58,7 @@ public class CustomersController {
             dto.setId(id);
             service.remove(dto);
         }
-        return new ResponseDTO(true, "success", id);
+        return new ResponseDTO(true, "操作成功", id);
     }
 
     @GetMapping("state/{id}/{state}")
@@ -69,7 +69,7 @@ public class CustomersController {
             dto.setState(state);
             service.changeState(dto);
         }
-        return new ResponseDTO(true, "success", id);
+        return new ResponseDTO(true, "操作成功", id);
     }
 
 }

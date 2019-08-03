@@ -2,6 +2,7 @@ package com.hrbc.business.service;
 
 import com.hrbc.business.domain.JobsCandidates;
 import com.hrbc.business.domain.JobsCandidatesExample;
+import com.hrbc.business.domain.JobsCandidatesState;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 
@@ -20,5 +21,8 @@ public interface JobsCandidatesService {
     public int changeState(JobsCandidates dto);
 
     public List<JobsCandidates> query(JobsCandidatesExample example);
+
+    public int changeFlowState(JobsCandidatesState state);
+
 
     }

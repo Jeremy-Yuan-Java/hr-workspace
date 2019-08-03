@@ -28,7 +28,7 @@ public class AuthController {
             Map<String, String> user = Maps.newHashMap();
             user.put("token", token);
             user.put("cname", entity.getCnname());
-            return new ResponseDTO(true, "success", user);
+            return new ResponseDTO(true, "操作成功", user);
         } else {
             return new ResponseDTO(false, "error", null);
         }
@@ -36,7 +36,7 @@ public class AuthController {
 
     @PostMapping("api/auth/logout")
     public ResponseDTO logout() {
-        return new ResponseDTO(true, "success", "");
+        return new ResponseDTO(true, "操作成功", "");
     }
     @RequestMapping(value = "api/auth/tokeninvalid", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseDTO tokeninvalid() {
@@ -44,7 +44,7 @@ public class AuthController {
     }
     @GetMapping("/")
     public ResponseDTO ping() {
-        return new ResponseDTO(true, "success", null);
+        return new ResponseDTO(true, "操作成功", null);
     }
 
 }

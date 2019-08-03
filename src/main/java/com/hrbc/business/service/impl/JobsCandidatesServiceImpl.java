@@ -13,7 +13,6 @@ import com.hrbc.business.mapper.CustomersJobsMapper;
 import com.hrbc.business.mapper.JobsCandidatesMapper;
 import com.hrbc.business.mapper.JobsCandidatesStateMapper;
 import com.hrbc.business.service.JobsCandidatesService;
-import jdk.nashorn.internal.runtime.options.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -170,5 +169,24 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     @Override
     public List<JobsCandidates> query(JobsCandidatesExample example) {
         return mapper.selectByExample(example);
+    }
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class})
+    public int changeFlowState(JobsCandidatesState state) {
+        JobsCandidatesStateExample example = new JobsCandidatesStateExample();
+        example.createCriteria().andJcidEqualTo(state.getJcid()).andFlowstateEqualTo(state.getFlowstate());
+        if (stateMapper.countByExample(example) > 0) {
+            return -1;
+        }
+
+        int i = stateMapper.insertSelective(state);
+        if (i > 0) {
+            JobsCandidates jobsCandidates = new JobsCandidates();
+            jobsCandidates.setId(state.getJcid());
+            jobsCandidates.setState(state.getFlowstate());
+            mapper.updateByPrimaryKeySelective(jobsCandidates);
+        }
+        return i;
     }
 }

@@ -1,6 +1,7 @@
 package com.hrbc.business.controller;
 
 import com.hrbc.business.domain.JobsCandidates;
+import com.hrbc.business.domain.JobsCandidatesState;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
@@ -24,7 +25,7 @@ public class JobsCandidatesController {
     @PostMapping("save")
     public ResponseDTO save(@RequestBody JobsCandidates entity) {
         service.save(entity);
-        return new ResponseDTO(true, "success", entity.getId());
+        return new ResponseDTO(true, "操作成功", entity.getId());
     }
 
     @PostMapping("add")
@@ -41,7 +42,7 @@ public class JobsCandidatesController {
             return new ResponseDTO(false, "已加入该职位", null);
 
         }
-        return new ResponseDTO(true, "success", entity.getId());
+        return new ResponseDTO(true, "操作成功", entity.getId());
     }
 
 
@@ -59,7 +60,7 @@ public class JobsCandidatesController {
             dto.setId(id);
             service.remove(dto);
         }
-        return new ResponseDTO(true, "success", id);
+        return new ResponseDTO(true, "操作成功", id);
     }
 
     @GetMapping("state/{id}/{state}")
@@ -70,7 +71,20 @@ public class JobsCandidatesController {
             dto.setState(state);
             service.changeState(dto);
         }
-        return new ResponseDTO(true, "success", id);
+        return new ResponseDTO(true, "操作成功", id);
     }
 
+    @PostMapping("changeflowstate")
+    public ResponseDTO changeFlowState(@RequestBody JobsCandidatesState state) {
+        if (state == null || state.getJcid() == null || state.getFlowstate() == null) {
+            return new ResponseDTO(false, "职位选定错误", state);
+        }
+        int i = service.changeFlowState(state);
+        if (i == -1) {
+            return new ResponseDTO(false, "已经执行该状态", state);
+
+        }
+        return new ResponseDTO(true, "操作成功", state);
+
+    }
 }
