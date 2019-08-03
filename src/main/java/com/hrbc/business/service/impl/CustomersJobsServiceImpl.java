@@ -83,6 +83,7 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
                 team.setCreatetime(new Date());
                 team.setJobid(entity.getId());
                 team.setStaffid(sid);
+                team.setUsername(JwtToken.getUser());
                 return team;
             }).collect(Collectors.toList());
             CustomersJobsTeamExample example = new CustomersJobsTeamExample();

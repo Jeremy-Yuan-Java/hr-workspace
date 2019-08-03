@@ -11,6 +11,8 @@ public class CustomersJobsTeam {
 
     private Date createtime;
 
+    private String username;
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +43,13 @@ public class CustomersJobsTeam {
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
     }
 }
