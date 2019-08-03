@@ -3,6 +3,7 @@ package com.hrbc.business.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hrbc.business.common.JwtToken;
+import com.hrbc.business.conf.aop.ProcessLog;
 import com.hrbc.business.domain.Customers;
 import com.hrbc.business.domain.CustomersExample;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
@@ -31,6 +32,7 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
+    @ProcessLog(businessName = "客户",methodName = "save")
     public int save(Customers entity) {
         CustomersExample example = new CustomersExample();
         example.createCriteria().andCnameEqualTo(entity.getCname());
@@ -57,6 +59,7 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
+    @ProcessLog(businessName = "客户",methodName = "changeOpsUser")
     public int changeOpsUser(Customers entity) {
         Customers n = new Customers();
         n.setId(entity.getId());
@@ -66,6 +69,7 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
+    @ProcessLog(businessName = "客户",methodName = "saveCommunicate")
     public Customers saveCommunicate(Customers entity) {
         Customers customers = mapper.selectByPrimaryKey(entity.getId());
         JSONArray cs = null;
@@ -156,6 +160,7 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
+    @ProcessLog(businessName = "客户",methodName = "remove")
     public int remove(Customers dto) {
 
         Customers delDto = new Customers();

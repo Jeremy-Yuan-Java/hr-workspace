@@ -3,6 +3,7 @@ package com.hrbc.business.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.hrbc.business.common.JwtToken;
+import com.hrbc.business.conf.aop.ProcessLog;
 import com.hrbc.business.domain.*;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
@@ -41,6 +42,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     }
 
     @Override
+    @ProcessLog(businessName = "职位候选人管理",methodName = "save")
     public int save(JobsCandidates entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
@@ -53,6 +55,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
+    @ProcessLog(businessName = "职位候选人管理",methodName = "add")
     public int add(JobsCandidates entity) {
         String username = JwtToken.getUser();
         CustomersJobs jobs = jobsMapper.selectByPrimaryKey(entity.getJobid());
@@ -160,6 +163,8 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     }
 
     @Override
+    @ProcessLog(businessName = "职位候选人管理",methodName = "remove")
+
     public int remove(JobsCandidates dto) {
 
         JobsCandidates delDto = new JobsCandidates();
@@ -182,6 +187,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
+    @ProcessLog(businessName = "职位候选人管理",methodName = "changeFlowState")
     public int changeFlowState(JobsCandidatesState state) {
         JobsCandidatesStateExample example = new JobsCandidatesStateExample();
         example.createCriteria().andJcidEqualTo(state.getJcid()).andFlowstateEqualTo(state.getFlowstate());

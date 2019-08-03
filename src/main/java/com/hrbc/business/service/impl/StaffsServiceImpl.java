@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hrbc.business.common.Constants;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.PathConf;
+import com.hrbc.business.conf.aop.ProcessLog;
 import com.hrbc.business.domain.Staffs;
 import com.hrbc.business.domain.StaffsExample;
 import com.hrbc.business.domain.SysUser;
@@ -36,6 +37,7 @@ public class StaffsServiceImpl implements StaffsService {
     }
 
     @Override
+    @ProcessLog(businessName = "员工",methodName = "save")
     public int save(Staffs entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
@@ -170,6 +172,7 @@ public class StaffsServiceImpl implements StaffsService {
     }
 
     @Override
+    @ProcessLog(businessName = "员工",methodName = "remove")
     public int remove(Staffs dto) {
 
         Staffs delDto = new Staffs();
@@ -180,6 +183,7 @@ public class StaffsServiceImpl implements StaffsService {
     }
 
     @Override
+    @ProcessLog(businessName = "员工",methodName = "changeState")
     public int changeState(Staffs dto) {
 
         return mapper.updateByPrimaryKeySelective(dto);

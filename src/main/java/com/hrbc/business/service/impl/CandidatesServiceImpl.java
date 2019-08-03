@@ -3,6 +3,7 @@ package com.hrbc.business.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.PathConf;
+import com.hrbc.business.conf.aop.ProcessLog;
 import com.hrbc.business.domain.Candidates;
 import com.hrbc.business.domain.CandidatesExample;
 import com.hrbc.business.domain.CandidatesWithBLOBs;
@@ -29,6 +30,7 @@ public class CandidatesServiceImpl implements CandidatesService {
     }
 
     @Override
+    @ProcessLog(businessName = "候选人管理",methodName = "save")
     public int save(CandidatesWithBLOBs entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
@@ -246,6 +248,8 @@ public class CandidatesServiceImpl implements CandidatesService {
     }
 
     @Override
+    @ProcessLog(businessName = "候选人管理",methodName = "remove")
+
     public int remove(CandidatesWithBLOBs dto) {
 
         CandidatesWithBLOBs delDto = new CandidatesWithBLOBs();
@@ -256,6 +260,8 @@ public class CandidatesServiceImpl implements CandidatesService {
     }
 
     @Override
+    @ProcessLog(businessName = "候选人管理",methodName = "changeState")
+
     public int changeState(CandidatesWithBLOBs dto) {
 
         return mapper.updateByPrimaryKeySelective(dto);

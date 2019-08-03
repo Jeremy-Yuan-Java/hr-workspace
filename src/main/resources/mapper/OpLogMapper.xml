@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrbc.business.mapper.OpLogMapper">
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.OpLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="opuser" jdbcType="VARCHAR" property="opuser" />
+    <result column="opcontent" jdbcType="VARCHAR" property="opcontent" />
+    <result column="optime" jdbcType="TIMESTAMP" property="optime" />
+    <result column="dataid" jdbcType="VARCHAR" property="dataid" />
+    <result column="datakey1" jdbcType="VARCHAR" property="datakey1" />
+    <result column="datakey2" jdbcType="VARCHAR" property="datakey2" />
+    <result column="opcontent1" jdbcType="VARCHAR" property="opcontent1" />
+    <result column="business" jdbcType="VARCHAR" property="business" />
+    <result column="func" jdbcType="VARCHAR" property="func" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, opuser, opcontent, optime, dataid, datakey1, datakey2, opcontent1, business, 
+    func
+  </sql>
+  <select id="selectByExample" parameterType="com.hrbc.business.domain.OpLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from op_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from op_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from op_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.OpLogExample">
+    delete from op_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hrbc.business.domain.OpLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into op_log (opuser, opcontent, optime, 
+      dataid, datakey1, datakey2, 
+      opcontent1, business, func
+      )
+    values (#{opuser,jdbcType=VARCHAR}, #{opcontent,jdbcType=VARCHAR}, #{optime,jdbcType=TIMESTAMP}, 
+      #{dataid,jdbcType=VARCHAR}, #{datakey1,jdbcType=VARCHAR}, #{datakey2,jdbcType=VARCHAR}, 
+      #{opcontent1,jdbcType=VARCHAR}, #{business,jdbcType=VARCHAR}, #{func,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.OpLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into op_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="opuser != null">
+        opuser,
+      </if>
+      <if test="opcontent != null">
+        opcontent,
+      </if>
+      <if test="optime != null">
+        optime,
+      </if>
+      <if test="dataid != null">
+        dataid,
+      </if>
+      <if test="datakey1 != null">
+        datakey1,
+      </if>
+      <if test="datakey2 != null">
+        datakey2,
+      </if>
+      <if test="opcontent1 != null">
+        opcontent1,
+      </if>
+      <if test="business != null">
+        business,
+      </if>
+      <if test="func != null">
+        func,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="opuser != null">
+        #{opuser,jdbcType=VARCHAR},
+      </if>
+      <if test="opcontent != null">
+        #{opcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="optime != null">
+        #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataid != null">
+        #{dataid,jdbcType=VARCHAR},
+      </if>
+      <if test="datakey1 != null">
+        #{datakey1,jdbcType=VARCHAR},
+      </if>
+      <if test="datakey2 != null">
+        #{datakey2,jdbcType=VARCHAR},
+      </if>
+      <if test="opcontent1 != null">
+        #{opcontent1,jdbcType=VARCHAR},
+      </if>
+      <if test="business != null">
+        #{business,jdbcType=VARCHAR},
+      </if>
+      <if test="func != null">
+        #{func,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hrbc.business.domain.OpLogExample" resultType="java.lang.Long">
+    select count(*) from op_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update op_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.opuser != null">
+        opuser = #{record.opuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opcontent != null">
+        opcontent = #{record.opcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.optime != null">
+        optime = #{record.optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dataid != null">
+        dataid = #{record.dataid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.datakey1 != null">
+        datakey1 = #{record.datakey1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.datakey2 != null">
+        datakey2 = #{record.datakey2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opcontent1 != null">
+        opcontent1 = #{record.opcontent1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.business != null">
+        business = #{record.business,jdbcType=VARCHAR},
+      </if>
+      <if test="record.func != null">
+        func = #{record.func,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update op_log
+    set id = #{record.id,jdbcType=INTEGER},
+      opuser = #{record.opuser,jdbcType=VARCHAR},
+      opcontent = #{record.opcontent,jdbcType=VARCHAR},
+      optime = #{record.optime,jdbcType=TIMESTAMP},
+      dataid = #{record.dataid,jdbcType=VARCHAR},
+      datakey1 = #{record.datakey1,jdbcType=VARCHAR},
+      datakey2 = #{record.datakey2,jdbcType=VARCHAR},
+      opcontent1 = #{record.opcontent1,jdbcType=VARCHAR},
+      business = #{record.business,jdbcType=VARCHAR},
+      func = #{record.func,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.OpLog">
+    update op_log
+    <set>
+      <if test="opuser != null">
+        opuser = #{opuser,jdbcType=VARCHAR},
+      </if>
+      <if test="opcontent != null">
+        opcontent = #{opcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="optime != null">
+        optime = #{optime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataid != null">
+        dataid = #{dataid,jdbcType=VARCHAR},
+      </if>
+      <if test="datakey1 != null">
+        datakey1 = #{datakey1,jdbcType=VARCHAR},
+      </if>
+      <if test="datakey2 != null">
+        datakey2 = #{datakey2,jdbcType=VARCHAR},
+      </if>
+      <if test="opcontent1 != null">
+        opcontent1 = #{opcontent1,jdbcType=VARCHAR},
+      </if>
+      <if test="business != null">
+        business = #{business,jdbcType=VARCHAR},
+      </if>
+      <if test="func != null">
+        func = #{func,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.OpLog">
+    update op_log
+    set opuser = #{opuser,jdbcType=VARCHAR},
+      opcontent = #{opcontent,jdbcType=VARCHAR},
+      optime = #{optime,jdbcType=TIMESTAMP},
+      dataid = #{dataid,jdbcType=VARCHAR},
+      datakey1 = #{datakey1,jdbcType=VARCHAR},
+      datakey2 = #{datakey2,jdbcType=VARCHAR},
+      opcontent1 = #{opcontent1,jdbcType=VARCHAR},
+      business = #{business,jdbcType=VARCHAR},
+      func = #{func,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into op_log (
+    opuser,
+    opcontent,
+    optime,
+    dataid,
+    datakey1,
+    datakey2,
+    opcontent1,
+    business,
+    func
+    )
+    values
+    <foreach collection="recordList" index="index" item="item" separator=",">
+      (
+      #{item.opuser,jdbcType=VARCHAR},
+      #{item.opcontent,jdbcType=VARCHAR},
+      #{item.optime,jdbcType=TIMESTAMP},
+      #{item.dataid,jdbcType=VARCHAR},
+      #{item.datakey1,jdbcType=VARCHAR},
+      #{item.datakey2,jdbcType=VARCHAR},
+      #{item.opcontent1,jdbcType=VARCHAR},
+      #{item.business,jdbcType=VARCHAR},
+      #{item.func,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+</mapper>
