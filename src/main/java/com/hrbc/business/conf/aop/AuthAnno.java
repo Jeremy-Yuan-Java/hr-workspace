@@ -10,7 +10,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface AuthAnno {
 	/**
-	 * 通过aff隔离的field
 	 * @return
 	 */
 	String authfield() default "";

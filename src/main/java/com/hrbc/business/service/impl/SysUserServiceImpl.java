@@ -14,7 +14,6 @@ import com.hrbc.business.mapper.StaffsMapper;
 import com.hrbc.business.mapper.SysUserMapper;
 import com.hrbc.business.service.SysUserService;
 import com.hrbc.business.util.MD5Encode;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -34,10 +33,10 @@ public class SysUserServiceImpl implements SysUserService {
         SysUserExample example = new SysUserExample();
         example.createCriteria().andUsernameEqualTo(entity.getUsername())
                 .andStateEqualTo(StateE.VALID.code).andPwdEqualTo(MD5Encode.md5(entity.getPwd(), entity.getUsername()));
-        List<SysUser>  sysUsers = mapper.selectByExample(example);
-        if(CollectionUtils.isEmpty(sysUsers)){
+        List<SysUser> sysUsers = mapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(sysUsers)) {
             return 0;
-        }else{
+        } else {
 
             entity.setCnname(sysUsers.get(0).getCnname());
             entity.setId(sysUsers.get(0).getId());
@@ -46,9 +45,10 @@ public class SysUserServiceImpl implements SysUserService {
                 StaffsExample example1 = new StaffsExample();
                 example1.createCriteria().andUsernameEqualTo(entity.getUsername());
                 List<Staffs> list = staffsMapper.selectByExample(example1);
-                if(!CollectionUtils.isEmpty(list)){
+                if (!CollectionUtils.isEmpty(list)) {
                     JwtToken.CURRENTSTAFFMAP.put(entity.getUsername(), list.get(0));
                     entity.setCnname(list.get(0).getStaffname());
+                    entity.setStaffid(list.get(0).getId());
 
                 }
             } catch (Exception e) {
@@ -84,7 +84,7 @@ public class SysUserServiceImpl implements SysUserService {
         SysUserExample example = new SysUserExample();
         example.createCriteria().andUsernameEqualTo(username);
         List<SysUser> list = mapper.selectByExample(example);
-        if(!CollectionUtils.isEmpty(list)){
+        if (!CollectionUtils.isEmpty(list)) {
             dto.setPwd(MD5Encode.md5(dto.getPwd(), username));
             dto.setId(list.get(0).getId());
             return mapper.updateByPrimaryKeySelective(dto);
@@ -127,11 +127,11 @@ public class SysUserServiceImpl implements SysUserService {
 
                 }
                 if (!StringUtils.isEmpty(dto.getUsername())) {
-                    example.getOredCriteria().get(0).andUsernameLike("%"+dto.getUsername()+"%");
+                    example.getOredCriteria().get(0).andUsernameLike("%" + dto.getUsername() + "%");
 
                 }
                 if (!StringUtils.isEmpty(dto.getCnname())) {
-                    example.getOredCriteria().get(0).andCnnameLike("%"+dto.getCnname()+"%");
+                    example.getOredCriteria().get(0).andCnnameLike("%" + dto.getCnname() + "%");
 
                 }
 

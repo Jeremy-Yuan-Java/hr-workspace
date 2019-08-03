@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class SysUser {
     private Integer id;
+    private Integer staffid;
 
     private String username;
 
@@ -143,5 +144,13 @@ public class SysUser {
 
     public void setUpdatestaff(String updatestaff) {
         this.updatestaff = updatestaff == null ? null : updatestaff.trim();
+    }
+
+    public Integer getStaffid() {
+        return staffid;
+    }
+
+    public void setStaffid(Integer staffid) {
+        this.staffid = staffid;
     }
 }
