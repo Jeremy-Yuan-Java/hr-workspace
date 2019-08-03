@@ -48,13 +48,13 @@ public class JobsCandidatesState {
     private String text4;
 
     private String text5;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date1;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date2;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date3;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date4;
 
     private Integer ischeck;
