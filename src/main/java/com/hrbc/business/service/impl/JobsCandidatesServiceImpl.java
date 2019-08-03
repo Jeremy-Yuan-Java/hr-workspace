@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -112,6 +113,8 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
                 example.setOrderByClause(params.getOrderby());
             }
             if (params.getQuery() != null) {
+                Date createtimest = params.getQuery().getDate("createtimest");
+                Date createtimeed = params.getQuery().getDate("createtimeed");
                 dto = JSONObject.toJavaObject(params.getQuery(), JobsCandidates.class);
                 example.createCriteria();
                 if (dto.getDelflag() == null) {
@@ -126,6 +129,12 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
 
                 if (dto.getState() != null) {
                     example.getOredCriteria().get(0).andStateEqualTo(dto.getState());
+                }
+                if (createtimest != null) {
+                    example.getOredCriteria().get(0).andCreatetimeGreaterThanOrEqualTo(createtimest);
+                }
+                if (createtimeed != null) {
+                    example.getOredCriteria().get(0).andCreatetimeLessThanOrEqualTo(createtimeed);
                 }
             }
             count = mapper.countByExample(example);

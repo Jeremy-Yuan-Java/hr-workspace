@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -164,6 +165,10 @@ public class CandidatesServiceImpl implements CandidatesService {
                 example.setOrderByClause(params.getOrderby());
             }
             if (params.getQuery() != null) {
+
+                Date createtimest = params.getQuery().getDate("createtimest");
+                Date createtimeed = params.getQuery().getDate("createtimeed");
+
                 dto = JSONObject.toJavaObject(params.getQuery(), Candidates.class);
                 example.createCriteria();
                 if (dto.getDelflag() == null) {
@@ -203,6 +208,12 @@ public class CandidatesServiceImpl implements CandidatesService {
 
                 if (!StringUtils.isEmpty(dto.getWorkyears())) {
                     example.getOredCriteria().get(0).andWorkyearsGreaterThan(dto.getWorkyears());
+                }
+                if (createtimest != null) {
+                    example.getOredCriteria().get(0).andCreatetimeGreaterThanOrEqualTo(createtimest);
+                }
+                if (createtimeed != null) {
+                    example.getOredCriteria().get(0).andCreatetimeLessThanOrEqualTo(createtimeed);
                 }
 
 

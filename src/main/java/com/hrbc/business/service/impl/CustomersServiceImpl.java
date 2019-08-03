@@ -103,6 +103,8 @@ public class CustomersServiceImpl implements CustomersService {
                 example.setOrderByClause(params.getOrderby());
             }
             if (params.getQuery() != null) {
+                Date createtimest = params.getQuery().getDate("createtimest");
+                Date createtimeed = params.getQuery().getDate("createtimeed");
                 dto = JSONObject.toJavaObject(params.getQuery(), Customers.class);
                 example.createCriteria();
                 if (dto.getDelflag() == null) {
@@ -128,6 +130,12 @@ public class CustomersServiceImpl implements CustomersService {
                 if (!StringUtils.isEmpty(dto.getOpsstaffname())) {
                     example.getOredCriteria().get(0).andOpsstaffnameLike("%" + dto.getOpsstaffname() + "%");
 
+                }
+                if (createtimest != null) {
+                    example.getOredCriteria().get(0).andCreatetimeGreaterThanOrEqualTo(createtimest);
+                }
+                if (createtimeed != null) {
+                    example.getOredCriteria().get(0).andCreatetimeLessThanOrEqualTo(createtimeed);
                 }
 
             }

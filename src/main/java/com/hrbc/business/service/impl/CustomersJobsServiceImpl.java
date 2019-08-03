@@ -201,7 +201,8 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
                 dto = JSONObject.toJavaObject(params.getQuery(), CustomersJobs.class);
                 Date publishtimest = params.getQuery().getDate("publishtimest");
                 Date publishtimeed = params.getQuery().getDate("publishtimeed");
-
+                Date createtimest = params.getQuery().getDate("createtimest");
+                Date createtimeed = params.getQuery().getDate("createtimeed");
                 example.createCriteria();
                 if (dto.getDelflag() == null) {
                     example.getOredCriteria().get(0).andDelflagEqualTo(DelFlagE.NO.code);
@@ -234,6 +235,13 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
                     example.getOredCriteria().get(0).andPublishtimeLessThanOrEqualTo(publishtimeed);
                 }
 
+
+                if (createtimest != null) {
+                    example.getOredCriteria().get(0).andCreatetimeGreaterThanOrEqualTo(createtimest);
+                }
+                if (createtimeed != null) {
+                    example.getOredCriteria().get(0).andCreatetimeLessThanOrEqualTo(createtimeed);
+                }
 
                 if (dto.getSalarymin() != null) {
                     example.getOredCriteria().get(0).andSalarymaxGreaterThanOrEqualTo(dto.getSalarymin());
