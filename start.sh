@@ -6,7 +6,7 @@ projectdir=/opt/ibms/
 
 cd $workspace
 echo "enter into workspace, " `pwd`
-
+git pull
 
 for i in `ps -ef | grep  ibms.jar | grep java | awk '{print $2}'`
 do
