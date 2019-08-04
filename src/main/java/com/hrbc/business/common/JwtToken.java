@@ -32,7 +32,7 @@ public class JwtToken {
     public static Set<String> SUPER_ADMIN = Sets.newHashSet();
 
     static {
-        SUPER_ADMIN.add("guochengqiang");
+        SUPER_ADMIN.add("guocq");
         SUPER_ADMIN.add("admin");
         SUPER_ADMIN.add("admin1");
         SUPER_ADMIN.add("admin2");

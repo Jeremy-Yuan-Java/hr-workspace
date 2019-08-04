@@ -57,17 +57,16 @@ public class StaffsServiceImpl implements StaffsService {
                     sysUser.setUsername(entity.getUsername());
                     sysUser.setCnname(entity.getStaffname());
                     sysUser.setPwd(MD5Encode.md5(Constants.DEFAULT_PWD, entity.getUsername()));
+
                     if (userMapper.insertSelective(sysUser) > 0) {
                         i = mapper.insertSelective(entity);
                         if (StringUtils.isEmpty(entity.getStaffno())) {
-
                             String no = String.format("%06d", entity.getId());
                             Staffs n = new Staffs();
                             n.setStaffno(no);
                             n.setId(entity.getId());
                             entity.setUpdateuser(JwtToken.getUser());
                             mapper.updateByPrimaryKeySelective(n);
-
 
                         }
                     }
@@ -192,5 +191,10 @@ public class StaffsServiceImpl implements StaffsService {
     @Override
     public List<Staffs> query(StaffsExample example) {
         return mapper.selectByExample(example);
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(MD5Encode.md5(Constants.DEFAULT_PWD, "guocq"));
     }
 }
