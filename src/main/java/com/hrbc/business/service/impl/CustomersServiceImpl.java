@@ -45,8 +45,12 @@ public class CustomersServiceImpl implements CustomersService {
             return -2;
         }
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
+            entity.setUpdateuser(JwtToken.getUser());
+
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
+            entity.setCreateuser(JwtToken.getUser());
+
             int i = mapper.insertSelective(entity);
             if (StringUtils.isEmpty(entity.getCno())) {
                 String no = String.format("%06d", entity.getId());

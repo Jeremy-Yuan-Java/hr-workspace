@@ -40,6 +40,8 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
     public int save(CustomersJobs entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
+            entity.setUpdateuser(JwtToken.getUser());
+
             int i = mapper.updateByPrimaryKeySelective(entity);
             //更新全文检索
             updateFulltext(entity, 2);
@@ -47,6 +49,8 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
             return i;
         } else {
             updateFulltext(entity, 1);
+            entity.setCreateuser(JwtToken.getUser());
+
             int i = mapper.insertSelective(entity);
             if (StringUtils.isEmpty(entity.getJobno())) {
                 String no = String.format("%06d", entity.getId());

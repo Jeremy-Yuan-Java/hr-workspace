@@ -42,12 +42,15 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     }
 
     @Override
-    @ProcessLog(businessName = "职位候选人管理",methodName = "save")
+    @ProcessLog(businessName = "职位候选人管理", methodName = "save")
     public int save(JobsCandidates entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
+            entity.setUpdateuser(JwtToken.getUser());
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
+            entity.setCreateuser(JwtToken.getUser());
+
             return mapper.insertSelective(entity);
 
         }
@@ -55,7 +58,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    @ProcessLog(businessName = "职位候选人管理",methodName = "add")
+    @ProcessLog(businessName = "职位候选人管理", methodName = "add")
     public int add(JobsCandidates entity) {
         String username = JwtToken.getUser();
         CustomersJobs jobs = jobsMapper.selectByPrimaryKey(entity.getJobid());
@@ -163,7 +166,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     }
 
     @Override
-    @ProcessLog(businessName = "职位候选人管理",methodName = "remove")
+    @ProcessLog(businessName = "职位候选人管理", methodName = "remove")
 
     public int remove(JobsCandidates dto) {
 
@@ -187,7 +190,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    @ProcessLog(businessName = "职位候选人管理",methodName = "changeFlowState")
+    @ProcessLog(businessName = "职位候选人管理", methodName = "changeFlowState")
     public int changeFlowState(JobsCandidatesState state) {
         JobsCandidatesStateExample example = new JobsCandidatesStateExample();
         example.createCriteria().andJcidEqualTo(state.getJcid()).andFlowstateEqualTo(state.getFlowstate());
