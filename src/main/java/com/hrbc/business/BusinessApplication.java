@@ -13,16 +13,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @MapperScan({"com.hrbc.business.mapper"})
-public class BusinessApplication  extends SpringBootServletInitializer {
+public class BusinessApplication {
 
 
     public static void main(String[] args) {
         SpringApplication.run(BusinessApplication.class, args);
     }
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(BusinessApplication.class);
-    }
 }
 
