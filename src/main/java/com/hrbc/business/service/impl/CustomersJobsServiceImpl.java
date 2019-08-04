@@ -5,10 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.aop.ProcessLog;
-import com.hrbc.business.domain.CustomersJobs;
-import com.hrbc.business.domain.CustomersJobsExample;
-import com.hrbc.business.domain.CustomersJobsTeam;
-import com.hrbc.business.domain.CustomersJobsTeamExample;
+import com.hrbc.business.domain.*;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
@@ -21,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,7 +35,7 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
     }
 
     @Override
-    @ProcessLog(businessName = "职位",methodName = "save")
+    @ProcessLog(businessName = "职位", methodName = "save")
 
     public int save(CustomersJobs entity) {
 
@@ -64,7 +62,8 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
 
         }
     }
-    @ProcessLog(businessName = "职位",methodName = "updateOpsTeam")
+
+    @ProcessLog(businessName = "职位", methodName = "updateOpsTeam")
     private void updateOpsTeam(CustomersJobs entity, int op) {
         if (entity.getId() == null) {
             return;
@@ -207,7 +206,21 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
                 Date publishtimeed = params.getQuery().getDate("publishtimeed");
                 Date createtimest = params.getQuery().getDate("createtimest");
                 Date createtimeed = params.getQuery().getDate("createtimeed");
+                Integer ownner = params.getQuery().getInteger("auth_ownner");
+
                 example.createCriteria();
+                if (ownner != null && !JwtToken.isAdmin()) {
+
+                    Staffs staffs = JwtToken.getStaff(JwtToken.getUser());
+                    CustomersJobsTeamExample teamExample = new CustomersJobsTeamExample();
+                    teamExample.createCriteria().andStaffidEqualTo(staffs.getId());
+                    List<CustomersJobsTeam> team = teamMapper.selectByExample(teamExample);
+                    List<Integer> jobids = Optional.of(team).orElse(Lists.newArrayList()).stream().map(n -> n.getJobid()).collect(Collectors.toList());
+                    jobids.add(-100);
+                    example.getOredCriteria().get(0).andIdIn(jobids);
+                }
+
+
                 if (dto.getDelflag() == null) {
                     example.getOredCriteria().get(0).andDelflagEqualTo(DelFlagE.NO.code);
                 }
@@ -273,7 +286,7 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
     }
 
     @Override
-    @ProcessLog(businessName = "职位",methodName = "remove")
+    @ProcessLog(businessName = "职位", methodName = "remove")
     public int remove(CustomersJobs dto) {
 
         CustomersJobs delDto = new CustomersJobs();
@@ -284,7 +297,7 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
     }
 
     @Override
-    @ProcessLog(businessName = "职位",methodName = "changeState")
+    @ProcessLog(businessName = "职位", methodName = "changeState")
     public int changeState(CustomersJobs dto) {
 
         return mapper.updateByPrimaryKeySelective(dto);

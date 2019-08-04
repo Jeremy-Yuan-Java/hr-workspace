@@ -6,6 +6,7 @@ import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.aop.ProcessLog;
 import com.hrbc.business.domain.Customers;
 import com.hrbc.business.domain.CustomersExample;
+import com.hrbc.business.domain.Staffs;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
@@ -19,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomersServiceImpl implements CustomersService {
@@ -32,21 +34,21 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
-    @ProcessLog(businessName = "客户",methodName = "save")
+    @ProcessLog(businessName = "客户", methodName = "save")
     public int save(Customers entity) {
         CustomersExample example = new CustomersExample();
         example.createCriteria().andCnameEqualTo(entity.getCname());
-        if(entity.getId()!=null){
+        if (entity.getId() != null) {
             example.getOredCriteria().get(0).andIdNotEqualTo(entity.getId());
         }
-        if(mapper.countByExample(example)>0){
+        if (mapper.countByExample(example) > 0) {
             return -2;
         }
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
             int i = mapper.insertSelective(entity);
-            if(StringUtils.isEmpty(entity.getCno())) {
+            if (StringUtils.isEmpty(entity.getCno())) {
                 String no = String.format("%06d", entity.getId());
                 Customers n = new Customers();
                 n.setCno(no);
@@ -59,7 +61,7 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
-    @ProcessLog(businessName = "客户",methodName = "changeOpsUser")
+    @ProcessLog(businessName = "客户", methodName = "changeOpsUser")
     public int changeOpsUser(Customers entity) {
         Customers n = new Customers();
         n.setId(entity.getId());
@@ -69,7 +71,7 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
-    @ProcessLog(businessName = "客户",methodName = "saveCommunicate")
+    @ProcessLog(businessName = "客户", methodName = "saveCommunicate")
     public Customers saveCommunicate(Customers entity) {
         Customers customers = mapper.selectByPrimaryKey(entity.getId());
         JSONArray cs = null;
@@ -112,8 +114,14 @@ public class CustomersServiceImpl implements CustomersService {
             if (params.getQuery() != null) {
                 Date createtimest = params.getQuery().getDate("createtimest");
                 Date createtimeed = params.getQuery().getDate("createtimeed");
+                Integer ownner = params.getQuery().getInteger("auth_ownner");
                 dto = JSONObject.toJavaObject(params.getQuery(), Customers.class);
                 example.createCriteria();
+                if (ownner != null && !JwtToken.isAdmin()) {
+                    Staffs staffs = JwtToken.getStaff(JwtToken.getUser());
+
+                    example.getOredCriteria().get(0).andOpsstaffnoEqualTo(Optional.of(staffs).orElse(new Staffs()).getStaffno());
+                }
                 if (dto.getDelflag() == null) {
                     example.getOredCriteria().get(0).andDelflagEqualTo(DelFlagE.NO.code);
                 }
@@ -160,7 +168,7 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
-    @ProcessLog(businessName = "客户",methodName = "remove")
+    @ProcessLog(businessName = "客户", methodName = "remove")
     public int remove(Customers dto) {
 
         Customers delDto = new Customers();

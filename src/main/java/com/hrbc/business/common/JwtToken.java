@@ -3,6 +3,7 @@ package com.hrbc.business.common;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.hrbc.business.domain.Staffs;
 import com.hrbc.business.domain.StaffsExample;
 import com.hrbc.business.domain.enums.DelFlagE;
@@ -21,16 +22,22 @@ import javax.annotation.PostConstruct;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author huangyongchao
  */
 @Component
 public class JwtToken {
+    public static Set<String> SUPER_ADMIN = Sets.newHashSet();
+
+    static {
+        SUPER_ADMIN.add("guochengqiang");
+        SUPER_ADMIN.add("admin");
+        SUPER_ADMIN.add("admin1");
+        SUPER_ADMIN.add("admin2");
+        SUPER_ADMIN.add("admin3");
+    }
 
     @Autowired
     private StaffsMapper staffsMapper;
@@ -50,6 +57,18 @@ public class JwtToken {
         return USER_LOCAL.get();
     }
 
+    /**
+     * 判断是否超级账号
+     *
+     * @return
+     */
+    public static boolean isAdmin() {
+        return SUPER_ADMIN.contains(USER_LOCAL.get());
+    }
+
+    public static Staffs getStaff(String username) {
+        return CURRENTSTAFFMAP.get(username);
+    }
 
     public static String getUserName(String username) {
         return CURRENTSTAFFMAP.get(username).getStaffname();
