@@ -7,7 +7,7 @@ package com.hrbc.business.domain.enums;
  */
 public enum JobFlowE {
     匹配职位(1),
-    推荐管理(2),
+    推给客户(2),
     约面管理(3),
     面试反馈(4),
     OFFER确认(5),
