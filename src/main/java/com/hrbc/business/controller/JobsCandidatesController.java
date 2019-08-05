@@ -24,7 +24,12 @@ public class JobsCandidatesController {
 
     @PostMapping("save")
     public ResponseDTO save(@RequestBody JobsCandidates entity) {
-        service.save(entity);
+        int i = service.save(entity);
+
+        if(i==-3){
+            return new ResponseDTO(false, "候选人Offer确认,无法操作", entity.getId());
+        }
+
         return new ResponseDTO(true, "操作成功", entity.getId());
     }
 
@@ -79,7 +84,11 @@ public class JobsCandidatesController {
         if (state == null || state.getJcid() == null || state.getFlowstate() == null) {
             return new ResponseDTO(false, "职位选定错误", state);
         }
+
         int i = service.changeFlowState(state);
+        if(i==-3){
+            return new ResponseDTO(false, "候选人Offer确认,无法操作", state.getId());
+        }
         if (i == -1) {
             return new ResponseDTO(false, "已经执行该状态", state);
 

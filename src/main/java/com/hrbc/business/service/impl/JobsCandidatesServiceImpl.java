@@ -2,6 +2,7 @@ package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.hrbc.business.common.Constants;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.aop.ProcessLog;
 import com.hrbc.business.domain.*;
@@ -66,6 +67,11 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
         if (jobs == null || candidates == null) {
             return -1;
         }
+
+        if (checkCandidateState(entity, null)) {
+            return -3;
+        }
+
         JobsCandidatesExample example = new JobsCandidatesExample();
         example.createCriteria().andCandidateidEqualTo(entity.getCandidateid()).andJobidEqualTo(entity.getJobid());
         if (mapper.countByExample(example) > 0) {
@@ -95,6 +101,20 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
             return r;
 
 
+        }
+
+    }
+
+    private boolean checkCandidateState(JobsCandidates entity, JobsCandidatesState state) {
+        if (state != null && entity == null) {
+            entity = mapper.selectByPrimaryKey(state.getJcid());
+        }
+        JobsCandidatesExample stateexample = new JobsCandidatesExample();
+        stateexample.createCriteria().andCandidateidEqualTo(entity.getCandidateid()).andStateIn(Lists.newArrayList(Constants.CANDIDATE_LOCK_STATE));
+        if (mapper.countByExample(stateexample) > 0) {
+            return true;
+        } else {
+            return false;
         }
 
     }
@@ -196,6 +216,10 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
         example.createCriteria().andJcidEqualTo(state.getJcid()).andFlowstateEqualTo(state.getFlowstate());
         if (stateMapper.countByExample(example) > 0) {
             return -1;
+        }
+
+        if (Constants.CANDIDATE_LOCK_STATE.contains(state.getFlowstate()) && checkCandidateState(null, state)) {
+            return -3;
         }
         String username = JwtToken.getUser();
         String name = JwtToken.getUserName(JwtToken.getUser());

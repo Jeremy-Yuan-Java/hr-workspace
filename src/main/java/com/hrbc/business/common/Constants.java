@@ -1,4 +1,10 @@
 package com.hrbc.business.common;
+
+import com.google.common.collect.Sets;
+import com.hrbc.business.domain.enums.JobFlowE;
+
+import java.util.Set;
+
 /**
  * @author huangyongchao
  */
@@ -15,4 +21,12 @@ public class Constants {
      */
     public static String OPEN_API = "openapi";
     public static String DEFAULT_PWD = "123456";
+    public static Set<Integer> CANDIDATE_LOCK_STATE = Sets.newHashSet();
+
+    static {
+        CANDIDATE_LOCK_STATE.add(JobFlowE.OFFER确认.code);
+        CANDIDATE_LOCK_STATE.add(JobFlowE.入职到岗.code);
+        CANDIDATE_LOCK_STATE.add(JobFlowE.过保.code);
+        CANDIDATE_LOCK_STATE.add(JobFlowE.协商延长保用期.code);
+    }
 }
