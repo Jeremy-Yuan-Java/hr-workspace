@@ -46,6 +46,9 @@ public class JobsCandidatesController {
         } else if (res == -2) {
             return new ResponseDTO(false, "已加入该职位", null);
 
+        }else if (res == -3) {
+            return new ResponseDTO(false, "候选人Offer确认,已锁定", null);
+
         }
         return new ResponseDTO(true, "操作成功", entity.getId());
     }
