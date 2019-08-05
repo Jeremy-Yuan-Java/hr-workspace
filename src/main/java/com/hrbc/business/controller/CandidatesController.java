@@ -39,7 +39,11 @@ public class CandidatesController {
         entity.setPicpath(null);
         entity.setPostcard(null);
         entity.setResumefile(null);
-        service.save(entity);
+        int i = service.save(entity);
+        if (i == -3) {
+            return new ResponseDTO(false, "候选人手机号存在", entity.getId());
+
+        }
         return new ResponseDTO(true, "操作成功", entity.getId());
     }
 

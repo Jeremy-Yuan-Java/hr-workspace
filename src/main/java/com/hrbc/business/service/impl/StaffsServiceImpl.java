@@ -50,6 +50,8 @@ public class StaffsServiceImpl implements StaffsService {
                 SysUserExample example = new SysUserExample();
                 example.createCriteria().andUsernameEqualTo(entity.getUsername());
                 long exist = userMapper.countByExample(example);
+
+
                 if (exist > 0) {
                     return -1;
                 } else {

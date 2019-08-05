@@ -35,18 +35,43 @@ public class CandidatesServiceImpl implements CandidatesService {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             entity.setCreateuser(JwtToken.getUser());
+            if(checkPhoneNo(entity,1)){
+                return -3;
+            }
+
             int i = mapper.updateByPrimaryKeySelective(entity);
             //更新全文检索
             updateFulltext(entity, 2);
 
             return i;
         } else {
+
+            if(checkPhoneNo(entity,2)){
+                return -3;
+            }
+
             entity.setUpdateuser(JwtToken.getUser());
             updateFulltext(entity, 1);
             return mapper.insertSelective(entity);
 
         }
     }
+
+    private boolean checkPhoneNo(CandidatesWithBLOBs candidates ,int op ){
+        //1 代表新增 2代表编辑
+        CandidatesExample candidatesExample = new CandidatesExample();
+        candidatesExample.createCriteria().andPhonenoEqualTo(candidates.getPhoneno()).andDelflagEqualTo(DelFlagE.NO.code);
+        if(op==2){
+            candidatesExample.getOredCriteria().get(0).andIdNotEqualTo(candidates.getId());
+        }
+        if(mapper.countByExample(candidatesExample)>0){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
 
     /**
      * 1 新增时候  2 编辑时候
