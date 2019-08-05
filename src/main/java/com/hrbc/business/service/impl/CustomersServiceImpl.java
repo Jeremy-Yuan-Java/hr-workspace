@@ -151,6 +151,9 @@ public class CustomersServiceImpl implements CustomersService {
                 if (!StringUtils.isEmpty(dto.getVerify())) {
                     example.getOredCriteria().get(0).andVerifyEqualTo(dto.getVerify());
                 }
+                if (!StringUtils.isEmpty(dto.getOpsstaffno())) {
+                    example.getOredCriteria().get(0).andOpsstaffnoEqualTo(dto.getOpsstaffno());
+                }
                 if (!StringUtils.isEmpty(dto.getOpsstaffname())) {
                     example.getOredCriteria().get(0).andOpsstaffnameLike("%" + dto.getOpsstaffname() + "%");
 
