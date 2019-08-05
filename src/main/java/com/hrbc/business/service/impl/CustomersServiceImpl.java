@@ -50,6 +50,11 @@ public class CustomersServiceImpl implements CustomersService {
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
             entity.setCreateuser(JwtToken.getUser());
+            Staffs staffs = JwtToken.getStaff(JwtToken.getUser());
+
+            entity.setOpsstaffno(staffs.getStaffno());
+            entity.setOpsstaffname(staffs.getStaffname());
+            entity.setOpsstaffid(staffs.getId());
 
             int i = mapper.insertSelective(entity);
             if (StringUtils.isEmpty(entity.getCno())) {
