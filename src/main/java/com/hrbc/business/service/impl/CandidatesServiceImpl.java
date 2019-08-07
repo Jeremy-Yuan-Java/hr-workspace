@@ -35,7 +35,7 @@ public class CandidatesServiceImpl implements CandidatesService {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             entity.setCreateuser(JwtToken.getUser());
-            if(checkPhoneNo(entity,1)){
+            if(checkPhoneNo(entity,2)){
                 return -3;
             }
 
@@ -46,7 +46,7 @@ public class CandidatesServiceImpl implements CandidatesService {
             return i;
         } else {
 
-            if(checkPhoneNo(entity,2)){
+            if(checkPhoneNo(entity,1)){
                 return -3;
             }
 
