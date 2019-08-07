@@ -34,10 +34,10 @@ public class CandidatesServiceImpl implements CandidatesService {
     public int save(CandidatesWithBLOBs entity) {
 
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
-            entity.setCreateuser(JwtToken.getUser());
             if(checkPhoneNo(entity,2)){
                 return -3;
             }
+            entity.setUpdateuser(JwtToken.getUser());
 
             int i = mapper.updateByPrimaryKeySelective(entity);
             //更新全文检索
@@ -49,8 +49,8 @@ public class CandidatesServiceImpl implements CandidatesService {
             if(checkPhoneNo(entity,1)){
                 return -3;
             }
+            entity.setCreateuser(JwtToken.getUser());
 
-            entity.setUpdateuser(JwtToken.getUser());
             updateFulltext(entity, 1);
             return mapper.insertSelective(entity);
 
