@@ -36,7 +36,7 @@ public class JwtToken {
         SUPER_ADMIN.add("admin");
         SUPER_ADMIN.add("admin1");
         SUPER_ADMIN.add("admin2");
-        SUPER_ADMIN.add("admin3");
+        SUPER_ADMIN.add("Amanda.zhao");
     }
 
     @Autowired
