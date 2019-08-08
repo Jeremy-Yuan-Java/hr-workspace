@@ -12,6 +12,7 @@ import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
 import com.hrbc.business.mapper.CandidatesMapper;
 import com.hrbc.business.service.CandidatesService;
+import com.hrbc.business.util.QuickTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -237,9 +238,11 @@ public class CandidatesServiceImpl implements CandidatesService {
                     example.getOredCriteria().get(0).andWorkyearsGreaterThan(dto.getWorkyears());
                 }
                 if (createtimest != null) {
+                    createtimest = QuickTimeUtil.firstDate(createtimest);
                     example.getOredCriteria().get(0).andCreatetimeGreaterThanOrEqualTo(createtimest);
                 }
                 if (createtimeed != null) {
+                    createtimeed = QuickTimeUtil.lastDate(createtimeed);
                     example.getOredCriteria().get(0).andCreatetimeLessThanOrEqualTo(createtimeed);
                 }
 

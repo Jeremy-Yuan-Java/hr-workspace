@@ -13,6 +13,7 @@ import com.hrbc.business.domain.enums.DelFlagE;
 import com.hrbc.business.mapper.CustomersMapper;
 import com.hrbc.business.service.CustomersService;
 import com.hrbc.business.util.Patten;
+import com.hrbc.business.util.QuickTimeUtil;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -159,9 +160,13 @@ public class CustomersServiceImpl implements CustomersService {
 
                 }
                 if (createtimest != null) {
+                    createtimest = QuickTimeUtil.firstDate(createtimest);
+
                     example.getOredCriteria().get(0).andCreatetimeGreaterThanOrEqualTo(createtimest);
                 }
                 if (createtimeed != null) {
+                    createtimeed = QuickTimeUtil.firstDate(createtimeed);
+
                     example.getOredCriteria().get(0).andCreatetimeLessThanOrEqualTo(createtimeed);
                 }
 
