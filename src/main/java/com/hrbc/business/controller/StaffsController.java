@@ -2,6 +2,7 @@ package com.hrbc.business.controller;
 
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Staffs;
+import com.hrbc.business.domain.SysUser;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
@@ -101,5 +102,6 @@ public class StaffsController {
 
         return new ResponseDTO(true, "", PathConf.ACCESS_PATH_PIC.concat(fileName));
     }
+
 
 }

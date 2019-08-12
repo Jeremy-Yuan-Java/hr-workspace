@@ -1,6 +1,7 @@
 package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hrbc.business.common.Constants;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.domain.Staffs;
 import com.hrbc.business.domain.StaffsExample;
@@ -169,4 +170,20 @@ public class SysUserServiceImpl implements SysUserService {
     public List<SysUser> query(SysUserExample example) {
         return mapper.selectByExample(example);
     }
+
+
+    @Override
+    public int resetPwd(SysUser dto) {
+        SysUserExample example = new SysUserExample();
+        example.createCriteria().andUsernameEqualTo(dto.getUsername());
+        List<SysUser> list = mapper.selectByExample(example);
+        if (!CollectionUtils.isEmpty(list)) {
+            dto.setPwd(MD5Encode.md5(Constants.DEFAULT_PWD, dto.getUsername()));
+            dto.setId(list.get(0).getId());
+            return mapper.updateByPrimaryKeySelective(dto);
+        }
+        return 0;
+
+    }
+
 }

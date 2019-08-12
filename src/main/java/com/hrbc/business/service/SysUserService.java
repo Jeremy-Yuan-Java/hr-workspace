@@ -22,4 +22,8 @@ public interface SysUserService {
 
     public List<SysUser> query(SysUserExample example);
 
-    }
+    public int resetPwd(SysUser dto);
+
+
+
+}

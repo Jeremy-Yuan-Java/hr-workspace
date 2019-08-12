@@ -43,7 +43,7 @@ public class SysUserController {
     @GetMapping("remove/{id}")
     public ResponseDTO remove(@PathVariable Integer id) {
         if (id != null) {
-			SysUser dto = new SysUser();
+            SysUser dto = new SysUser();
             dto.setId(id);
             service.remove(dto);
         }
@@ -53,12 +53,19 @@ public class SysUserController {
     @GetMapping("state/{id}/{state}")
     public ResponseDTO changeState(@PathVariable Integer id, @PathVariable Integer state) {
         if (state != null) {
-			SysUser dto = new SysUser();
+            SysUser dto = new SysUser();
             dto.setId(id);
             dto.setState(state);
             service.changeState(dto);
         }
         return new ResponseDTO(true, "操作成功", id);
     }
+
+    @PostMapping("resetpwd")
+    public ResponseDTO resetpwd(@RequestBody SysUser entity) {
+        service.resetPwd(entity);
+        return new ResponseDTO(true, "操作成功", entity.getId());
+    }
+
 
 }
