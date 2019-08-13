@@ -66,6 +66,47 @@ public class Customers {
 
     private Integer opsstaffid;
 
+    private String contactuser1;
+
+    private String phoneno1;
+
+    private String contactuser2;
+
+    private String phoneno2;
+
+
+    public String getContactuser1() {
+        return contactuser1;
+    }
+
+    public void setContactuser1(String contactuser1) {
+        this.contactuser1 = contactuser1;
+    }
+
+    public String getPhoneno1() {
+        return phoneno1;
+    }
+
+    public void setPhoneno1(String phoneno1) {
+        this.phoneno1 = phoneno1;
+    }
+
+    public String getContactuser2() {
+        return contactuser2;
+    }
+
+    public void setContactuser2(String contactuser2) {
+        this.contactuser2 = contactuser2;
+    }
+
+    public String getPhoneno2() {
+        return phoneno2;
+    }
+
+    public void setPhoneno2(String phoneno2) {
+        this.phoneno2 = phoneno2;
+    }
+
     public Integer getOpsstaffid() {
         return opsstaffid;
     }
