@@ -15,6 +15,14 @@ public class GlobalException {
     @ResponseBody
     @ExceptionHandler(Throwable.class)
     public ResponseDTO processException(Exception e) {
+        logger.error("GlobalThrowable:", e);
+        return new ResponseDTO(false, "操作失败", null);
+
+    }
+
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    public ResponseDTO processException1(Exception e) {
         logger.error("GlobalException:", e);
         return new ResponseDTO(false, "操作失败", null);
 
