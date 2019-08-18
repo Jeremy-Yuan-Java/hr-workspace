@@ -13,7 +13,7 @@ public class GlobalException {
     private static final Logger logger = LoggerFactory.getLogger(GlobalException.class);
 
     @ResponseBody
-    @ExceptionHandler
+    @ExceptionHandler(Throwable.class)
     public ResponseDTO processException(Exception e) {
         logger.error("GlobalException:", e);
         return new ResponseDTO(false, "操作失败", null);
