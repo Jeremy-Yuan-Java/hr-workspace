@@ -7,11 +7,7 @@
 
     <contextName>${log.context.name}</contextName>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./log/std%d{yyyyMMdd}.log</fileNamePattern>
-            <maxHistory>5</maxHistory>
-        </rollingPolicy>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder charset="${log.charset}">
             <pattern>${log.pattern}</pattern>
         </encoder>
