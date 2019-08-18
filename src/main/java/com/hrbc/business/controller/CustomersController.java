@@ -46,7 +46,7 @@ public class CustomersController {
 
     @PostMapping("loadPage")
     public PageResultDTO loadPage(@RequestBody PageQueryParamDTO params) {
-
+        System.out.println("客户查询。。。");
         // 返回分页数据
         return service.loadPage(params);
     }

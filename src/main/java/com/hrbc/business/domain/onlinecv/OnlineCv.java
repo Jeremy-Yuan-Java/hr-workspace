@@ -16,6 +16,7 @@ public class OnlineCv {
     private String errormessage;
     private String cv_id;
     private int errorcode;
+    // 简历对象
     private Parsing_result parsing_result;
     private String resume_rawtext;
     private String version;

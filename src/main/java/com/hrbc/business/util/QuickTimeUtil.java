@@ -1,6 +1,7 @@
 package com.hrbc.business.util;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,6 +36,14 @@ public class QuickTimeUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE,plusday);
         return calendar.getTime();
+    }
+
+    public static String dateParseString(Date date ,String pattern){
+        if(date == null){
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        return sdf.format(date);
     }
 
 
