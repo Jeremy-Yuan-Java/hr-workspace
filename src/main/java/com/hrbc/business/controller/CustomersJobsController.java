@@ -5,6 +5,8 @@ import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.service.CustomersJobsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "api/customersJobs", produces = {"application/json;charset=UTF-8"})
 public class CustomersJobsController {
+    private static final Logger logger = LoggerFactory.getLogger(CustomersJobsController.class);
 
     @Autowired
     private CustomersJobsService service;
@@ -23,7 +26,13 @@ public class CustomersJobsController {
 
     @PostMapping("save")
     public ResponseDTO save(@RequestBody CustomersJobs entity) {
-        service.save(entity);
+        try {
+            service.save(entity);
+        } catch (Exception e) {
+            logger.error("",e);
+            return new ResponseDTO(false, "操作失败", null);
+
+        }
         return new ResponseDTO(true, "操作成功", entity.getId());
     }
 
