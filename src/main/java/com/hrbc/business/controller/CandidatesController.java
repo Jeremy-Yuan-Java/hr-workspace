@@ -1,5 +1,7 @@
 package com.hrbc.business.controller;
 
+import com.hrbc.business.common.ResumeUtil;
+import com.hrbc.business.common.ResumeUtilAliy;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Candidates;
 import com.hrbc.business.domain.CandidatesWithBLOBs;
@@ -8,6 +10,7 @@ import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.mapper.CandidatesMapper;
 import com.hrbc.business.service.CandidatesService;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -16,8 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Date;
 
 @CrossOrigin
 @RestController
@@ -26,6 +32,7 @@ public class CandidatesController {
 
     @Autowired
     private CandidatesService service;
+
     @Autowired
     private CandidatesMapper mapper;
 
@@ -49,8 +56,6 @@ public class CandidatesController {
 
     @PostMapping("loadPage")
     public PageResultDTO loadPage(@RequestBody PageQueryParamDTO params) {
-
-        // 返回分页数据
         return service.loadPage(params);
     }
 
@@ -135,6 +140,51 @@ public class CandidatesController {
 
         return new ResponseDTO(true, "", null);
     }
+
+
+    /**
+     *  上传简历 并解析简历
+     * @param file
+     * @param model
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/upload/resume")
+    public ResponseDTO fileUploadResume(@RequestParam(value = "file") MultipartFile file, Model model, HttpServletRequest request) {
+        if (file.isEmpty() ) {
+            System.out.println("文件为空/数据为空");
+        }
+        String fileName = file.getOriginalFilename();
+        File dest = null;
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+
+        fileName = PathConf.SUFFIX_CARESUME.concat(new Date().getTime()+"").concat(suffixName);
+        dest = new File(PathConf.getSavePathResume().concat(fileName));
+
+
+
+        if (dest != null) {
+            try {
+                file.transferTo(dest);
+                CandidatesWithBLOBs candidates = new CandidatesWithBLOBs();
+                candidates.setPicpath(null);
+                candidates.setPostcard(null);
+                candidates.setResumefile(null);
+                candidates.setResumefile(fileName);
+                // 解析简历
+                InputStream in = new FileInputStream(dest);
+                // 解析 简历
+                ResumeUtilAliy.parseResume(in,candidates,suffixName);
+                //mapper.insertSelective(candidates);
+                service.save(candidates);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new ResponseDTO(true, "", null);
+    }
+
 
 
 }

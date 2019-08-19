@@ -40,7 +40,12 @@ public class ProcessLogAspect {
                     OpLog opLog = new OpLog();
                     Object[] args = joinpoint.getArgs();
                     if (args.length > 0) {
-                        opLog.setOpcontent(JSONObject.toJSONString(args[0]));
+                        String json = JSONObject.toJSONString(args[0]);
+                        if ( json.length() > 2000) {
+                            json = json.substring(0,2000);
+                        }
+                        opLog.setOpcontent(json);
+                        System.out.println("------->" + json);
                         if (StringUtils.isEmpty(opLog.getOpcontent()) && opLog.getOpcontent().length() > 2000) {
                             opLog.setOpcontent(opLog.getOpcontent().substring(0, 2000));
                         }
