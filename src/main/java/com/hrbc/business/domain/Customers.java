@@ -355,8 +355,8 @@ public class Customers {
         if (followrec == null) {
             array = JSONArray.parseArray("[]");
         } else {
-
-            array = JSONArray.parseArray(new String(followrec));
+            String msg = new String(followrec);
+            array = JSONArray.parseArray(new String(msg));
         }
         followrec = null;
         return array;

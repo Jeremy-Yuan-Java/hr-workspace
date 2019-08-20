@@ -22,7 +22,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,6 +46,12 @@ public class ResumeController {
     public void exportWordFromTemplate(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response){
         // 根据 候选人编号 获取相关的信息
         Candidates candidates = candidatesService.get(id);
+        if (StringUtils.isEmpty(candidates.getWorkbase())) {
+            candidates.setWorkbase("不详");
+        }
+        if (StringUtils.isEmpty(candidates.getLivebase())) {
+            candidates.setLivebase("不详");
+        }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("candidates",candidates);
         map.put("now", new Date());
@@ -94,7 +99,7 @@ public class ResumeController {
     public String getCandidateEdu(Candidates candidates){
         StringBuilder edu = new StringBuilder();
         if(! StringUtils.isEmpty(candidates.getEducations())){
-            edu.append("最高学历:"+candidates.getEducations() + "\r");
+            edu.append("最高学历:"+candidates.getEducations() + Constants.LF1);
         }
         if ( !StringUtils.isEmpty(candidates.getEdu1())) {
             edu.append(candidates.getEdu1());
@@ -102,7 +107,7 @@ public class ResumeController {
             edu.append(QuickTimeUtil.dateParseString(candidates.getEdu1stdate(),"yyyy.MM"));
             edu.append(" - ");
             edu.append(QuickTimeUtil.dateParseString(candidates.getEdu1eddate(),"yyyy.MM"));
-            edu.append(" ) "+"\r");
+            edu.append(" ) "+Constants.LF1);
         }
         if ( !StringUtils.isEmpty(candidates.getEdu2())) {
             edu.append(candidates.getEdu2());
@@ -110,7 +115,7 @@ public class ResumeController {
             edu.append(QuickTimeUtil.dateParseString(candidates.getEdu2stdate(),"yyyy.MM"));
             edu.append(" - ");
             edu.append(QuickTimeUtil.dateParseString(candidates.getEdu2eddate(),"yyyy.MM"));
-            edu.append(" ) "+"\r");
+            edu.append(" ) "+Constants.LF1);
         }
         if ( !StringUtils.isEmpty(candidates.getEdu3())) {
             edu.append(candidates.getEdu3());
@@ -118,7 +123,7 @@ public class ResumeController {
             edu.append(QuickTimeUtil.dateParseString(candidates.getEdu3stdate(),"yyyy.MM"));
             edu.append(" - ");
             edu.append(QuickTimeUtil.dateParseString(candidates.getEdu3eddate(),"yyyy.MM"));
-            edu.append(" ) "+"\r");
+            edu.append(" ) "+Constants.LF1);
         }
         return edu.toString() + " ";
     }
@@ -139,7 +144,7 @@ public class ResumeController {
             work.append(" ");
             work.append("(" + candidates.getWorkyears() + "年)");
             work.append(" " + candidates.getJobtitle());
-            work.append( "\r");
+            work.append( Constants.LF1);
         }
         if( !StringUtils.isEmpty(candidates.getWork2())){
             work.append(QuickTimeUtil.dateParseString(candidates.getWork2stdate(),"yyyy.MM"));
@@ -148,7 +153,7 @@ public class ResumeController {
             work.append(" ");
             work.append(candidates.getWork2());
             work.append(" " + candidates.getWork2jobtitle());
-            work.append( "\r");
+            work.append( Constants.LF1);
         }
 
         if( !StringUtils.isEmpty(candidates.getWork3())){
@@ -158,7 +163,7 @@ public class ResumeController {
             work.append(" ");
             work.append(candidates.getWork3());
             work.append(" " + candidates.getWork3jobtitle());
-            work.append("\r");
+            work.append(Constants.LF1);
         }
         if( !StringUtils.isEmpty(candidates.getWork4())){
             work.append(QuickTimeUtil.dateParseString(candidates.getWork4stdate(),"yyyy.MM"));
@@ -167,9 +172,9 @@ public class ResumeController {
             work.append(" ");
             work.append(candidates.getWork4());
             work.append(" " + candidates.getWork4jobtitle());
-            work.append( "\r");
+            work.append( Constants.LF1);
         }
-        return work.toString();
+        return work.toString() + " ";
     }
 
     /**
@@ -238,7 +243,7 @@ public class ResumeController {
             work4.append(" ");
             work4.append(candidates.getWork4() + " ");
             work4.append(candidates.getWork4jobtitle()) ;
-            work4.append("\r");
+            work4.append(Constants.LF1);
             map.put("work4",work4.toString());
             // 公司介绍： 汇报对象：  下属人数：工作职责： 求职原因：
             map.put("work4Info",getCommonInfo());
@@ -248,11 +253,11 @@ public class ResumeController {
 
     public String getCommonInfo(){
         StringBuilder work1Info = new StringBuilder();
-        work1Info.append("公司介绍：" + "\r" );
-        work1Info.append("汇报对象：" + "\r" );
-        work1Info.append("下属人数：" + "\r" );
-        work1Info.append("工作职责：" + "\r" );
-        work1Info.append("求职原因：" + "\r" );
-        return work1Info.toString();
+        work1Info.append("公司介绍：" + Constants.LF1 );
+        work1Info.append("汇报对象：" + Constants.LF1 );
+        work1Info.append("下属人数：" + Constants.LF1 );
+        work1Info.append("工作职责：" + Constants.LF1 );
+        work1Info.append("求职原因：" + Constants.LF1 );
+        return work1Info.toString() + " ";
     }
 }

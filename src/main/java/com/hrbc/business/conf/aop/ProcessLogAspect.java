@@ -45,7 +45,6 @@ public class ProcessLogAspect {
                             json = json.substring(0,2000);
                         }
                         opLog.setOpcontent(json);
-                        System.out.println("------->" + json);
                         if (StringUtils.isEmpty(opLog.getOpcontent()) && opLog.getOpcontent().length() > 2000) {
                             opLog.setOpcontent(opLog.getOpcontent().substring(0, 2000));
                         }

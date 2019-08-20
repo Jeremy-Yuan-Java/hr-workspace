@@ -1,5 +1,7 @@
 package com.hrbc.business.controller;
 
+import com.hrbc.business.conf.PathConf;
+import com.hrbc.business.domain.CandidatesWithBLOBs;
 import com.hrbc.business.domain.JobsCandidates;
 import com.hrbc.business.domain.JobsCandidatesState;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
@@ -7,7 +9,16 @@ import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.service.JobsCandidatesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Date;
 
 @CrossOrigin
 @RestController
@@ -98,5 +109,39 @@ public class JobsCandidatesController {
         }
         return new ResponseDTO(true, "操作成功", state);
 
+    }
+
+    @PostMapping(value = "/upload/report")
+    public ResponseDTO fileUpload(@RequestParam(value = "file") MultipartFile file,  Model model, HttpServletRequest request) {
+
+        if (file.isEmpty()) {
+            System.out.println("文件为空/数据为空");
+        }
+        String fileName = file.getOriginalFilename();
+        File dest = null;
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+
+        fileName = PathConf.SUFFIX_REPORT.concat(new Date().getTime() + "").concat(suffixName);
+        dest = new File(PathConf.getSavePathReport().concat(fileName));
+
+        if (dest != null) {
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            } else {
+                try {
+                    Files.delete(dest.toPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                file.transferTo(dest);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseDTO(false, "上传失败", null);
+            }
+        }
+
+        return new ResponseDTO(true, "fileName", fileName);
     }
 }

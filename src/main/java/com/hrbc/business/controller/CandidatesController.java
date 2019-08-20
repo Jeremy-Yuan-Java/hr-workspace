@@ -89,7 +89,7 @@ public class CandidatesController {
         String fileName = file.getOriginalFilename();
         File dest = null;
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        // 1 代表上传头像 2 代表上传明信片 3 代表上传 简历
+        // 1 代表上传头像 2 代表上传明信片 3 代表上传 简历  4 上传简历模板
         if ("1".equalsIgnoreCase(type)) {
             fileName = PathConf.SUFFIX_CAPIC.concat(id).concat(suffixName);
             dest = new File(PathConf.getSavePathPic().concat(fileName));
@@ -101,8 +101,9 @@ public class CandidatesController {
         } else if ("3".equalsIgnoreCase(type)) {
             fileName = PathConf.SUFFIX_CARESUME.concat(id).concat(suffixName);
             dest = new File(PathConf.getSavePathResume().concat(fileName));
-
-
+        } else if ( "4".equalsIgnoreCase(type)){
+            fileName = PathConf.SUFFIX_REPORT.concat(new Date().getTime() + "").concat(suffixName);
+            dest = new File(PathConf.getSavePathReport().concat(fileName));
         }
         if (dest != null) {
             if (!dest.getParentFile().exists()) {
@@ -169,14 +170,18 @@ public class CandidatesController {
                 CandidatesWithBLOBs candidates = new CandidatesWithBLOBs();
                 candidates.setPicpath(null);
                 candidates.setPostcard(null);
-                candidates.setResumefile(null);
                 candidates.setResumefile(fileName);
                 // 解析简历
                 InputStream in = new FileInputStream(dest);
                 // 解析 简历
                 ResumeUtilAliy.parseResume(in,candidates,suffixName);
+
                 //mapper.insertSelective(candidates);
-                service.save(candidates);
+                int flag = service.save(candidates);
+                if ( flag == -3) {
+                    // 表示手机号码已经存在了
+                    return new ResponseDTO(false, "手机号已经存在了", null);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

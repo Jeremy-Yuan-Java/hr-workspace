@@ -26,10 +26,17 @@ public class PathConf {
      */
     public static String SUFFIX_CARESUME = "resume";
 
+    /**
+     * 简历模板文件名前缀
+     */
+    public static String SUFFIX_REPORT = "report";
+
     public static String SAVE_PATH_ROOT;
     private static String PIC = "pic/";
     private static String RESUME = "resumes/";
     private static String POSTCARD = "postcard/";
+
+    private static String RESUME_REPORT = "report/";
 
     public static String ACCESS_PATH_PIC = ACCESS_PATH + PIC;
     public static String ACCESS_PATH_RESUME = ACCESS_PATH + RESUME;
@@ -51,5 +58,9 @@ public class PathConf {
 
     public static String getSavePathPostcard() {
         return SAVE_PATH_ROOT + POSTCARD;
+    }
+
+    public static String getSavePathReport(){
+        return SAVE_PATH_ROOT + RESUME_REPORT;
     }
 }

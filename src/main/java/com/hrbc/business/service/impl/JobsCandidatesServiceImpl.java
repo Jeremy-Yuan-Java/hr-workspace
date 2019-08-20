@@ -10,10 +10,7 @@ import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
 import com.hrbc.business.domain.enums.JobFlowE;
-import com.hrbc.business.mapper.CandidatesMapper;
-import com.hrbc.business.mapper.CustomersJobsMapper;
-import com.hrbc.business.mapper.JobsCandidatesMapper;
-import com.hrbc.business.mapper.JobsCandidatesStateMapper;
+import com.hrbc.business.mapper.*;
 import com.hrbc.business.service.JobsCandidatesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +33,9 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     private CustomersJobsMapper jobsMapper;
     @Autowired
     private JobsCandidatesStateMapper stateMapper;
+
+    @Autowired
+    private CandidatesJobsReportMapper reportMapper;
 
     @Override
     public JobsCandidates get(Integer id) {
@@ -232,6 +232,18 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
             jobsCandidates.setId(state.getJcid());
             jobsCandidates.setState(state.getFlowstate());
             mapper.updateByPrimaryKeySelective(jobsCandidates);
+            if (state.getFlowstate() == 2 && !StringUtils.isEmpty(state.getText5())) {
+                CandidatesJobsReport report = new CandidatesJobsReport();
+                report.setReportpath(state.getText5());
+
+                report.setUploadUsername(username);
+                report.setUploadUsercname(name);
+                // 根据 jcid 获取 客户编号和 候选人编号
+                jobsCandidates = mapper.selectByPrimaryKey(state.getJcid());
+                report.setCandidatesId(jobsCandidates.getCandidateid());
+                report.setCustomerId(jobsCandidates.getJobid());
+                reportMapper.insertSelective(report);
+            }
         }
         return i;
     }

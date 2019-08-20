@@ -34,7 +34,8 @@ public class ResumeUtilAliy {
     static String host = "http://jljxjk.market.alicloudapi.com";
     static String path = "/aliyunapp/aliyunservice.aspx";
     static String method = "POST";
-    static String appcode = "192a6811b5a4458f9402da3b0c3b9aa5";
+   // static String appcode = "192a6811b5a4458f9402da3b0c3b9aa5";
+    static String appcode = "99a909a55532473aa7dfb80e435060ac";
 
     /**
      *  通过 第三方服务解析简历内容
@@ -63,7 +64,7 @@ public class ResumeUtilAliy {
              */
             HttpResponse response = HttpUtils.doPost(host,path,method,headers,querys,bodys);
             String result = EntityUtils.toString(response.getEntity());
-            System.out.println(result);
+            // System.out.println(result);
             ResumeInfo info = JSONObject.parseObject(result, ResumeInfo.class);
             return info;
         } catch (Exception e) {
@@ -346,7 +347,7 @@ public class ResumeUtilAliy {
             System.out.println(sb.toString());
             ResumeInfo info = JSONObject.parseObject(sb.toString(), ResumeInfo.class);
             String json = JSONObject.toJSON(info).toString();
-            System.out.println("---" + json );
+            //System.out.println("---" + json );
         }catch (Exception e){
             e.printStackTrace();
         }
