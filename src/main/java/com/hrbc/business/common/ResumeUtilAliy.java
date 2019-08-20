@@ -259,9 +259,10 @@ public class ResumeUtilAliy {
                 String[] s = salary.split("-");
                 candidates.setSalarymin(NumberUtils.toInt(s[0],0));
                 String maxStr = s[1];
-                if ( StringUtils.isNotBlank(maxStr) && maxStr.contains("/")){
-                    candidates.setSalarymax(NumberUtils.toInt(maxStr.split("/")[0],0));
+                if ( StringUtils.isNotBlank(maxStr) && maxStr.contains("元")){
+                    candidates.setSalarymax(NumberUtils.toInt(maxStr.split("元")[0],0));
                 }
+
             }
         }
         // 所属行业
