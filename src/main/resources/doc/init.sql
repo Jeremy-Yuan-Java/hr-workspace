@@ -327,3 +327,25 @@ INSERT INTO ibms.staffs (id, username, staffno, staffname, phonenobak, phoneno, 
 INSERT INTO ibms.staffs (id, username, staffno, staffname, phonenobak, phoneno, emailbak, idcard, stafftime, email, picpath, jobtitle, superior, age, gender, education, salary, constellation, hometown, state, delflag, createtime, updatetime, region, birthday, createuser, updateuser, createstaff, updatestaff, remark, fulltexts) VALUES (1, 'guocq', '000001', '郭成强', null, '1888', null, null, '2019-08-18 19:00:00', '1888@qq.com', null, '总经理', null, null, '男', null, 888, null, null, 0, 0, '2019-08-04 11:38:15', '2019-08-04 11:38:23', '北京-北关', null, null, null, null, null, null, null);
 INSERT INTO ibms.sys_user (id, username, cnname, pwd, accounttype, enname, state, delflag, createtime, updatetime, createuser, updateuser, createstaff, updatestaff) VALUES (2, 'admin', '超级管理员', 'a66abb5684c45962d887564f08346e8d', 1, null, 0, 0, '2019-08-04 10:12:38', '2019-08-04 10:12:38', null, null, null, null);
 INSERT INTO ibms.sys_user (id, username, cnname, pwd, accounttype, enname, state, delflag, createtime, updatetime, createuser, updateuser, createstaff, updatestaff) VALUES (1, 'guocq', '郭成强', '936c597d82f2de1fe713732a8021b7a8', 1, null, 0, 0, '2019-08-04 11:38:14', '2019-08-04 11:38:14', null, null, null, null);
+
+
+
+create table candidates_jobs_report
+(
+    id               int auto_increment
+        primary key,
+    customer_id      int          not null comment '客户编号',
+    candidates_id    int          not null comment '候选人编号',
+    reportPath       varchar(100) null comment '简历报告文件名',
+    upload_userid    int          null comment '简历报告上传用户编号',
+    upload_username  varchar(30)  null comment '简历报告上传用户账户',
+    upload_usercname varchar(30)  null comment '简历报告上传人姓名',
+    state            int          null comment '状态',
+    create_time      timestamp    null comment '记录创建的时间',
+    backup1          varchar(100) null,
+    backup2          varchar(100) null,
+    update_time      timestamp    null comment '更新时间'
+)
+    comment '候选人简历报告' engine = InnoDB
+                      collate = utf8mb4_unicode_ci;
+

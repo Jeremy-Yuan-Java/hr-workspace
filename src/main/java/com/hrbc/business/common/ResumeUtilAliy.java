@@ -5,25 +5,19 @@ import com.hrbc.business.domain.Candidates;
 import com.hrbc.business.domain.CandidatesWithBLOBs;
 import com.hrbc.business.domain.aliylincv.EducationInfo;
 import com.hrbc.business.domain.aliylincv.ExperienceInfo;
+import com.hrbc.business.domain.aliylincv.ProjectInfo;
 import com.hrbc.business.domain.aliylincv.ResumeInfo;
-import com.hrbc.business.domain.onlinecv.*;
 import com.hrbc.business.util.QuickTimeUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.data.util.CastUtils;
 
 import java.io.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,7 +71,7 @@ public class ResumeUtilAliy {
      * 简历解析
      * @return
      */
-    public static void parseResume(InputStream in, CandidatesWithBLOBs candidates,String suffixName) {
+    public static void parseResume(InputStream in, CandidatesWithBLOBs candidates, String suffixName) {
         // 字节流转换为字节数组
         byte[] data = inputStreamConvertByteArray(in);
         // 解析 简历 获取到对应的包装对象
@@ -100,7 +94,7 @@ public class ResumeUtilAliy {
     /**
      * 获取候选人 教育经历
      */
-    public static void getCandidatesEdu(Candidates candidates,ResumeInfo info){
+    public static void getCandidatesEdu(CandidatesWithBLOBs candidates, ResumeInfo info){
         EducationInfo[] eis = info.getEducationInfo();
         if ( eis != null && eis.length > 0) {
             for (int i = 0 ; i < eis.length ;  i ++) {
@@ -108,6 +102,7 @@ public class ResumeUtilAliy {
                 if ( i == 0) {
                     // 最高学历
                     candidates.setEducations(info.getEducation());
+
                     // 学校名称
                     candidates.setEdu1(ei.getSchool());
                     // 起始
@@ -140,7 +135,7 @@ public class ResumeUtilAliy {
      * @param candidates
      * @param info
      */
-    public static void getCandidatesJobs(Candidates candidates,ResumeInfo info){
+    public static void getCandidatesJobs(CandidatesWithBLOBs candidates,ResumeInfo info){
         ExperienceInfo[] experienceInfos = info.getExperienceInfo();
         if (experienceInfos != null && experienceInfos.length > 0) {
             for (int i = 0 ; i < experienceInfos.length ; i ++ ) {
@@ -152,6 +147,8 @@ public class ResumeUtilAliy {
                         periodsTime = periodsTime.substring(0,periodsTime.indexOf("年"));
                     }
                 }
+                Date startDate = QuickTimeUtil.stringParseDate(ei.getStartDate(),"yyyy-MM");
+                Date endDate = QuickTimeUtil.stringParseDate(ei.getEndDate(),"yyyy-MM");
                 if ( i == 0) {
                     // 公司名称
                     String company = ei.getCompany();
@@ -161,12 +158,14 @@ public class ResumeUtilAliy {
                     // 职位名称
                     candidates.setJobtitle(ei.getTitle());
                     // 起始时间
-                    candidates.setWork1stdate(QuickTimeUtil.stringParseDate(ei.getStartDate(),"yyyy-MM"));
-                    candidates.setWork1eddate(QuickTimeUtil.stringParseDate(ei.getEndDate(),"yyyy-MM"));
+                    candidates.setWork1stdate(startDate);
+                    candidates.setWork1eddate(endDate);
+
                     // 工作描述
                     candidates.setWork1desc(ei.getSummary());
-                    // 工作年限
-                    candidates.setWorkyears(NumberUtils.toInt(periodsTime,0));
+
+                    // 项目描述
+                    candidates.setWork1projs(getCandidatesProjectInfo(startDate,endDate,info));
                 }
 
                 if( i == 1){
@@ -178,10 +177,12 @@ public class ResumeUtilAliy {
                     // 职位名称
                     candidates.setWork2jobtitle(ei.getTitle());
                     // 起始时间
-                    candidates.setWork2stdate(QuickTimeUtil.stringParseDate(ei.getStartDate(),"yyyy-MM"));
-                    candidates.setWork2eddate(QuickTimeUtil.stringParseDate(ei.getEndDate(),"yyyy-MM"));
+                    candidates.setWork2stdate(startDate);
+                    candidates.setWork2eddate(endDate);
                     // 工作描述
                     candidates.setWork2desc(ei.getSummary());
+                    // 项目描述
+                    candidates.setWork2projs(getCandidatesProjectInfo(startDate,endDate,info));
 
                 }
                 if( i == 2){
@@ -193,10 +194,12 @@ public class ResumeUtilAliy {
                     // 职位名称
                     candidates.setWork3jobtitle(ei.getTitle());
                     // 起始时间
-                    candidates.setWork3stdate(QuickTimeUtil.stringParseDate(ei.getStartDate(),"yyyy-MM"));
-                    candidates.setWork3eddate(QuickTimeUtil.stringParseDate(ei.getEndDate(),"yyyy-MM"));
+                    candidates.setWork3stdate(startDate);
+                    candidates.setWork3eddate(endDate);
                     // 工作描述
                     candidates.setWork3desc(ei.getSummary());
+                    // 项目描述
+                    candidates.setWork3projs(getCandidatesProjectInfo(startDate,endDate,info));
 
                 }
                 if( i == 3){
@@ -208,10 +211,12 @@ public class ResumeUtilAliy {
                     // 职位名称
                     candidates.setWork4jobtitle(ei.getTitle());
                     // 起始时间
-                    candidates.setWork4stdate(QuickTimeUtil.stringParseDate(ei.getStartDate(),"yyyy-MM"));
-                    candidates.setWork4eddate(QuickTimeUtil.stringParseDate(ei.getEndDate(),"yyyy-MM"));
+                    candidates.setWork4stdate(startDate);
+                    candidates.setWork4eddate(endDate);
                     // 工作描述
                     candidates.setWork4desc(ei.getSummary());
+                    // 项目描述
+                    candidates.setWork4projs(getCandidatesProjectInfo(startDate,endDate,info));
                     break;
                 }
             }
@@ -221,7 +226,7 @@ public class ResumeUtilAliy {
     /**
      * 获取候选人的基本信息
      */
-    public static void getCandidatesBasic(Candidates candidates,ResumeInfo info){
+    public static void getCandidatesBasic(CandidatesWithBLOBs candidates, ResumeInfo info){
         // 姓名
         candidates.setUsername(info.getName());
         // 性别
@@ -231,11 +236,13 @@ public class ResumeUtilAliy {
         // 年龄
         candidates.setAge(NumberUtils.toInt(info.getAge(),0));
         // 工作年限 当前时间-参加工作的时间 例如：2000-09
-        String begin = info.getBeginworktime();
+        /*String begin = info.getBeginworktime();
         if(StringUtils.isNotEmpty(begin)){
             Date beginDate = QuickTimeUtil.stringParseDate(begin,"yyyy-MM");
             candidates.setWorkyears(QuickTimeUtil.getDateBetweenYear(new Date(),beginDate));
-        }
+        }*/
+        // 工作年限
+        candidates.setWorkyears(NumberUtils.toInt(info.getExperience() , 0));
         // 所在地
         candidates.setLivebase(info.getAddress());
         // 学历
@@ -243,7 +250,7 @@ public class ResumeUtilAliy {
         // 毕业学校
         candidates.setEdu1(info.getSchool());
         // 工作状态
-        //candidates.setWorksate();
+        candidates.setWorkbase(info.getSwitch());
         // 婚姻状态
         candidates.setMarried(info.getMarried());
         // 期望工作
@@ -292,6 +299,86 @@ public class ResumeUtilAliy {
         candidates.setPerprofile(info.getPersonal());
         // 专业技能
         candidates.setPersonaliy(info.getSkill());
+        // 学历
+        candidates.setEducations(info.getEducation());
+        // 专业
+
+        // 籍贯
+        candidates.setJiguan(info.getJiguan());
+        // 统招/自考
+        candidates.setStudenttype(info.getStudentType());
+        // 现从事行业
+        candidates.setVocation(info.getVocation());
+        // 期望从事行业
+        candidates.setForwordvocation(info.getForwardVocation());
+        // 目前薪水
+        candidates.setNowsalary(info.getSalary());
+        // 期望薪水
+        candidates.setAimsalary(info.getAimSalary());
+        // 教育经历所有信息
+        candidates.setEducationdetail(info.getEducationDetail());
+        // 工作经历全部内容
+        candidates.setExperiencedetail(info.getExperienceDetail());
+        // 培训情况
+        candidates.setTraining(info.getTraining());
+        // 个人技能
+        candidates.setSkill(info.getSkill());
+        // 政治面貌
+        candidates.setPolitical(info.getPolitical());
+        // 到岗时间
+        candidates.setStartfrom(info.getStartFrom());
+        // qq 号
+        candidates.setQq(info.getQQ());
+        // 所受奖励
+        candidates.setEncouragement(info.getEncouragement());
+        // 社团活动
+        candidates.setTeam(info.getTeam());
+        // 志愿者
+        candidates.setVolunteer(info.getVolunteer());
+        // 毕业时间
+        candidates.setGraduatetime(info.getGraduatetime());
+        // 开始工作时间
+        candidates.setBeginworktime(info.getBeginworktime());
+        // 所学课程
+        candidates.setLesson(info.getLesson());
+        // 计算机水平
+        candidates.setComputer(info.getComputer());
+        // 学校排名
+        candidates.setSchoolrankings(info.getSchoolRankings());
+        // 学校类型
+        candidates.setSchooltype(info.getSchoolType());
+        // 邮编
+        candidates.setPostcode(info.getPostCode());
+        // 专业
+        candidates.setSpeciality(info.getSpeciality());
+        // 通信地址
+        candidates.setAddress(info.getAddress());
+        // 名族
+        candidates.setNotional(info.getNational());
+        // 国籍
+        candidates.setNationality(info.getNationality());
+        // 个人主页
+        candidates.setHref(info.getHref());
+        // 身高
+        candidates.setHigh(info.getHigh());
+        // 体重
+        candidates.setTizhong(info.getWeight());
+        // 最高学位
+        candidates.setAdvanceddegree(info.getAdvancedDegree());
+        // 是否处于找工作状态
+        candidates.setIsjobsearch(info.getSwitch());
+        // 是有有海外工作经历
+        candidates.setOverseaswork(info.getOverseasWork());
+        // 跳槽频率
+        candidates.setJobhoppingfrequency(info.getJobHoppingFrequency());
+        // 工作类型
+        candidates.setWorktype(info.getWorkType());
+        // 微信号
+        candidates.setWebchat(info.getWebChat());
+        // 兴趣爱好
+        candidates.setPersonalinterests(info.getPersonalInterests());
+        // 英语
+        candidates.setEnglish(info.getEnglish());
     }
 
     /**
@@ -317,6 +404,38 @@ public class ResumeUtilAliy {
             }
         }
         return null;
+    }
+
+    /**
+     *  根据传入的 时间 查询出在次时间范围内的项目信息
+     * @param start  公司入职时间
+     * @param end    公司离职时间
+     * @param info
+     * @return
+     */
+    public static String getCandidatesProjectInfo (Date start , Date end ,ResumeInfo info) {
+        ProjectInfo[] projects = info.ProjectInfo;
+        StringBuilder sb = new StringBuilder();
+
+        if( projects != null && projects.length > 0){
+            for (ProjectInfo p : projects) {
+                // 项目的 起始时间
+                Date startDate = QuickTimeUtil.stringParseDate(p.getStartDate(),"yyyy-MM");
+
+                if ( !startDate.before(start) &&  ( end == null || !startDate.after(end) )) {
+                    sb.append(Constants.LF1);
+                    sb.append(p.getStartDate() + "  " + p.getEndDate() );
+                    sb.append(Constants.LF1);
+                    sb.append( p.getProjectName() ) ;
+                    sb.append(Constants.LF1);
+                    sb.append("项目简介:" + p.getProjectDescription() );
+                    sb.append(Constants.LF1);
+                    sb.append("个人职责:" + p.getResponsibilities() );
+                    sb.append(Constants.LF1);
+                }
+            }
+        }
+        return sb.toString();
     }
 
     public static void main(String[] args) {

@@ -3,13 +3,12 @@ package com.hrbc.business.controller;
 import cn.afterturn.easypoi.entity.ImageEntity;
 import cn.afterturn.easypoi.word.WordExportUtil;
 import com.hrbc.business.common.Constants;
-import com.hrbc.business.common.ResumeUtil;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Candidates;
+import com.hrbc.business.domain.CandidatesWithBLOBs;
 import com.hrbc.business.service.CandidatesService;
 import com.hrbc.business.util.QuickTimeUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -45,7 +44,7 @@ public class ResumeController {
     @RequestMapping("/exportWordFromTemplate/{id}")
     public void exportWordFromTemplate(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response){
         // 根据 候选人编号 获取相关的信息
-        Candidates candidates = candidatesService.get(id);
+        CandidatesWithBLOBs candidates = candidatesService.getWithBLOBs(id);
         if (StringUtils.isEmpty(candidates.getWorkbase())) {
             candidates.setWorkbase("不详");
         }
@@ -96,7 +95,7 @@ public class ResumeController {
      * 获取候选人的教育经历
      * @return
      */
-    public String getCandidateEdu(Candidates candidates){
+    public String getCandidateEdu(CandidatesWithBLOBs candidates){
         StringBuilder edu = new StringBuilder();
         if(! StringUtils.isEmpty(candidates.getEducations())){
             edu.append("最高学历:"+candidates.getEducations() + Constants.LF1);

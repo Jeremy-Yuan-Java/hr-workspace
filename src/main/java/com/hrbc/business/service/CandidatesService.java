@@ -9,6 +9,9 @@ import com.hrbc.business.domain.common.PageResultDTO;
 import java.util.List;
 
 public interface CandidatesService {
+
+    public CandidatesWithBLOBs getWithBLOBs(Integer id);
+
     public Candidates get(Integer id);
 
     public int save(CandidatesWithBLOBs entity);

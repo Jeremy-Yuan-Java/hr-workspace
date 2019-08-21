@@ -1,6 +1,5 @@
 package com.hrbc.business.controller;
 
-import com.hrbc.business.common.ResumeUtil;
 import com.hrbc.business.common.ResumeUtilAliy;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Candidates;
@@ -10,7 +9,6 @@ import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.mapper.CandidatesMapper;
 import com.hrbc.business.service.CandidatesService;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -37,8 +35,8 @@ public class CandidatesController {
     private CandidatesMapper mapper;
 
     @GetMapping("get/{id}")
-    public Candidates get(@PathVariable Integer id) {
-        return service.get(id);
+    public CandidatesWithBLOBs get(@PathVariable Integer id) {
+        return service.getWithBLOBs(id);
     }
 
     @PostMapping("save")

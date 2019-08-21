@@ -26,9 +26,16 @@ public class CandidatesServiceImpl implements CandidatesService {
     private CandidatesMapper mapper;
 
     @Override
+    public CandidatesWithBLOBs getWithBLOBs(Integer id) {
+        return mapper.selectByPrimaryKey(id);
+    }
+
+    @Override
     public Candidates get(Integer id) {
         return mapper.selectByPrimaryKey(id);
     }
+
+
 
     @Override
     @ProcessLog(businessName = "候选人管理",methodName = "save")
@@ -177,7 +184,7 @@ public class CandidatesServiceImpl implements CandidatesService {
     public PageResultDTO loadPage(PageQueryParamDTO params) {
 
         long count = 0;
-        List<Candidates> list = null;
+        List<CandidatesWithBLOBs> list = null;
         int page = 1;
         int size = 10;
         if (params != null) {
@@ -187,7 +194,7 @@ public class CandidatesServiceImpl implements CandidatesService {
             if (params.getSize() >= 0) {
                 size = params.getSize();
             }
-            Candidates dto = null;
+            CandidatesWithBLOBs dto = null;
             CandidatesExample example = new CandidatesExample();
             if (!StringUtils.isEmpty(params.getOrderby())) {
                 example.setOrderByClause(params.getOrderby());
@@ -197,7 +204,7 @@ public class CandidatesServiceImpl implements CandidatesService {
                 Date createtimest = params.getQuery().getDate("createtimest");
                 Date createtimeed = params.getQuery().getDate("createtimeed");
 
-                dto = JSONObject.toJavaObject(params.getQuery(), Candidates.class);
+                dto = JSONObject.toJavaObject(params.getQuery(), CandidatesWithBLOBs.class);
                 example.createCriteria();
                 if (dto.getDelflag() == null) {
                     example.getOredCriteria().get(0).andDelflagEqualTo(DelFlagE.NO.code);
@@ -230,9 +237,9 @@ public class CandidatesServiceImpl implements CandidatesService {
                 if (!StringUtils.isEmpty(dto.getEdu1())) {
                     example.getOredCriteria().get(0).andJobtitleLike("%" + dto.getEdu1() + "%");
                 }
-                if (!StringUtils.isEmpty(dto.getFulltexts())) {
+               /* if (!StringUtils.isEmpty(dto.getFulltexts())) {
                     example.getOredCriteria().get(0).andFulltextsLike("%" + dto.getFulltexts() + "%");
-                }
+                }*/
 
                 if (!StringUtils.isEmpty(dto.getWorkyears())) {
                     example.getOredCriteria().get(0).andWorkyearsGreaterThan(dto.getWorkyears());
@@ -253,7 +260,8 @@ public class CandidatesServiceImpl implements CandidatesService {
             if (count > 0) {
                 example.setOffset((page - 1) * size);
                 example.setLimit(size);
-                list = mapper.selectByExample(example);
+                list = mapper.selectByExampleWithBLOBs(example);
+
                 list.forEach(s -> {
                     if (!StringUtils.isEmpty(s.getPicpath())) {
 

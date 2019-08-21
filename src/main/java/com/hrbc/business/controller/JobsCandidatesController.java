@@ -1,7 +1,6 @@
 package com.hrbc.business.controller;
 
 import com.hrbc.business.conf.PathConf;
-import com.hrbc.business.domain.CandidatesWithBLOBs;
 import com.hrbc.business.domain.JobsCandidates;
 import com.hrbc.business.domain.JobsCandidatesState;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
@@ -10,7 +9,6 @@ import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.service.JobsCandidatesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,25 +1,5 @@
 package com.hrbc.business.common;
 
-import com.alibaba.fastjson.JSONObject;
-import com.hrbc.business.domain.CandidatesWithBLOBs;
-import com.hrbc.business.domain.onlinecv.*;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.time.DateUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * 集成第三方简历解析,该接口收费
  */
