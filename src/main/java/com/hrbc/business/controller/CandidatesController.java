@@ -176,6 +176,7 @@ public class CandidatesController {
                 // 解析 简历
                 ResumeUtilAliy.parseResume(in,candidates,suffixName);
 
+
                 //mapper.insertSelective(candidates);
                 int flag = service.save(candidates);
                 if ( flag == -3) {
