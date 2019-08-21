@@ -34,7 +34,7 @@ public class ResumeUtilAliy {
     static String host = "http://jljxjk.market.alicloudapi.com";
     static String path = "/aliyunapp/aliyunservice.aspx";
     static String method = "POST";
-   // static String appcode = "192a6811b5a4458f9402da3b0c3b9aa5";
+   //  static String appcode = "192a6811b5a4458f9402da3b0c3b9aa5";
     static String appcode = "99a909a55532473aa7dfb80e435060ac";
 
     /**
