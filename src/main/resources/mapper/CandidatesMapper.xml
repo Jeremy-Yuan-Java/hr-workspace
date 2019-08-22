@@ -125,6 +125,8 @@
     <result column="skill" jdbcType="LONGVARCHAR" property="skill" />
     <result column="team" jdbcType="LONGVARCHAR" property="team" />
     <result column="volunteer" jdbcType="LONGVARCHAR" property="volunteer" />
+    <result column="projectdetails1" jdbcType="LONGVARCHAR" property="projectdetails1" />
+    <result column="projectdetails2" jdbcType="LONGVARCHAR" property="projectdetails2" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -203,7 +205,7 @@
     resumedetail, resumedetail1, resumedetail2, certifications, educations, workexperiences, 
     perprofile, work1desc, work1projs, work2desc, work2projs, work3desc, work3projs, 
     work4projs, fulltexts, educationdetail, experiencedetail, training, skill, team, 
-    volunteer
+    volunteer, projectdetails1, projectdetails2
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.hrbc.business.domain.CandidatesExample" resultMap="ResultMapWithBLOBs">
     select
@@ -305,7 +307,8 @@
       work2projs, work3desc, work3projs, 
       work4projs, fulltexts, educationdetail, 
       experiencedetail, training, skill, 
-      team, volunteer)
+      team, volunteer, projectdetails1, 
+      projectdetails2)
     values (#{username,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{emailbak,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
       #{picpath,jdbcType=VARCHAR}, #{postcard,jdbcType=VARCHAR}, #{jobtitle,jdbcType=VARCHAR}, 
@@ -346,7 +349,8 @@
       #{work2projs,jdbcType=LONGVARCHAR}, #{work3desc,jdbcType=LONGVARCHAR}, #{work3projs,jdbcType=LONGVARCHAR}, 
       #{work4projs,jdbcType=LONGVARCHAR}, #{fulltexts,jdbcType=LONGVARCHAR}, #{educationdetail,jdbcType=LONGVARCHAR}, 
       #{experiencedetail,jdbcType=LONGVARCHAR}, #{training,jdbcType=LONGVARCHAR}, #{skill,jdbcType=LONGVARCHAR}, 
-      #{team,jdbcType=LONGVARCHAR}, #{volunteer,jdbcType=LONGVARCHAR})
+      #{team,jdbcType=LONGVARCHAR}, #{volunteer,jdbcType=LONGVARCHAR}, #{projectdetails1,jdbcType=LONGVARCHAR}, 
+      #{projectdetails2,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -714,6 +718,12 @@
       <if test="volunteer != null">
         volunteer,
       </if>
+      <if test="projectdetails1 != null">
+        projectdetails1,
+      </if>
+      <if test="projectdetails2 != null">
+        projectdetails2,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="username != null">
@@ -1075,6 +1085,12 @@
       </if>
       <if test="volunteer != null">
         #{volunteer,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="projectdetails1 != null">
+        #{projectdetails1,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="projectdetails2 != null">
+        #{projectdetails2,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -1450,6 +1466,12 @@
       <if test="record.volunteer != null">
         volunteer = #{record.volunteer,jdbcType=LONGVARCHAR},
       </if>
+      <if test="record.projectdetails1 != null">
+        projectdetails1 = #{record.projectdetails1,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.projectdetails2 != null">
+        projectdetails2 = #{record.projectdetails2,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -1577,7 +1599,9 @@
       training = #{record.training,jdbcType=LONGVARCHAR},
       skill = #{record.skill,jdbcType=LONGVARCHAR},
       team = #{record.team,jdbcType=LONGVARCHAR},
-      volunteer = #{record.volunteer,jdbcType=LONGVARCHAR}
+      volunteer = #{record.volunteer,jdbcType=LONGVARCHAR},
+      projectdetails1 = #{record.projectdetails1,jdbcType=LONGVARCHAR},
+      projectdetails2 = #{record.projectdetails2,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -2051,6 +2075,12 @@
       <if test="volunteer != null">
         volunteer = #{volunteer,jdbcType=LONGVARCHAR},
       </if>
+      <if test="projectdetails1 != null">
+        projectdetails1 = #{projectdetails1,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="projectdetails2 != null">
+        projectdetails2 = #{projectdetails2,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -2175,7 +2205,9 @@
       training = #{training,jdbcType=LONGVARCHAR},
       skill = #{skill,jdbcType=LONGVARCHAR},
       team = #{team,jdbcType=LONGVARCHAR},
-      volunteer = #{volunteer,jdbcType=LONGVARCHAR}
+      volunteer = #{volunteer,jdbcType=LONGVARCHAR},
+      projectdetails1 = #{projectdetails1,jdbcType=LONGVARCHAR},
+      projectdetails2 = #{projectdetails2,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.Candidates">
@@ -2402,7 +2434,9 @@
     training,
     skill,
     team,
-    volunteer
+    volunteer,
+    projectdetails1,
+    projectdetails2
     )
     values
     <foreach collection="recordList" index="index" item="item" separator=",">
@@ -2526,7 +2560,9 @@
       #{item.training,jdbcType=LONGVARCHAR},
       #{item.skill,jdbcType=LONGVARCHAR},
       #{item.team,jdbcType=LONGVARCHAR},
-      #{item.volunteer,jdbcType=LONGVARCHAR}
+      #{item.volunteer,jdbcType=LONGVARCHAR},
+      #{item.projectdetails1,jdbcType=LONGVARCHAR},
+      #{item.projectdetails2,jdbcType=LONGVARCHAR}
       )
     </foreach>
   </insert>

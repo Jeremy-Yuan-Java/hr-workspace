@@ -63,6 +63,9 @@ public class ResumeController {
         if ( StringUtils.isEmpty(candidates.getEducationdetail())) {
             candidates.setExperiencedetail("未知");
         }
+        if (StringUtils.isEmpty(candidates.getJiguan())){
+            candidates.setJiguan("未知");
+        }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("candidates",candidates);
         map.put("now", new Date());
@@ -116,7 +119,11 @@ public class ResumeController {
      */
     public static String getCandidatesProject(CandidatesWithBLOBs candidates){
         StringBuilder sb = new StringBuilder();
-        String work1projs = candidates.getWork1projs();
+        String projects = candidates.getProjectdetails2().replace("<br/>",Constants.LF1);
+        projects = projects.replace("<b>","");
+        projects = projects.replace("</b>" , "");
+        sb.append(projects.replace("\u2500",Constants.LF1));
+       /* String work1projs = candidates.getWork1projs();
         if ( StringUtils.isNotEmpty(work1projs)) {
             sb.append(work1projs) ;
             sb.append(Constants.LF1) ;
@@ -135,7 +142,7 @@ public class ResumeController {
         if ( StringUtils.isNotEmpty(work4projs)) {
             sb.append(work4projs) ;
             sb.append(Constants.LF1) ;
-        }
+        }*/
         return sb.toString()+" ";
     }
 
@@ -151,7 +158,8 @@ public class ResumeController {
         if(!StringUtils.isEmpty(candidates.getWork1())){
             work.append(QuickTimeUtil.dateParseString(candidates.getWork1stdate(),"yyyy.MM"));
             work.append(" - ");
-            work.append(QuickTimeUtil.dateParseString(candidates.getWork1eddate(),"yyyy.MM"));
+            String endDate = QuickTimeUtil.dateParseString(candidates.getWork1eddate(),"yyyy.MM");
+            work.append(endDate == null?"至今":endDate);
             work.append(" ");
             work.append(candidates.getWork1());
             work.append(" ");

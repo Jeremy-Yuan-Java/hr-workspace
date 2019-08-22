@@ -80,14 +80,39 @@ public class ResumeUtilAliy {
         if(info != null){
             /*** 获取基本信息 ***/
             getCandidatesBasic(candidates,info);
-
-            /********** 获取工作经历 **********/
+            /*** 获取工作经历 ***/
             getCandidatesJobs(candidates,info);
+            /*** 获取项目经历 ***/
+            getCandidatesProjects(candidates,info);
             /*** 获取教育经历 ***/
             getCandidatesEdu(candidates,info);
             String json = JSONObject.toJSON(info).toString();
             /** 最后将整个 简历解析的内容以 JSON 格式 存储到字段中 **/
             candidates.setResumedetail(json.getBytes());
+        }
+    }
+
+    /**
+     * 获取候选人的项目经历
+     * @param candidates
+     * @param info
+     */
+    public static void getCandidatesProjects(CandidatesWithBLOBs candidates ,ResumeInfo info){
+        // 设置 候选人的所有的项目信息
+        candidates.setProjectdetails1(info.getProject());
+        // 获取候选人的每条 项目经历
+        ProjectInfo[] projectInfos = info.getProjectInfo();
+        StringBuilder sb = new StringBuilder();
+        if (projectInfos != null && projectInfos.length > 0) {
+            for (ProjectInfo pi: projectInfos ) {
+                sb.append( pi.getStartDate() + " " + pi.getEndDate() + "<br/>");
+                sb.append( "<b>项目名称</b>:" + pi.getProjectName() + "<br/>" );
+                sb.append( "<b>项目描述</b>:" + pi.getProjectDescription() + "<br/>" );
+                sb.append( "<b>个人职责</b>:" + pi.getResponsibilities() + "<br/>");
+                // 项目与项目间分割
+                sb.append( Constants.DECOLLATOR);
+            }
+            candidates.setProjectdetails2(sb.toString());
         }
     }
 
@@ -163,9 +188,11 @@ public class ResumeUtilAliy {
 
                     // 工作描述
                     candidates.setWork1desc(ei.getSummary());
-
                     // 项目描述
-                    candidates.setWork1projs(getCandidatesProjectInfo(startDate,endDate,info));
+                    /*if (startDate != null) {
+                        candidates.setWork1projs(getCandidatesProjectInfo(startDate,endDate,info));
+                    }*/
+
                 }
 
                 if( i == 1){
@@ -182,8 +209,9 @@ public class ResumeUtilAliy {
                     // 工作描述
                     candidates.setWork2desc(ei.getSummary());
                     // 项目描述
-                    candidates.setWork2projs(getCandidatesProjectInfo(startDate,endDate,info));
-
+                    /*if ( startDate != null) {
+                        candidates.setWork2projs(getCandidatesProjectInfo(startDate,endDate,info));
+                    }*/
                 }
                 if( i == 2){
                     // 公司名称
@@ -199,7 +227,10 @@ public class ResumeUtilAliy {
                     // 工作描述
                     candidates.setWork3desc(ei.getSummary());
                     // 项目描述
-                    candidates.setWork3projs(getCandidatesProjectInfo(startDate,endDate,info));
+                    /*if ( startDate != null) {
+                        candidates.setWork3projs(getCandidatesProjectInfo(startDate,endDate,info));
+                    }*/
+
 
                 }
                 if( i == 3){
@@ -216,8 +247,9 @@ public class ResumeUtilAliy {
                     // 工作描述
                     candidates.setWork4desc(ei.getSummary());
                     // 项目描述
-                    candidates.setWork4projs(getCandidatesProjectInfo(startDate,endDate,info));
-                    break;
+                    /*if (startDate != null) {
+                        candidates.setWork4projs(getCandidatesProjectInfo(startDate,endDate,info));
+                    }*/
                 }
             }
         }
@@ -235,12 +267,7 @@ public class ResumeUtilAliy {
         candidates.setIdcard(info.getIDNO());
         // 年龄
         candidates.setAge(NumberUtils.toInt(info.getAge(),0));
-        // 工作年限 当前时间-参加工作的时间 例如：2000-09
-        /*String begin = info.getBeginworktime();
-        if(StringUtils.isNotEmpty(begin)){
-            Date beginDate = QuickTimeUtil.stringParseDate(begin,"yyyy-MM");
-            candidates.setWorkyears(QuickTimeUtil.getDateBetweenYear(new Date(),beginDate));
-        }*/
+
         // 工作年限
         candidates.setWorkyears(NumberUtils.toInt(info.getExperience() , 0));
         // 所在地
@@ -421,6 +448,9 @@ public class ResumeUtilAliy {
             for (ProjectInfo p : projects) {
                 // 项目的 起始时间
                 Date startDate = QuickTimeUtil.stringParseDate(p.getStartDate(),"yyyy-MM");
+                if (startDate == null) {
+                    continue;
+                }
 
                 if ( !startDate.before(start) &&  ( end == null || !startDate.after(end) )) {
                     sb.append(Constants.LF1);

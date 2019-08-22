@@ -38,8 +38,10 @@ public class Constants {
     public static final String USER_AGENT = "demo/aliyun/java";
     //换行符
     public static final String LF = "\n";
-
+    //  跨系统换行符
     public static final String LF1 = System.getProperty("line.separator");
+    // 项目分隔符
+    public static final String DECOLLATOR = "\u2500";
     //串联符
     public static final String SPE1 = ",";
     //示意符

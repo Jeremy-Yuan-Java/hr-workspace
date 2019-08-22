@@ -110,7 +110,7 @@ public class CandidatesController {
                 try {
                     Files.delete(dest.toPath());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                 }
             }
             try {

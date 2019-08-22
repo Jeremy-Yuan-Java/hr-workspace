@@ -43,6 +43,10 @@ public class CandidatesWithBLOBs extends Candidates {
 
     private String volunteer;
 
+    private String projectdetails1;
+
+    private String projectdetails2;
+
     public byte[] getResumedetail() {
         return resumedetail;
     }
@@ -209,5 +213,21 @@ public class CandidatesWithBLOBs extends Candidates {
 
     public void setVolunteer(String volunteer) {
         this.volunteer = volunteer == null ? null : volunteer.trim();
+    }
+
+    public String getProjectdetails1() {
+        return projectdetails1;
+    }
+
+    public void setProjectdetails1(String projectdetails1) {
+        this.projectdetails1 = projectdetails1 == null ? null : projectdetails1.trim();
+    }
+
+    public String getProjectdetails2() {
+        return projectdetails2;
+    }
+
+    public void setProjectdetails2(String projectdetails2) {
+        this.projectdetails2 = projectdetails2 == null ? null : projectdetails2.trim();
     }
 }
