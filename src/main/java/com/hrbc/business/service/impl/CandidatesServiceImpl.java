@@ -66,6 +66,9 @@ public class CandidatesServiceImpl implements CandidatesService {
     }
 
     private boolean checkPhoneNo(CandidatesWithBLOBs candidates ,int op ){
+        if(org.apache.commons.lang3.StringUtils.isBlank(candidates.getPhoneno())){
+            return false;
+        }
         //1 代表新增 2代表编辑
         CandidatesExample candidatesExample = new CandidatesExample();
         candidatesExample.createCriteria().andPhonenoEqualTo(candidates.getPhoneno()).andDelflagEqualTo(DelFlagE.NO.code);
