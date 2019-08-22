@@ -66,7 +66,7 @@ public class CandidatesServiceImpl implements CandidatesService {
     }
 
     private boolean checkPhoneNo(CandidatesWithBLOBs candidates ,int op ){
-        if(StringUtils.isEmpty(candidates.getPhoneno())){
+        if(org.apache.commons.lang3.StringUtils.isBlank(candidates.getPhoneno())){
             return false;
         }
         //1 代表新增 2代表编辑
