@@ -244,7 +244,7 @@ public class ResumeUtilAliy {
         // 工作年限
         candidates.setWorkyears(NumberUtils.toInt(info.getExperience() , 0));
         // 所在地
-        candidates.setLivebase(info.getAddress());
+        candidates.setLivebase(info.getNowLocation());
         // 学历
         candidates.setDegree(info.getEducation());
         // 毕业学校

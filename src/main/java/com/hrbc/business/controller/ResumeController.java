@@ -46,10 +46,22 @@ public class ResumeController {
         // 根据 候选人编号 获取相关的信息
         CandidatesWithBLOBs candidates = candidatesService.getWithBLOBs(id);
         if (StringUtils.isEmpty(candidates.getWorkbase())) {
-            candidates.setWorkbase("不详");
+            candidates.setWorkbase("未知");
         }
         if (StringUtils.isEmpty(candidates.getLivebase())) {
-            candidates.setLivebase("不详");
+            candidates.setLivebase("未知");
+        }
+        if ( StringUtils.isEmpty( candidates.getNowsalary())) {
+            candidates.setNowsalary("未知");
+        }
+        if ( StringUtils.isEmpty( candidates.getAimsalary())) {
+            candidates.setAimsalary("未知");
+        }
+        if ( StringUtils.isEmpty(candidates.getStartfrom())) {
+            candidates.setStartfrom("未知");
+        }
+        if ( StringUtils.isEmpty(candidates.getEducationdetail())) {
+            candidates.setExperiencedetail("未知");
         }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("candidates",candidates);
@@ -57,75 +69,77 @@ public class ResumeController {
         String work = getWorkInfo(candidates);
         // 保存工作经历
         map.put("work",work);
-        // 保存教育经历
-        map.put("edu",getCandidateEdu(candidates));
+
         // 保存工作经历  逐条
         map.put("wd",getWorkDedatilInfo(candidates));
+        // 获取项目经历
+        map.put("projects",getCandidatesProject(candidates));
 
-        ImageEntity image = new ImageEntity();
-        image.setHeight(200);
-        image.setWidth(200);
-        image.setUrl(PathConf.getSavePathPic() + candidates.getPicpath());
-        image.setType(ImageEntity.URL);
-        map.put("imgCode", image);
+        String imgPath = candidates.getPicpath();
+        if (StringUtils.isNotEmpty(imgPath)) {
+            ImageEntity image = new ImageEntity();
+            image.setHeight(200);
+            image.setWidth(200);
+            image.setUrl(PathConf.getSavePathPic() + candidates.getPicpath());
+            image.setType(ImageEntity.URL);
+            map.put("imgCode", image);
+        }
+
         try {
             //InputStream in = new FileInputStream("doc/ytmb1.docx");
             ClassPathResource resource = new ClassPathResource("doc" + File.separator + "ytmb.docx");
             // 获取文件流
-            InputStream inputStream = resource.getInputStream();
+            // InputStream inputStream = resource.getInputStream();
             // 获取文件
             File file = resource.getFile();
-
-            XWPFDocument doc = WordExportUtil.exportWord07(file.getPath(), map);
-           // FileOutputStream fos = new FileOutputStream("c:/tools/2.docx");
-            //设置响应头和客户端保存文件名
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("multipart/form-data");
-            response.setHeader("Content-Disposition", "attachment;fileName=" + candidates.getUsername() + "的简历报告.docx" );
-            response.setHeader("fileName",candidates.getUsername() + "的简历报告.docx");
-            ServletOutputStream out = response.getOutputStream();
-            doc.write(out);
-            out.close();
+            if ( file.exists()) {
+                XWPFDocument doc = WordExportUtil.exportWord07(file.getPath(), map);
+                // FileOutputStream fos = new FileOutputStream("c:/tools/2.docx");
+                //设置响应头和客户端保存文件名
+                response.setCharacterEncoding("utf-8");
+                response.setContentType("multipart/form-data");
+                response.setHeader("Content-Disposition", "attachment;fileName=" + candidates.getUsername() + "的简历报告.docx" );
+                response.setHeader("fileName",candidates.getUsername() + "的简历报告.docx");
+                ServletOutputStream out = response.getOutputStream();
+                doc.write(out);
+                out.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 获取候选人的教育经历
+     * 获取候选人的项目经历
+     * @param candidates
      * @return
      */
-    public String getCandidateEdu(CandidatesWithBLOBs candidates){
-        StringBuilder edu = new StringBuilder();
-        if(! StringUtils.isEmpty(candidates.getEducations())){
-            edu.append("最高学历:"+candidates.getEducations() + Constants.LF1);
+    public static String getCandidatesProject(CandidatesWithBLOBs candidates){
+        StringBuilder sb = new StringBuilder();
+        String work1projs = candidates.getWork1projs();
+        if ( StringUtils.isNotEmpty(work1projs)) {
+            sb.append(work1projs) ;
+            sb.append(Constants.LF1) ;
         }
-        if ( !StringUtils.isEmpty(candidates.getEdu1())) {
-            edu.append(candidates.getEdu1());
-            edu.append(" ( ");
-            edu.append(QuickTimeUtil.dateParseString(candidates.getEdu1stdate(),"yyyy.MM"));
-            edu.append(" - ");
-            edu.append(QuickTimeUtil.dateParseString(candidates.getEdu1eddate(),"yyyy.MM"));
-            edu.append(" ) "+Constants.LF1);
+        String work2projs = candidates.getWork2projs();
+        if ( StringUtils.isNotEmpty(work2projs)) {
+            sb.append(work2projs) ;
+            sb.append(Constants.LF1) ;
         }
-        if ( !StringUtils.isEmpty(candidates.getEdu2())) {
-            edu.append(candidates.getEdu2());
-            edu.append(" ( ");
-            edu.append(QuickTimeUtil.dateParseString(candidates.getEdu2stdate(),"yyyy.MM"));
-            edu.append(" - ");
-            edu.append(QuickTimeUtil.dateParseString(candidates.getEdu2eddate(),"yyyy.MM"));
-            edu.append(" ) "+Constants.LF1);
+        String work3projs = candidates.getWork3projs();
+        if ( StringUtils.isNotEmpty(work3projs)) {
+            sb.append(work3projs) ;
+            sb.append(Constants.LF1) ;
         }
-        if ( !StringUtils.isEmpty(candidates.getEdu3())) {
-            edu.append(candidates.getEdu3());
-            edu.append(" ( ");
-            edu.append(QuickTimeUtil.dateParseString(candidates.getEdu3stdate(),"yyyy.MM"));
-            edu.append(" - ");
-            edu.append(QuickTimeUtil.dateParseString(candidates.getEdu3eddate(),"yyyy.MM"));
-            edu.append(" ) "+Constants.LF1);
+        String work4projs = candidates.getWork4projs();
+        if ( StringUtils.isNotEmpty(work4projs)) {
+            sb.append(work4projs) ;
+            sb.append(Constants.LF1) ;
         }
-        return edu.toString() + " ";
+        return sb.toString()+" ";
     }
+
+
 
     /**
      * 获取候选人的工作经历
