@@ -10,8 +10,9 @@ import com.hrbc.business.service.CandidatesService;
 import com.hrbc.business.util.QuickTimeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +39,7 @@ public class ResumeController {
     @Autowired
     private CandidatesService candidatesService;
 
+    public static final Logger logger = LoggerFactory.getLogger(ResumeController.class);
 
     @RequestMapping("/exportWordFromTemplate/{id}")
     public void exportWordFromTemplate(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response){
@@ -86,27 +86,20 @@ public class ResumeController {
             image.setUrl(PathConf.getSavePathPic() + candidates.getPicpath());
             image.setType(ImageEntity.URL);
             map.put("imgCode", image);
+        }else {
+            map.put("imgCode", "未上传");
         }
-
         try {
-            //InputStream in = new FileInputStream("doc/ytmb1.docx");
-            ClassPathResource resource = new ClassPathResource("doc" + File.separator + "ytmb.docx");
-            // 获取文件流
-            // InputStream inputStream = resource.getInputStream();
-            // 获取文件
-            File file = resource.getFile();
-            if ( file.exists()) {
-                XWPFDocument doc = WordExportUtil.exportWord07(file.getPath(), map);
-                // FileOutputStream fos = new FileOutputStream("c:/tools/2.docx");
-                //设置响应头和客户端保存文件名
-                response.setCharacterEncoding("utf-8");
-                response.setContentType("multipart/form-data");
-                response.setHeader("Content-Disposition", "attachment;fileName=" + candidates.getUsername() + "的简历报告.docx" );
-                response.setHeader("fileName",candidates.getUsername() + "的简历报告.docx");
-                ServletOutputStream out = response.getOutputStream();
-                doc.write(out);
-                out.close();
-            }
+            XWPFDocument doc = WordExportUtil.exportWord07(PathConf.getResumeReportPath() + "ytmb.docx", map);
+            //设置响应头和客户端保存文件名
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("multipart/form-data");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + candidates.getUsername() + "的简历报告.docx" );
+            response.setHeader("fileName",candidates.getUsername() + "的简历报告.docx");
+            ServletOutputStream out = response.getOutputStream();
+            doc.write(out);
+            doc.close();
+            out.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -203,7 +196,7 @@ public class ResumeController {
      * @param candidates
      * @return
      */
-    public Map<String,Object> getWorkDedatilInfo(Candidates candidates){
+    public Map<String,Object> getWorkDedatilInfo(CandidatesWithBLOBs candidates){
         Map<String,Object> map = new HashMap<>();
         map.put("work1"," ");
         map.put("work1Info"," ");
@@ -225,7 +218,7 @@ public class ResumeController {
             map.put("work1",work1.toString());
             // 公司介绍： 汇报对象：  下属人数：工作职责： 求职原因：
 
-            map.put("work1Info",getCommonInfo());
+            map.put("work1Info",getCommonInfo(candidates,1));
         }
 
         if(!StringUtils.isEmpty(candidates.getWork2())){
@@ -239,7 +232,7 @@ public class ResumeController {
             work2.append(candidates.getWork2jobtitle()) ;
             map.put("work2",work2.toString());
             // 公司介绍： 汇报对象：  下属人数：工作职责： 求职原因：
-            map.put("work2Info",getCommonInfo());
+            map.put("work2Info",getCommonInfo(candidates,2));
         }
 
         if(!StringUtils.isEmpty(candidates.getWork3())){
@@ -253,7 +246,7 @@ public class ResumeController {
             work3.append(candidates.getWork3jobtitle()) ;
             map.put("work3",work3.toString());
             // 公司介绍： 汇报对象：  下属人数：工作职责： 求职原因：
-            map.put("work3Info",getCommonInfo());
+            map.put("work3Info",getCommonInfo(candidates,3));
         }
         if(!StringUtils.isEmpty(candidates.getWork4())){
             // 时间  公司名称  职位
@@ -267,17 +260,44 @@ public class ResumeController {
             work4.append(Constants.LF1);
             map.put("work4",work4.toString());
             // 公司介绍： 汇报对象：  下属人数：工作职责： 求职原因：
-            map.put("work4Info",getCommonInfo());
+            map.put("work4Info",getCommonInfo(candidates,4));
         }
         return map;
     }
 
-    public String getCommonInfo(){
+    public String getCommonInfo(CandidatesWithBLOBs candidates,Integer i){
         StringBuilder work1Info = new StringBuilder();
         work1Info.append("公司介绍：" + Constants.LF1 );
         work1Info.append("汇报对象：" + Constants.LF1 );
         work1Info.append("下属人数：" + Constants.LF1 );
-        work1Info.append("工作职责：" + Constants.LF1 );
+        if ( i == 1){
+            work1Info.append("工作职责：");
+            work1Info.append(Constants.LF1);
+            work1Info.append("  ");// 行开始空格
+            work1Info.append(candidates.getWork1desc());
+            work1Info.append(Constants.LF1);
+        }
+        if ( i == 2){
+            work1Info.append("工作职责：" );
+            work1Info.append(Constants.LF1);
+            work1Info.append("  ");// 行开始空格
+            work1Info.append(candidates.getWork2desc());
+            work1Info.append(Constants.LF1);
+        }
+        if ( i == 3){
+            work1Info.append("工作职责：" );
+            work1Info.append(Constants.LF1);
+            work1Info.append("  ");// 行开始空格
+            work1Info.append(candidates.getWork3desc());
+            work1Info.append(Constants.LF1);
+        }
+        if ( i == 4){
+            work1Info.append("工作职责：" );
+            work1Info.append(Constants.LF1);
+            work1Info.append("  ");// 行开始空格
+            work1Info.append(candidates.getWork4desc());
+            work1Info.append(Constants.LF1);
+        }
         work1Info.append("求职原因：" + Constants.LF1 );
         return work1Info.toString() + " ";
     }

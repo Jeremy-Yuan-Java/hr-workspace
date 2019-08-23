@@ -37,6 +37,7 @@ public class PathConf {
     private static String POSTCARD = "postcard/";
 
     private static String RESUME_REPORT = "report/";
+    private static String RESUME_REPORT_TEMPLATE = "reporttemplate/";
 
     public static String ACCESS_PATH_PIC = ACCESS_PATH + PIC;
     public static String ACCESS_PATH_RESUME = ACCESS_PATH + RESUME;
@@ -46,6 +47,8 @@ public class PathConf {
     public void setFilerootpath(String filerootpath) {
         SAVE_PATH_ROOT = filerootpath;
     }
+
+
 
 
     public static String getSavePathPic() {
@@ -63,4 +66,6 @@ public class PathConf {
     public static String getSavePathReport(){
         return SAVE_PATH_ROOT + RESUME_REPORT;
     }
+
+    public static String getResumeReportPath () { return SAVE_PATH_ROOT + RESUME_REPORT_TEMPLATE ; }
 }
