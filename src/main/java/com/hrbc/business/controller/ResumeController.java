@@ -112,10 +112,13 @@ public class ResumeController {
      */
     public static String getCandidatesProject(CandidatesWithBLOBs candidates){
         StringBuilder sb = new StringBuilder();
-        String projects = candidates.getProjectdetails2().replace("<br/>",Constants.LF1);
-        projects = projects.replace("<b>","");
-        projects = projects.replace("</b>" , "");
-        sb.append(projects.replace("\u2500",Constants.LF1));
+        String projects = candidates.getProjectdetails2();
+        if ( StringUtils.isNotBlank(projects)) {
+            projects = projects.replace("<br/>",Constants.LF1);
+            projects = projects.replace("<b>","");
+            projects = projects.replace("</b>" , "");
+            sb.append(projects.replace("\u2500",Constants.LF1));
+        }
        /* String work1projs = candidates.getWork1projs();
         if ( StringUtils.isNotEmpty(work1projs)) {
             sb.append(work1projs) ;
