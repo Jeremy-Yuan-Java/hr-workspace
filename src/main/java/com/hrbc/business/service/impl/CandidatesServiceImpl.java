@@ -229,6 +229,10 @@ public class CandidatesServiceImpl implements CandidatesService {
                     example.getOredCriteria().get(0).andUsernameEqualTo(dto.getExpectworkbase());
                 }
 
+                if (!StringUtils.isEmpty(dto.getCreateuser())) {
+                    example.getOredCriteria().get(0).andCreateuserEqualTo(dto.getCreateuser());
+                }
+
                 if (!StringUtils.isEmpty(dto.getJobtitle())) {
                     example.getOredCriteria().get(0).andJobtitleLike("%" + dto.getJobtitle() + "%");
                 }
@@ -240,9 +244,6 @@ public class CandidatesServiceImpl implements CandidatesService {
                 if (!StringUtils.isEmpty(dto.getEdu1())) {
                     example.getOredCriteria().get(0).andJobtitleLike("%" + dto.getEdu1() + "%");
                 }
-               /* if (!StringUtils.isEmpty(dto.getFulltexts())) {
-                    example.getOredCriteria().get(0).andFulltextsLike("%" + dto.getFulltexts() + "%");
-                }*/
 
                 if (!StringUtils.isEmpty(dto.getWorkyears())) {
                     example.getOredCriteria().get(0).andWorkyearsGreaterThan(dto.getWorkyears());
