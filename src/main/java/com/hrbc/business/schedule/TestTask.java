@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 
 @Component
@@ -14,7 +15,8 @@ public class TestTask {
     @Autowired
     private CandidatesResumeService resumeService;
 
-    @Scheduled(cron = "0 50 23 * * ?")
+    //@Scheduled(cron = "0 50 23 * * ?")
+    @PostConstruct
     public void test() {
         // 1.将通过简历解析获取的数据 重新解析一遍，信息保存在 resumedetail 字段中
         // 注意此操作不需要 插入新的候选人信息
