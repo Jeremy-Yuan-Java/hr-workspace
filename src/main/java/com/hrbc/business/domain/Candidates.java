@@ -80,7 +80,7 @@ public class Candidates {
     private Date edu1eddate;
 
     private String edu2;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+
     private Date edu2stdate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date edu2eddate;
@@ -131,8 +131,6 @@ public class Candidates {
 
     private String work4jobtitle;
 
-    private String work4desc;
-
     private String updateuser;
 
     private String createuser;
@@ -141,69 +139,7 @@ public class Candidates {
 
     private String updatestaff;
 
-    private String studenttype;
-
-    private String jiguan;
-
-    private String vocation;
-
-    private String forwordvocation;
-
-    private String nowsalary;
-
-    private String aimsalary;
-
-    private String political;
-
-    private String startfrom;
-
-    private String qq;
-
-    private String encouragement;
-
-    private String graduatetime;
-
-    private String beginworktime;
-
-    private String lesson;
-
-    private String computer;
-
-    private String english;
-
-    private String schoolrankings;
-
-    private String schooltype;
-
-    private String postcode;
-
-    private String speciality;
-
-    private String address;
-
-    private String notional;
-
-    private String nationality;
-
-    private String href;
-
-    private String high;
-
-    private String tizhong;
-
-    private String advanceddegree;
-
-    private String isjobsearch;
-
-    private String overseaswork;
-
-    private String jobhoppingfrequency;
-
-    private String worktype;
-
-    private String webchat;
-
-    private String personalinterests;
+    private String fulltexts;
 
     public Integer getId() {
         return id;
@@ -709,14 +645,6 @@ public class Candidates {
         this.work4jobtitle = work4jobtitle == null ? null : work4jobtitle.trim();
     }
 
-    public String getWork4desc() {
-        return work4desc;
-    }
-
-    public void setWork4desc(String work4desc) {
-        this.work4desc = work4desc == null ? null : work4desc.trim();
-    }
-
     public String getUpdateuser() {
         return updateuser;
     }
@@ -749,259 +677,11 @@ public class Candidates {
         this.updatestaff = updatestaff == null ? null : updatestaff.trim();
     }
 
-    public String getStudenttype() {
-        return studenttype;
+    public String getFulltexts() {
+        return fulltexts;
     }
 
-    public void setStudenttype(String studenttype) {
-        this.studenttype = studenttype == null ? null : studenttype.trim();
-    }
-
-    public String getJiguan() {
-        return jiguan;
-    }
-
-    public void setJiguan(String jiguan) {
-        this.jiguan = jiguan == null ? null : jiguan.trim();
-    }
-
-    public String getVocation() {
-        return vocation;
-    }
-
-    public void setVocation(String vocation) {
-        this.vocation = vocation == null ? null : vocation.trim();
-    }
-
-    public String getForwordvocation() {
-        return forwordvocation;
-    }
-
-    public void setForwordvocation(String forwordvocation) {
-        this.forwordvocation = forwordvocation == null ? null : forwordvocation.trim();
-    }
-
-    public String getNowsalary() {
-        return nowsalary;
-    }
-
-    public void setNowsalary(String nowsalary) {
-        this.nowsalary = nowsalary == null ? null : nowsalary.trim();
-    }
-
-    public String getAimsalary() {
-        return aimsalary;
-    }
-
-    public void setAimsalary(String aimsalary) {
-        this.aimsalary = aimsalary == null ? null : aimsalary.trim();
-    }
-
-    public String getPolitical() {
-        return political;
-    }
-
-    public void setPolitical(String political) {
-        this.political = political == null ? null : political.trim();
-    }
-
-    public String getStartfrom() {
-        return startfrom;
-    }
-
-    public void setStartfrom(String startfrom) {
-        this.startfrom = startfrom == null ? null : startfrom.trim();
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq == null ? null : qq.trim();
-    }
-
-    public String getEncouragement() {
-        return encouragement;
-    }
-
-    public void setEncouragement(String encouragement) {
-        this.encouragement = encouragement == null ? null : encouragement.trim();
-    }
-
-    public String getGraduatetime() {
-        return graduatetime;
-    }
-
-    public void setGraduatetime(String graduatetime) {
-        this.graduatetime = graduatetime == null ? null : graduatetime.trim();
-    }
-
-    public String getBeginworktime() {
-        return beginworktime;
-    }
-
-    public void setBeginworktime(String beginworktime) {
-        this.beginworktime = beginworktime == null ? null : beginworktime.trim();
-    }
-
-    public String getLesson() {
-        return lesson;
-    }
-
-    public void setLesson(String lesson) {
-        this.lesson = lesson == null ? null : lesson.trim();
-    }
-
-    public String getComputer() {
-        return computer;
-    }
-
-    public void setComputer(String computer) {
-        this.computer = computer == null ? null : computer.trim();
-    }
-
-    public String getEnglish() {
-        return english;
-    }
-
-    public void setEnglish(String english) {
-        this.english = english == null ? null : english.trim();
-    }
-
-    public String getSchoolrankings() {
-        return schoolrankings;
-    }
-
-    public void setSchoolrankings(String schoolrankings) {
-        this.schoolrankings = schoolrankings == null ? null : schoolrankings.trim();
-    }
-
-    public String getSchooltype() {
-        return schooltype;
-    }
-
-    public void setSchooltype(String schooltype) {
-        this.schooltype = schooltype == null ? null : schooltype.trim();
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode == null ? null : postcode.trim();
-    }
-
-    public String getSpeciality() {
-        return speciality;
-    }
-
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality == null ? null : speciality.trim();
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
-    }
-
-    public String getNotional() {
-        return notional;
-    }
-
-    public void setNotional(String notional) {
-        this.notional = notional == null ? null : notional.trim();
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality == null ? null : nationality.trim();
-    }
-
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href == null ? null : href.trim();
-    }
-
-    public String getHigh() {
-        return high;
-    }
-
-    public void setHigh(String high) {
-        this.high = high == null ? null : high.trim();
-    }
-
-    public String getTizhong() {
-        return tizhong;
-    }
-
-    public void setTizhong(String tizhong) {
-        this.tizhong = tizhong == null ? null : tizhong.trim();
-    }
-
-    public String getAdvanceddegree() {
-        return advanceddegree;
-    }
-
-    public void setAdvanceddegree(String advanceddegree) {
-        this.advanceddegree = advanceddegree == null ? null : advanceddegree.trim();
-    }
-
-    public String getIsjobsearch() {
-        return isjobsearch;
-    }
-
-    public void setIsjobsearch(String isjobsearch) {
-        this.isjobsearch = isjobsearch == null ? null : isjobsearch.trim();
-    }
-
-    public String getOverseaswork() {
-        return overseaswork;
-    }
-
-    public void setOverseaswork(String overseaswork) {
-        this.overseaswork = overseaswork == null ? null : overseaswork.trim();
-    }
-
-    public String getJobhoppingfrequency() {
-        return jobhoppingfrequency;
-    }
-
-    public void setJobhoppingfrequency(String jobhoppingfrequency) {
-        this.jobhoppingfrequency = jobhoppingfrequency == null ? null : jobhoppingfrequency.trim();
-    }
-
-    public String getWorktype() {
-        return worktype;
-    }
-
-    public void setWorktype(String worktype) {
-        this.worktype = worktype == null ? null : worktype.trim();
-    }
-
-    public String getWebchat() {
-        return webchat;
-    }
-
-    public void setWebchat(String webchat) {
-        this.webchat = webchat == null ? null : webchat.trim();
-    }
-
-    public String getPersonalinterests() {
-        return personalinterests;
-    }
-
-    public void setPersonalinterests(String personalinterests) {
-        this.personalinterests = personalinterests == null ? null : personalinterests.trim();
+    public void setFulltexts(String fulltexts) {
+        this.fulltexts = fulltexts == null ? null : fulltexts.trim();
     }
 }

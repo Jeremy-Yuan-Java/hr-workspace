@@ -1,24 +1,20 @@
 package com.hrbc.business.common;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hrbc.business.domain.Candidates;
-import com.hrbc.business.domain.CandidatesWithBLOBs;
-import com.hrbc.business.domain.aliylincv.EducationInfo;
-import com.hrbc.business.domain.aliylincv.ExperienceInfo;
-import com.hrbc.business.domain.aliylincv.ProjectInfo;
-import com.hrbc.business.domain.aliylincv.ResumeInfo;
+import com.hrbc.business.domain.*;
+import com.hrbc.business.domain.aliylincv.*;
+import com.hrbc.business.domain.common.CandidatesDto;
 import com.hrbc.business.util.QuickTimeUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.BeanUtils;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 集成第三方简历解析,该接口收费
@@ -36,7 +32,8 @@ public class ResumeUtilAliy {
      * @param data
      * @return
      */
-    public static ResumeInfo getResume(byte[] data,String suffixName) {
+    public static Map<String,Object> getResume(byte[] data,String suffixName) {
+        Map<String,Object> map = new HashMap<>();
         try {
             Map<String, String> headers = new HashMap<String, String>();
             //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
@@ -60,24 +57,379 @@ public class ResumeUtilAliy {
             String result = EntityUtils.toString(response.getEntity());
             // System.out.println(result);
             ResumeInfo info = JSONObject.parseObject(result, ResumeInfo.class);
-            return info;
+            map.put("info",info);
+            map.put("msg",result);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return map;
     }
 
     /**
-     * 简历解析
+     * 解析详细信息
+     * @param info
+     */
+    public static CandidatesResumeDetailWithBLOBs resolveResumeDetails( ResumeInfo info){
+        CandidatesResumeDetailWithBLOBs detail = new CandidatesResumeDetailWithBLOBs();
+        if (info != null) {
+            detail.setResumetype(info.getType() + "");
+            detail.setResumegrade(info.getResumeGrade());
+            detail.setMarryied(info.getMarried());
+            detail.setFromwebsite(info.getFromWebSite());
+            detail.setKeyword(info.getKeyword());
+            detail.setIdno(info.getIDNO());
+            detail.setEncouragement(info.getEncouragement());
+            detail.setTeam(info.getTeam());
+            detail.setVolunteer(info.getVolunteer());
+            detail.setGraduatetime(info.getGraduatetime());
+            detail.setBeginworktime(info.getBeginworktime());
+            detail.setLastupdate(info.getLastUpdate());
+            detail.setLastupdate2(info.getLastUpdate2());
+            detail.setScore(NumberUtils.toInt(info.getScore(),0));
+            detail.setCertificate(info.getCertificate());
+            detail.setOriginal(info.getOriginal());
+            detail.setPersonal(info.getPersonal());
+            detail.setLesson(info.getLesson());
+            detail.setComputer(info.getComputer());
+            detail.setEnglish(info.getEnglish());
+            detail.setSchool(info.getSchool());
+            detail.setSchoolrankings(info.getSchoolRankings());
+            detail.setSchooltype(getSchoolType(info.getSchoolType()));
+            detail.setPostcode(info.getPostCode());
+            detail.setSpeciality(info.getSpeciality());
+            detail.setAddress(info.getAddress());
+            detail.setJiguan(info.getJiguan());
+            detail.setNational(info.getNational());
+            detail.setNationality(info.getNationality());
+            detail.setBirth(getBirth(info.getBirth()));
+            detail.setName(info.getName());
+            detail.setFamilyname(info.getFamilyName());
+            detail.setHref(info.getHref());
+            detail.setTitle(info.getTitle());
+            detail.setTitle2(info.getTitle2());
+            detail.setTitlestandard(info.getTitleStandard());
+            detail.setAmiinstitution(info.getAimInstitution());
+            detail.setAge(NumberUtils.toByte(info.getAge()==null?"0":info.getAge()));
+            detail.setSex(info.getSex());
+            detail.setHighr(info.getHigh());
+            detail.setWeightr(info.getWeight());
+            detail.setMobile(info.getMobile());
+            detail.setPhone(info.getPhone());
+            detail.setFax(info.getFax());
+            detail.setEmail(info.getEmail());
+            detail.setNowlocation(info.getNowLocation());
+            detail.setForwardlocation(info.getForwardlocation());
+            detail.setEducation(info.getEducation());
+            detail.setAdvanceddegree(info.getAdvancedDegree());
+            detail.setExperience(info.getExperience());
+            detail.setVocation(info.getVocation());
+            detail.setForwardvocation(info.getForwardVocation());
+            detail.setVocationstandard(info.getVocationStandard());
+            detail.setSalary(info.getSalary());
+            detail.setAimsalary(info.getAimSalary());
+            detail.setEducationdetail(info.getEducationDetail());
+            detail.setExpriencedetail(info.getExperienceDetail());
+            detail.setTraning(info.getTraining());
+            detail.setProjects(info.getProject());
+            detail.setSkill(info.getSkill());
+            detail.setPolitical(info.getPolitical());
+            detail.setStartfrom(info.getStartFrom());
+            detail.setIsjobsearch(info.getSwitch());
+            detail.setIssuedate(info.getIssueDate());
+            detail.setQq(info.getQQ());
+            detail.setStudenttype(info.getSchoolType());
+            detail.setPhotourl(info.getPhotoUrl());
+            detail.setPhotobase64string(info.getPhotoBase64String());
+            detail.setAppletter(info.getAppLetter());
+            detail.setLastcompany(info.getLastCompany());
+            detail.setLasttitle(info.getLastTitle());
+            detail.setOverseaswork(info.getOverseasWork());
+            detail.setJobhoppingfrequency(info.getJobHoppingFrequency());
+            detail.setIntegrity(info.getIntegrity());
+            detail.setWorktype(info.getWorkType());
+            detail.setMemo(info.getMemo());
+            detail.setMemo0(info.getMemo0());
+            detail.setLevel(info.getLevel());
+            detail.setSort(info.getSort());
+            detail.setMsn(info.getMsn());
+            detail.setWebchat(info.getWebChat());
+            detail.setDonotrecommend(info.getDoNotRecommend());
+            detail.setPersonalinterests(info.getPersonalInterests());
+            detail.setGradeofenglishs(getGradeOfEnglish(info.getGradeOfEnglish()));
+            detail.setGradeofenglishslist(getGradeOfEnglishList(info.getGradeOfEnglishs()));
+            detail.setItskills(getSkills(info.getITSkills()));
+            detail.setArreducationdetail(getArrayListDetail(info.getArrEducationDetail()));
+            detail.setArrexpericenedetail(getArrayListDetail(info.getArrExpericeneDetail()));
+            detail.setArrprojectdetail(getArrayListDetail(info.getArrProjectDetail()));
+            detail.setArrtrainingdetail(getArrayListDetail(info.getArrTrainingDetail()));
+        }
+        return detail;
+    }
+
+    /**
+     * 培训详情信息
+     * @param info
+     * @param resumeId
      * @return
      */
-    public static void parseResume(InputStream in, CandidatesWithBLOBs candidates, String suffixName) {
-        // 字节流转换为字节数组
-        byte[] data = inputStreamConvertByteArray(in);
-        // 解析 简历 获取到对应的包装对象
-        ResumeInfo info = getResume(data,suffixName);
-        // 解析包装到对象，将数据保存到对应 CandidateWithBLOBs 中
-        if(info != null){
+    public static List<CandidatesResumeTraininginfo> resolveResumeTraining(ResumeInfo info , Integer resumeId){
+        List<CandidatesResumeTraininginfo> trans = null;
+        TrainingInfo[] trainingInfos = info.getTrainingInfo();
+        if ( trainingInfos != null && trainingInfos.length > 0) {
+            trans = new ArrayList<>();
+            for ( int i = 0 ; i < trainingInfos.length ; i ++) {
+                CandidatesResumeTraininginfo tran = new CandidatesResumeTraininginfo();
+                TrainingInfo trainingInfo = trainingInfos[i] ;
+                tran.setCertificate(trainingInfo.getCertificate());
+                tran.setDescriptionindetails(trainingInfo.getDescriptionInDetails());
+                tran.setResumeid(resumeId);
+                tran.setTitle(trainingInfo.getTitle());
+                tran.setTrainingcourse(trainingInfo.getTrainingCourse());
+                tran.setTraininglocation(trainingInfo.getTrainingLocation());
+                tran.setStartdate(QuickTimeUtil.stringParseDate(trainingInfo.getStartDate(),"yyyy-MM"));
+                tran.setEnddate(QuickTimeUtil.stringParseDate(trainingInfo.getEndDate(),"yyyy-MM"));
+                tran.setCandidatesnum(i+1);
+                trans.add(tran);
+            }
+        }
+        return trans;
+    }
+    /**
+     * 获取项目详细信息
+     * @param info
+     * @param resumeId
+     * @return
+     */
+    public static List<CandidatesResumeProjectinfoWithBLOBs> resolveResumeProjects(ResumeInfo info , Integer resumeId){
+        List<CandidatesResumeProjectinfoWithBLOBs> projects = null;
+        ProjectInfo[] pis = info.getProjectInfo();
+        if ( pis != null && pis.length > 0) {
+            projects = new ArrayList<>();
+            for ( int i =0 ; i < pis.length ; i ++) {
+                CandidatesResumeProjectinfoWithBLOBs pro = new CandidatesResumeProjectinfoWithBLOBs();
+                ProjectInfo pi = pis[i];
+                pro.setProjectdescription(pi.getProjectDescription());
+                pro.setResponsiblities(pi.getResponsibilities());
+                pro.setProjectname(pi.getProjectName());
+                pro.setResumeid(resumeId);
+                pro.setStartdate(QuickTimeUtil.stringParseDate(pi.getStartDate(),"yyyy-MM"));
+                pro.setEnddate(QuickTimeUtil.stringParseDate(pi.getEndDate(),"yyyy-MM"));
+                pro.setCandidatesnum(i+1);
+                projects.add(pro);
+            }
+        }
+        return projects;
+    }
+
+    /**
+     * 解析工作经历
+     * @param info
+     * @param resumeId
+     * @return
+     */
+    public static List<CandidatesResumeExperienceinfoWithBLOBs> resolveResumeExperience(ResumeInfo info , Integer resumeId){
+        List<CandidatesResumeExperienceinfoWithBLOBs> res = null;
+        ExperienceInfo[] eis = info.getExperienceInfo();
+        if ( eis != null && eis.length > 0) {
+            res = new ArrayList<>();
+            for ( int i =0 ; i < eis.length ; i ++) {
+                CandidatesResumeExperienceinfoWithBLOBs re = new CandidatesResumeExperienceinfoWithBLOBs();
+                ExperienceInfo ei = eis[i];
+                re.setAchievement(ei.getAchievement());
+                re.setCompanydescription(ei.getCompanyDescription());
+                re.setCompany(ei.getCompany());
+                re.setOthers(ei.getOthers());
+                re.setDepartment(ei.getDepartment());
+                re.setDeponent(ei.getDeponent());
+                re.setLeader(ei.getLeader());
+                re.setLocation(ei.getLocation());
+                re.setIsstudii(ei.getIsStudii());
+                re.setTitle(ei.getTitle());
+                re.setWorktype(ei.getWorkType());
+                re.setVocation(ei.getVocation());
+                re.setUnderlingnumber(ei.getUnderlingNumber());
+                re.setTypecompany(ei.getType());
+                re.setSummary(ei.getSummary());
+                re.setSalary(ei.getSalary());
+                re.setResumeid(resumeId);
+                re.setReasonofleaving(ei.getReasonOfLeaving());
+                re.setSizecompany(ei.getSize());
+                re.setPeriodsoftime(ei.getPeriodsOfTime());
+                re.setStartdate(QuickTimeUtil.stringParseDate(ei.getStartDate(),"yyyy-MM"));
+                re.setEnddate(QuickTimeUtil.stringParseDate(ei.getEndDate(), "yyyy-MM"));
+                re.setCandidatesnum(i+1);
+                res.add(re);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 获取教育经历 详情信息
+     * @param info
+     * @param resumeId
+     * @return
+     */
+    public static List<CandidatesResumeEducationinfo> resolveResumeEducation(ResumeInfo info , Integer resumeId){
+        List<CandidatesResumeEducationinfo> edusInfo = null;
+        EducationInfo[] edus = info.getEducationInfo();
+        if (edus != null && edus.length > 0) {
+            edusInfo = new ArrayList<>();
+            for ( int i = 0 ; i < edus.length ; i ++){
+                CandidatesResumeEducationinfo cr  = new CandidatesResumeEducationinfo();
+                EducationInfo edu = edus[i];
+                // 属性复制
+                cr.setAdvanceddegree(edu.getAdvancedDegree());
+                cr.setDepartment(edu.getDepartment());
+                cr.setEducation(edu.getEducation());
+                cr.setSchool(edu.getSchool());
+                cr.setSchoollabel(edu.getSchoolLabel());
+                cr.setIsstudii(edu.getIsStudii());
+                cr.setStartdate(QuickTimeUtil.stringParseDate(edu.getStartDate(),"yyyy-MM"));
+                cr.setEnddate(QuickTimeUtil.stringParseDate(edu.getEndDate(), "yyyy-MM"));
+                cr.setSpeciality(edu.getSpeciality());
+                cr.setSummary(edu.getSummary());
+                cr.setResumeid(resumeId);
+                cr.setCandidatesnum(i+1);
+                edusInfo.add(cr);
+            }
+        }
+        return edusInfo;
+    }
+
+    /**
+     * 将 集合转换为字符串
+     * @return
+     */
+    public static String getArrayListDetail(ArrayList<String> list){
+        StringBuilder sb = new StringBuilder();
+        if (list != null && list.size() > 0) {
+            for (String s: list) {
+                sb.append(s);
+                sb.append(Constants.DECOLLATOR);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * 获取IT 技能信息
+     * @param its
+     * @return
+     */
+    public static String getSkills(ITSkills[] its) {
+        StringBuilder sb = new StringBuilder();
+        if (its != null && its.length > 0) {
+            for (ITSkills it: its) {
+                String level = it.getCompetencyLevel();
+                String type = it.getSkillType();
+                String time = it.getTimeOfUse();
+                sb.append(type + "-" + level + "-" + time);
+                sb.append(Constants.DECOLLATOR);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 获取 证书所有数据
+     * @param gs
+     * @return
+     */
+    public static String getGradeOfEnglishList(GradeOfEnglish[] gs){
+        StringBuilder sb = new StringBuilder();
+        if ( gs != null && gs.length > 0) {
+            for (GradeOfEnglish g: gs ) {
+                String name = g.getNameOfCertificate();
+                String date = g.getReceivingDate();
+                String score = g.getScore();
+                sb.append(name + "-");
+                sb.append(date + "-");
+                sb.append(score);
+                sb.append(Constants.DECOLLATOR);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 获取等级最高的证书
+     * @param gradeOfEnglish
+     * @return
+     */
+    public static String getGradeOfEnglish(GradeOfEnglish gradeOfEnglish){
+        StringBuilder sb = new StringBuilder();
+        if (gradeOfEnglish != null) {
+            String name = gradeOfEnglish.getNameOfCertificate();
+            String date = gradeOfEnglish.getReceivingDate();
+            String score = gradeOfEnglish.getScore();
+            sb.append(name + "-");
+            sb.append(date + "-");
+            sb.append(score);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * birth 转换
+     * @return
+     */
+    public static Date getBirth(String msg){
+        SimpleDateFormat sdf = null;
+        Date birth = null;
+        try {
+            sdf = new SimpleDateFormat("yyyy年MM月dd日");
+            birth = sdf.parse(msg);
+        }catch (Exception e){
+            sdf = new SimpleDateFormat("yyyy年MM月");
+            try {
+                birth = sdf.parse(msg);
+            }catch (Exception e1) {
+
+            }
+
+        }
+        return birth;
+    }
+
+    /**
+     * 获取学习类型
+     * @return
+     */
+    public static String getSchoolType(String type){
+        String res = "未知";
+        if ( StringUtils.isNotBlank(type)) {
+            if ( "0".equalsIgnoreCase(type)) {
+                res = "普通院校";
+            }
+            if ( "1".equalsIgnoreCase(type)) {
+                res = "211 院校";
+            }
+            if ( "2".equalsIgnoreCase(type)) {
+                res = "985 院校";
+            }
+            if ( "3".equalsIgnoreCase(type)) {
+                res = "985、211院校";
+            }
+            if ( "4".equalsIgnoreCase(type)) {
+                res = "国外院校";
+            }
+            if ( "5".equalsIgnoreCase(type)) {
+                res = "台湾大学";
+            }
+        }
+        return res;
+    }
+
+
+    /**
+     * 简历解析 保存到 候选人对象中
+     * @param info
+     */
+    public static CandidatesDto resolveResumeCandidates(ResumeInfo info){
+        CandidatesDto candidates = new CandidatesDto();
+        try {
             /*** 获取基本信息 ***/
             getCandidatesBasic(candidates,info);
             /*** 获取工作经历 ***/
@@ -86,10 +438,10 @@ public class ResumeUtilAliy {
             getCandidatesProjects(candidates,info);
             /*** 获取教育经历 ***/
             getCandidatesEdu(candidates,info);
-            String json = JSONObject.toJSON(info).toString();
-            /** 最后将整个 简历解析的内容以 JSON 格式 存储到字段中 **/
-            candidates.setResumedetail(json.getBytes());
+        } catch (Exception e) {
+
         }
+        return candidates;
     }
 
     /**
@@ -99,20 +451,29 @@ public class ResumeUtilAliy {
      */
     public static void getCandidatesProjects(CandidatesWithBLOBs candidates ,ResumeInfo info){
         // 设置 候选人的所有的项目信息
-        candidates.setProjectdetails1(info.getProject());
+        //candidates.setProjectdetails1(info.getProject());
         // 获取候选人的每条 项目经历
         ProjectInfo[] projectInfos = info.getProjectInfo();
-        StringBuilder sb = new StringBuilder();
         if (projectInfos != null && projectInfos.length > 0) {
-            for (ProjectInfo pi: projectInfos ) {
-                sb.append( pi.getStartDate() + " " + pi.getEndDate() + "<br/>");
-                sb.append( "<b>项目名称</b>:" + pi.getProjectName() + "<br/>" );
-                sb.append( "<b>项目描述</b>:" + pi.getProjectDescription() + "<br/>" );
-                sb.append( "<b>个人职责</b>:" + pi.getResponsibilities() + "<br/>");
-                // 项目与项目间分割
-                sb.append( Constants.DECOLLATOR);
+            for (int i = 0 ; i < projectInfos.length ; i++) {
+                ProjectInfo p = projectInfos[i];
+                StringBuilder sb = new StringBuilder();
+                sb.append(p.getStartDate() + " " + p.getEndDate() ) ;
+                sb.append("项目描述:" +p.getProjectName() + Constants.LF1);
+                sb.append("项目职责:" +p.getProjectDescription() + " ");
+                if ( i == 0) {
+                    candidates.setWork1projs(sb.toString());
+                }
+                if (i == 1) {
+                    candidates.setWork2projs(sb.toString());
+                }
+                if ( i == 2) {
+                    candidates.setWork3projs(sb.toString());
+                }
+                if ( i == 3) {
+                    candidates.setWork4projs(sb.toString());
+                }
             }
-            candidates.setProjectdetails2(sb.toString());
         }
     }
 
@@ -185,14 +546,8 @@ public class ResumeUtilAliy {
                     // 起始时间
                     candidates.setWork1stdate(startDate);
                     candidates.setWork1eddate(endDate);
-
                     // 工作描述
                     candidates.setWork1desc(ei.getSummary());
-                    // 项目描述
-                    /*if (startDate != null) {
-                        candidates.setWork1projs(getCandidatesProjectInfo(startDate,endDate,info));
-                    }*/
-
                 }
 
                 if( i == 1){
@@ -208,10 +563,7 @@ public class ResumeUtilAliy {
                     candidates.setWork2eddate(endDate);
                     // 工作描述
                     candidates.setWork2desc(ei.getSummary());
-                    // 项目描述
-                    /*if ( startDate != null) {
-                        candidates.setWork2projs(getCandidatesProjectInfo(startDate,endDate,info));
-                    }*/
+
                 }
                 if( i == 2){
                     // 公司名称
@@ -226,12 +578,6 @@ public class ResumeUtilAliy {
                     candidates.setWork3eddate(endDate);
                     // 工作描述
                     candidates.setWork3desc(ei.getSummary());
-                    // 项目描述
-                    /*if ( startDate != null) {
-                        candidates.setWork3projs(getCandidatesProjectInfo(startDate,endDate,info));
-                    }*/
-
-
                 }
                 if( i == 3){
                     // 公司名称
@@ -246,10 +592,6 @@ public class ResumeUtilAliy {
                     candidates.setWork4eddate(endDate);
                     // 工作描述
                     candidates.setWork4desc(ei.getSummary());
-                    // 项目描述
-                    /*if (startDate != null) {
-                        candidates.setWork4projs(getCandidatesProjectInfo(startDate,endDate,info));
-                    }*/
                 }
             }
         }
@@ -309,16 +651,18 @@ public class ResumeUtilAliy {
 
         if( StringUtils.isNotBlank(phone1)){
             candidates.setPhoneno(phone1);
+            candidates.setPhonenobak(phone1);
         }else if (StringUtils.isNotBlank(phone2)){
             candidates.setPhoneno(phone2);
+            candidates.setPhonenobak(phone2);
         }else {
             candidates.setPhoneno("无");
         }
 
-        candidates.setPhonenobak(info.getPhone());
+
         // 邮箱
         candidates.setEmail(info.getEmail());
-        candidates.setEmailbak(info.getFax());
+        candidates.setEmailbak(info.getEmail());
 
         // 所获证书
         candidates.setCertifications(info.getCertificate());
@@ -328,84 +672,7 @@ public class ResumeUtilAliy {
         candidates.setPersonaliy(info.getSkill());
         // 学历
         candidates.setEducations(info.getEducation());
-        // 专业
 
-        // 籍贯
-        candidates.setJiguan(info.getJiguan());
-        // 统招/自考
-        candidates.setStudenttype(info.getStudentType());
-        // 现从事行业
-        candidates.setVocation(info.getVocation());
-        // 期望从事行业
-        candidates.setForwordvocation(info.getForwardVocation());
-        // 目前薪水
-        candidates.setNowsalary(info.getSalary());
-        // 期望薪水
-        candidates.setAimsalary(info.getAimSalary());
-        // 教育经历所有信息
-        candidates.setEducationdetail(info.getEducationDetail());
-        // 工作经历全部内容
-        candidates.setExperiencedetail(info.getExperienceDetail());
-        // 培训情况
-        candidates.setTraining(info.getTraining());
-        // 个人技能
-        candidates.setSkill(info.getSkill());
-        // 政治面貌
-        candidates.setPolitical(info.getPolitical());
-        // 到岗时间
-        candidates.setStartfrom(info.getStartFrom());
-        // qq 号
-        candidates.setQq(info.getQQ());
-        // 所受奖励
-        candidates.setEncouragement(info.getEncouragement());
-        // 社团活动
-        candidates.setTeam(info.getTeam());
-        // 志愿者
-        candidates.setVolunteer(info.getVolunteer());
-        // 毕业时间
-        candidates.setGraduatetime(info.getGraduatetime());
-        // 开始工作时间
-        candidates.setBeginworktime(info.getBeginworktime());
-        // 所学课程
-        candidates.setLesson(info.getLesson());
-        // 计算机水平
-        candidates.setComputer(info.getComputer());
-        // 学校排名
-        candidates.setSchoolrankings(info.getSchoolRankings());
-        // 学校类型
-        candidates.setSchooltype(info.getSchoolType());
-        // 邮编
-        candidates.setPostcode(info.getPostCode());
-        // 专业
-        candidates.setSpeciality(info.getSpeciality());
-        // 通信地址
-        candidates.setAddress(info.getAddress());
-        // 名族
-        candidates.setNotional(info.getNational());
-        // 国籍
-        candidates.setNationality(info.getNationality());
-        // 个人主页
-        candidates.setHref(info.getHref());
-        // 身高
-        candidates.setHigh(info.getHigh());
-        // 体重
-        candidates.setTizhong(info.getWeight());
-        // 最高学位
-        candidates.setAdvanceddegree(info.getAdvancedDegree());
-        // 是否处于找工作状态
-        candidates.setIsjobsearch(info.getSwitch());
-        // 是有有海外工作经历
-        candidates.setOverseaswork(info.getOverseasWork());
-        // 跳槽频率
-        candidates.setJobhoppingfrequency(info.getJobHoppingFrequency());
-        // 工作类型
-        candidates.setWorktype(info.getWorkType());
-        // 微信号
-        candidates.setWebchat(info.getWebChat());
-        // 兴趣爱好
-        candidates.setPersonalinterests(info.getPersonalInterests());
-        // 英语
-        candidates.setEnglish(info.getEnglish());
     }
 
     /**
@@ -501,16 +768,6 @@ public class ResumeUtilAliy {
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
-
     }
 
-    public static String dateParseString(Date date ,String pattern){
-        if(date == null){
-            return "";
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        return sdf.format(date);
-    }
 }

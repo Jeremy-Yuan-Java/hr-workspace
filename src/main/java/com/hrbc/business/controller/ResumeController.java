@@ -1,11 +1,13 @@
 package com.hrbc.business.controller;
 
+import ch.qos.logback.classic.pattern.ClassNameOnlyAbbreviator;
 import cn.afterturn.easypoi.entity.ImageEntity;
 import cn.afterturn.easypoi.word.WordExportUtil;
 import com.hrbc.business.common.Constants;
 import com.hrbc.business.conf.PathConf;
-import com.hrbc.business.domain.Candidates;
-import com.hrbc.business.domain.CandidatesWithBLOBs;
+import com.hrbc.business.domain.*;
+import com.hrbc.business.domain.common.ResponseDTO;
+import com.hrbc.business.service.CandidatesResumeService;
 import com.hrbc.business.service.CandidatesService;
 import com.hrbc.business.util.QuickTimeUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,56 +42,14 @@ public class ResumeController {
     @Autowired
     private CandidatesService candidatesService;
 
-    public static final Logger logger = LoggerFactory.getLogger(ResumeController.class);
+    @Autowired
+    private CandidatesResumeService resumeService;
 
     @RequestMapping("/exportWordFromTemplate/{id}")
     public void exportWordFromTemplate(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response){
         // 根据 候选人编号 获取相关的信息
         CandidatesWithBLOBs candidates = candidatesService.getWithBLOBs(id);
-        if (StringUtils.isEmpty(candidates.getWorkbase())) {
-            candidates.setWorkbase("未知");
-        }
-        if (StringUtils.isEmpty(candidates.getLivebase())) {
-            candidates.setLivebase("未知");
-        }
-        if ( StringUtils.isEmpty( candidates.getNowsalary())) {
-            candidates.setNowsalary("未知");
-        }
-        if ( StringUtils.isEmpty( candidates.getAimsalary())) {
-            candidates.setAimsalary("未知");
-        }
-        if ( StringUtils.isEmpty(candidates.getStartfrom())) {
-            candidates.setStartfrom("未知");
-        }
-        if ( StringUtils.isEmpty(candidates.getEducationdetail())) {
-            candidates.setExperiencedetail("未知");
-        }
-        if (StringUtils.isEmpty(candidates.getJiguan())){
-            candidates.setJiguan("未知");
-        }
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("candidates",candidates);
-        map.put("now", new Date());
-        String work = getWorkInfo(candidates);
-        // 保存工作经历
-        map.put("work",work);
-
-        // 保存工作经历  逐条
-        map.put("wd",getWorkDedatilInfo(candidates));
-        // 获取项目经历
-        map.put("projects",getCandidatesProject(candidates));
-
-        String imgPath = candidates.getPicpath();
-        if (StringUtils.isNotEmpty(imgPath)) {
-            ImageEntity image = new ImageEntity();
-            image.setHeight(200);
-            image.setWidth(200);
-            image.setUrl(PathConf.getSavePathPic() + candidates.getPicpath());
-            image.setType(ImageEntity.URL);
-            map.put("imgCode", image);
-        }else {
-            map.put("imgCode", "未上传");
-        }
+        Map<String, Object> map = resolveExportCandidatesInfo(id);
         try {
             XWPFDocument doc = WordExportUtil.exportWord07(PathConf.getResumeReportPath() + "ytmb.docx", map);
             //设置响应头和客户端保存文件名
@@ -106,39 +67,121 @@ public class ResumeController {
     }
 
     /**
-     * 获取候选人的项目经历
-     * @param candidates
+     * 处理导出数据
+     * @param candidatesId
      * @return
      */
-    public static String getCandidatesProject(CandidatesWithBLOBs candidates){
+    public Map<String,Object> resolveExportCandidatesInfo(Integer candidatesId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        // 根据 候选人编号 获取相关的信息
+        CandidatesWithBLOBs candidates = candidatesService.getWithBLOBs(candidatesId);
+        CandidatesResumeDetail resumeDetail = resumeService.queryResumeDetail(candidatesId);
+        List<CandidatesResumeEducationinfo> edus = resumeService.queryResumeEdus(resumeDetail.getId());
+        List<CandidatesResumeExperienceinfoWithBLOBs> exprs = resumeService.queryResumeExprs(resumeDetail.getId());
+        List<CandidatesResumeProjectinfoWithBLOBs> pros = resumeService.queryResumePros(resumeDetail.getId());
+        // 应聘职位
+        map.put("forwardvocation",resumeDetail.getTitle()+" ");
+        // 应聘时间
+        map.put("now",new Date());
+        // 姓名
+        map.put("name",resumeDetail.getName() == null ?" ":resumeDetail.getName());
+        // 性别
+        map.put("sex",resumeDetail.getSex() == null ? " ":resumeDetail.getSex());
+        // 年龄
+        map.put("age",resumeDetail.getAge() == null ?" ":resumeDetail.getAge());
+        // 籍贯
+        map.put("jiguan",resumeDetail.getJiguan()==null? " " : resumeDetail.getJiguan());
+        // 婚姻
+        map.put("marry",resumeDetail.getMarryied() == null ? " " : resumeDetail.getMarryied());
+        // 现居
+        map.put("location",resumeDetail.getNowlocation() == null ? " ":resumeDetail.getNowlocation());
+        // 学历
+        map.put("education",resumeDetail.getEducation() == null ? " ":resumeDetail.getEducation());
+        // 是否统招
+        map.put("studenttype","0".equals(resumeDetail.getStudenttype())?"统招":"自考" + " ");
+
+        // 头像
+        String imgPath = candidates.getPicpath();
+        if (StringUtils.isNotEmpty(imgPath)) {
+            ImageEntity image = new ImageEntity();
+            image.setHeight(150);
+            image.setWidth(150);
+            image.setUrl(PathConf.getSavePathPic() + candidates.getPicpath());
+            image.setType(ImageEntity.URL);
+            map.put("imgcode", image);
+        }else {
+            map.put("imgcode", "未上传");
+        }
+
+        // 职业经历
+        String works = getWorkInfo(exprs);
+        map.put("works",works);
+        // 职业状态
+        map.put("jobstatus",resumeDetail.getIsjobsearch()==null?  " " :resumeDetail.getIsjobsearch() ) ;
+        // 薪资
+        map.put("nowsalary",resumeDetail.getSalary() == null  ? " ":resumeDetail.getSalary() );
+        map.put("aimsalary",resumeDetail.getAimsalary() == null ? " " :resumeDetail.getAimsalary());
+
+        // 到岗时间
+        map.put("startfrom",resumeDetail.getStartfrom()==null ? " ":resumeDetail.getStartfrom());
+
+        // 工作经历
+        map.put("workdetail",getWorkDedatilInfo(exprs) );
+        // 项目经历
+        map.put("proj",getCandidatesProject(pros)  );
+        // 教育经历
+        map.put("edu",getCandidatesEdu(edus)  );
+
+        return map;
+    }
+
+    public String getCandidatesEdu(List<CandidatesResumeEducationinfo > edus){
         StringBuilder sb = new StringBuilder();
-        String projects = candidates.getProjectdetails2();
-        if ( StringUtils.isNotBlank(projects)) {
-            projects = projects.replace("<br/>",Constants.LF1);
-            projects = projects.replace("<b>","");
-            projects = projects.replace("</b>" , "");
-            sb.append(projects.replace("\u2500",Constants.LF1));
+        if (edus != null && edus.size() > 0) {
+            for (CandidatesResumeEducationinfo edu:edus) {
+                String start = QuickTimeUtil.dateParseString(edu.getStartdate(),"yyyy.MM");
+                String endDate = QuickTimeUtil.dateParseString(edu.getEnddate(),"yyyy.MM") ;
+                sb.append(start) ;
+                sb.append(" ");
+                sb.append(endDate);
+                sb.append(" ");
+                sb.append(edu.getSchool());
+                sb.append(" ");
+                sb.append(edu.getSpeciality());
+                sb.append(" ");
+                sb.append(edu.getEducation());
+                sb.append(Constants.LF1);
+            }
         }
-       /* String work1projs = candidates.getWork1projs();
-        if ( StringUtils.isNotEmpty(work1projs)) {
-            sb.append(work1projs) ;
-            sb.append(Constants.LF1) ;
+        return sb.toString()+" ";
+    }
+
+    /**
+     * 获取候选人的项目经历
+     * @param pros
+     * @return
+     */
+    public  String getCandidatesProject(List<CandidatesResumeProjectinfoWithBLOBs> pros){
+        StringBuilder sb = new StringBuilder();
+        if (pros != null && pros.size() > 0) {
+            for (CandidatesResumeProjectinfoWithBLOBs p:pros){
+                String start = QuickTimeUtil.dateParseString(p.getStartdate(),"yyyy.MM");
+                sb.append(start);
+                sb.append(" ");
+                String endDate = QuickTimeUtil.dateParseString(p.getEnddate(),"yyyy.MM");
+                sb.append(endDate);
+                sb.append(" ");
+                sb.append(p.getProjectname()==null?"":p.getProjectname());
+                sb.append(" ");
+                sb.append(p.getTitle()==null?"":p.getTitle()) ;
+                sb.append(Constants.LF1);
+                sb.append("项目介绍:"+p.getProjectdescription());
+                sb.append(Constants.LF1);
+                sb.append("个人职责:"+p.getResponsiblities());
+                sb.append(Constants.LF1);
+                sb.append(Constants.LF1);
+            }
         }
-        String work2projs = candidates.getWork2projs();
-        if ( StringUtils.isNotEmpty(work2projs)) {
-            sb.append(work2projs) ;
-            sb.append(Constants.LF1) ;
-        }
-        String work3projs = candidates.getWork3projs();
-        if ( StringUtils.isNotEmpty(work3projs)) {
-            sb.append(work3projs) ;
-            sb.append(Constants.LF1) ;
-        }
-        String work4projs = candidates.getWork4projs();
-        if ( StringUtils.isNotEmpty(work4projs)) {
-            sb.append(work4projs) ;
-            sb.append(Constants.LF1) ;
-        }*/
         return sb.toString()+" ";
     }
 
@@ -146,162 +189,67 @@ public class ResumeController {
 
     /**
      * 获取候选人的工作经历
-     * @param candidates
+     * @param exp
      * @return
      */
-    public String getWorkInfo(Candidates candidates){
-        StringBuilder work = new StringBuilder();
-        if(!StringUtils.isEmpty(candidates.getWork1())){
-            work.append(QuickTimeUtil.dateParseString(candidates.getWork1stdate(),"yyyy.MM"));
-            work.append(" - ");
-            String endDate = QuickTimeUtil.dateParseString(candidates.getWork1eddate(),"yyyy.MM");
-            work.append(endDate == null?"至今":endDate);
-            work.append(" ");
-            work.append(candidates.getWork1());
-            work.append(" ");
-            work.append("(" + candidates.getWorkyears() + "年)");
-            work.append(" " + candidates.getJobtitle());
-            work.append( Constants.LF1);
+    public String getWorkInfo(List<CandidatesResumeExperienceinfoWithBLOBs>  exp){
+        StringBuilder sb = new StringBuilder();
+        if (exp != null && exp.size() > 0) {
+            for (CandidatesResumeExperienceinfoWithBLOBs e: exp) {
+                String start = QuickTimeUtil.dateParseString(e.getStartdate(),"yyyy.MM");
+                sb.append(start);
+                sb.append(" ");
+                String endDate = QuickTimeUtil.dateParseString(e.getEnddate(),"yyyy.MM");
+                sb.append(endDate == null?"至今":endDate);
+                sb.append(" ");
+                sb.append(e.getCompany());
+                sb.append(" ");
+                sb.append("(" + e.getPeriodsoftime() + "年)");
+                sb.append(" ");
+                sb.append(e.getTitle());
+                sb.append(Constants.LF1) ;
+            }
         }
-        if( !StringUtils.isEmpty(candidates.getWork2())){
-            work.append(QuickTimeUtil.dateParseString(candidates.getWork2stdate(),"yyyy.MM"));
-            work.append(" - ");
-            work.append(QuickTimeUtil.dateParseString(candidates.getWork2eddate(),"yyyy.MM"));
-            work.append(" ");
-            work.append(candidates.getWork2());
-            work.append(" " + candidates.getWork2jobtitle());
-            work.append( Constants.LF1);
-        }
-
-        if( !StringUtils.isEmpty(candidates.getWork3())){
-            work.append(QuickTimeUtil.dateParseString(candidates.getWork3stdate(),"yyyy.MM"));
-            work.append(" - ");
-            work.append(QuickTimeUtil.dateParseString(candidates.getWork3eddate(),"yyyy.MM"));
-            work.append(" ");
-            work.append(candidates.getWork3());
-            work.append(" " + candidates.getWork3jobtitle());
-            work.append(Constants.LF1);
-        }
-        if( !StringUtils.isEmpty(candidates.getWork4())){
-            work.append(QuickTimeUtil.dateParseString(candidates.getWork4stdate(),"yyyy.MM"));
-            work.append(" - ");
-            work.append(QuickTimeUtil.dateParseString(candidates.getWork4eddate(),"yyyy.MM"));
-            work.append(" ");
-            work.append(candidates.getWork4());
-            work.append(" " + candidates.getWork4jobtitle());
-            work.append( Constants.LF1);
-        }
-        return work.toString() + " ";
+        return sb.toString() + " ";
     }
 
     /**
      * 获取候选人 详细的工作经历
-     * @param candidates
+     * @param es
      * @return
      */
-    public Map<String,Object> getWorkDedatilInfo(CandidatesWithBLOBs candidates){
-        Map<String,Object> map = new HashMap<>();
-        map.put("work1"," ");
-        map.put("work1Info"," ");
-        map.put("work2"," ");
-        map.put("work2Info"," ");
-        map.put("work3"," ");
-        map.put("work3Info"," ");
-        map.put("work4"," ");
-        map.put("work4Info"," ");
-        if(!StringUtils.isEmpty(candidates.getWork1())){
-            // 时间  公司名称  职位
-            StringBuilder work1 = new StringBuilder();
-            work1.append(QuickTimeUtil.dateParseString(candidates.getWork1stdate(),"yyyy.MM"));
-            work1.append(" - ");
-            work1.append(QuickTimeUtil.dateParseString(candidates.getWork1eddate(),"yyyy.MM"));
-            work1.append(" ");
-            work1.append(candidates.getWork1() + " ");
-            work1.append(candidates.getJobtitle()) ;
-            map.put("work1",work1.toString());
-            // 公司介绍： 汇报对象：  下属人数：工作职责： 求职原因：
+    public String getWorkDedatilInfo(List<CandidatesResumeExperienceinfoWithBLOBs> es){
+        StringBuilder sb = new StringBuilder();
+        if (es != null && es.size() > 0) {
+            for (CandidatesResumeExperienceinfoWithBLOBs e:es) {
+                String start = QuickTimeUtil.dateParseString(e.getStartdate(),"yyyy.MM" );
+                sb.append(start);
+                sb.append(" ");
+                String endDate =  QuickTimeUtil.dateParseString(e.getEnddate(),"yyyy.MM");
 
-            map.put("work1Info",getCommonInfo(candidates,1));
+                sb.append(endDate == null ?"至今":endDate);
+                sb.append(" ");
+                sb.append(e.getCompany() == null ? "" : e.getCompany());
+                sb.append(" ");
+                sb.append(e.getTitle() == null ? "" : e.getTitle());
+                sb.append(Constants.LF1);
+                sb.append("公司介绍:");
+                sb.append(e.getCompanydescription() == null ? "" : e.getCompanydescription());
+                sb.append(Constants.LF1);
+                sb.append("汇报对象:");
+                sb.append(e.getLeader()==null ? "": e.getLeader());
+                sb.append(Constants.LF1);
+                sb.append("下属人数:");
+                sb.append(e.getUnderlingnumber()==null ? "" : e.getUnderlingnumber());
+                sb.append(Constants.LF1);
+                sb.append("工作职责:");
+                sb.append(e.getSummary()==null ? "" : e.getSummary());
+                sb.append(Constants.LF1);
+                sb.append(Constants.LF1);
+            }
         }
-
-        if(!StringUtils.isEmpty(candidates.getWork2())){
-            // 时间  公司名称  职位
-            StringBuilder work2 = new StringBuilder();
-            work2.append(QuickTimeUtil.dateParseString(candidates.getWork2stdate(),"yyyy.MM"));
-            work2.append(" - ");
-            work2.append(QuickTimeUtil.dateParseString(candidates.getWork2eddate(),"yyyy.MM"));
-            work2.append(" ");
-            work2.append(candidates.getWork2() + " ");
-            work2.append(candidates.getWork2jobtitle()) ;
-            map.put("work2",work2.toString());
-            // 公司介绍： 汇报对象：  下属人数：工作职责： 求职原因：
-            map.put("work2Info",getCommonInfo(candidates,2));
-        }
-
-        if(!StringUtils.isEmpty(candidates.getWork3())){
-            // 时间  公司名称  职位
-            StringBuilder work3 = new StringBuilder();
-            work3.append(QuickTimeUtil.dateParseString(candidates.getWork3stdate(),"yyyy.MM"));
-            work3.append(" - ");
-            work3.append(QuickTimeUtil.dateParseString(candidates.getWork3eddate(),"yyyy.MM"));
-            work3.append(" ");
-            work3.append(candidates.getWork3() + " ");
-            work3.append(candidates.getWork3jobtitle()) ;
-            map.put("work3",work3.toString());
-            // 公司介绍： 汇报对象：  下属人数：工作职责： 求职原因：
-            map.put("work3Info",getCommonInfo(candidates,3));
-        }
-        if(!StringUtils.isEmpty(candidates.getWork4())){
-            // 时间  公司名称  职位
-            StringBuilder work4 = new StringBuilder();
-            work4.append(QuickTimeUtil.dateParseString(candidates.getWork4stdate(),"yyyy.MM"));
-            work4.append(" - ");
-            work4.append(QuickTimeUtil.dateParseString(candidates.getWork4eddate(),"yyyy.MM"));
-            work4.append(" ");
-            work4.append(candidates.getWork4() + " ");
-            work4.append(candidates.getWork4jobtitle()) ;
-            work4.append(Constants.LF1);
-            map.put("work4",work4.toString());
-            // 公司介绍： 汇报对象：  下属人数：工作职责： 求职原因：
-            map.put("work4Info",getCommonInfo(candidates,4));
-        }
-        return map;
+        return sb.toString() + " ";
     }
 
-    public String getCommonInfo(CandidatesWithBLOBs candidates,Integer i){
-        StringBuilder work1Info = new StringBuilder();
-        work1Info.append("公司介绍：" + Constants.LF1 );
-        work1Info.append("汇报对象：" + Constants.LF1 );
-        work1Info.append("下属人数：" + Constants.LF1 );
-        if ( i == 1){
-            work1Info.append("工作职责：");
-            work1Info.append(Constants.LF1);
-            work1Info.append("  ");// 行开始空格
-            work1Info.append(candidates.getWork1desc());
-            work1Info.append(Constants.LF1);
-        }
-        if ( i == 2){
-            work1Info.append("工作职责：" );
-            work1Info.append(Constants.LF1);
-            work1Info.append("  ");// 行开始空格
-            work1Info.append(candidates.getWork2desc());
-            work1Info.append(Constants.LF1);
-        }
-        if ( i == 3){
-            work1Info.append("工作职责：" );
-            work1Info.append(Constants.LF1);
-            work1Info.append("  ");// 行开始空格
-            work1Info.append(candidates.getWork3desc());
-            work1Info.append(Constants.LF1);
-        }
-        if ( i == 4){
-            work1Info.append("工作职责：" );
-            work1Info.append(Constants.LF1);
-            work1Info.append("  ");// 行开始空格
-            work1Info.append(candidates.getWork4desc());
-            work1Info.append(Constants.LF1);
-        }
-        work1Info.append("求职原因：" + Constants.LF1 );
-        return work1Info.toString() + " ";
-    }
+
 }

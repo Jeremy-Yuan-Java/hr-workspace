@@ -27,25 +27,9 @@ public class CandidatesWithBLOBs extends Candidates {
 
     private String work3projs;
 
+    private String work4desc;
+
     private String work4projs;
-
-    private String fulltexts;
-
-    private String educationdetail;
-
-    private String experiencedetail;
-
-    private String training;
-
-    private String skill;
-
-    private String team;
-
-    private String volunteer;
-
-    private String projectdetails1;
-
-    private String projectdetails2;
 
     public byte[] getResumedetail() {
         return resumedetail;
@@ -151,83 +135,19 @@ public class CandidatesWithBLOBs extends Candidates {
         this.work3projs = work3projs == null ? null : work3projs.trim();
     }
 
+    public String getWork4desc() {
+        return work4desc;
+    }
+
+    public void setWork4desc(String work4desc) {
+        this.work4desc = work4desc == null ? null : work4desc.trim();
+    }
+
     public String getWork4projs() {
         return work4projs;
     }
 
     public void setWork4projs(String work4projs) {
         this.work4projs = work4projs == null ? null : work4projs.trim();
-    }
-
-    public String getFulltexts() {
-        return fulltexts;
-    }
-
-    public void setFulltexts(String fulltexts) {
-        this.fulltexts = fulltexts == null ? null : fulltexts.trim();
-    }
-
-    public String getEducationdetail() {
-        return educationdetail;
-    }
-
-    public void setEducationdetail(String educationdetail) {
-        this.educationdetail = educationdetail == null ? null : educationdetail.trim();
-    }
-
-    public String getExperiencedetail() {
-        return experiencedetail;
-    }
-
-    public void setExperiencedetail(String experiencedetail) {
-        this.experiencedetail = experiencedetail == null ? null : experiencedetail.trim();
-    }
-
-    public String getTraining() {
-        return training;
-    }
-
-    public void setTraining(String training) {
-        this.training = training == null ? null : training.trim();
-    }
-
-    public String getSkill() {
-        return skill;
-    }
-
-    public void setSkill(String skill) {
-        this.skill = skill == null ? null : skill.trim();
-    }
-
-    public String getTeam() {
-        return team;
-    }
-
-    public void setTeam(String team) {
-        this.team = team == null ? null : team.trim();
-    }
-
-    public String getVolunteer() {
-        return volunteer;
-    }
-
-    public void setVolunteer(String volunteer) {
-        this.volunteer = volunteer == null ? null : volunteer.trim();
-    }
-
-    public String getProjectdetails1() {
-        return projectdetails1;
-    }
-
-    public void setProjectdetails1(String projectdetails1) {
-        this.projectdetails1 = projectdetails1 == null ? null : projectdetails1.trim();
-    }
-
-    public String getProjectdetails2() {
-        return projectdetails2;
-    }
-
-    public void setProjectdetails2(String projectdetails2) {
-        this.projectdetails2 = projectdetails2 == null ? null : projectdetails2.trim();
     }
 }

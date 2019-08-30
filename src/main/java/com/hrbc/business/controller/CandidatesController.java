@@ -4,10 +4,12 @@ import com.hrbc.business.common.ResumeUtilAliy;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.domain.Candidates;
 import com.hrbc.business.domain.CandidatesWithBLOBs;
+import com.hrbc.business.domain.common.CandidatesDto;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.mapper.CandidatesMapper;
+import com.hrbc.business.service.CandidatesResumeService;
 import com.hrbc.business.service.CandidatesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -33,18 +35,20 @@ public class CandidatesController {
 
     @Autowired
     private CandidatesMapper mapper;
+    @Autowired
+    private CandidatesResumeService resumeService;
 
     @GetMapping("get/{id}")
-    public CandidatesWithBLOBs get(@PathVariable Integer id) {
+    public CandidatesDto get(@PathVariable Integer id) {
         return service.getWithBLOBs(id);
     }
 
     @PostMapping("save")
-    public ResponseDTO save(@RequestBody CandidatesWithBLOBs entity) {
+    public ResponseDTO save(@RequestBody CandidatesDto entity) {
         entity.setPicpath(null);
         entity.setPostcard(null);
         entity.setResumefile(null);
-        int i = service.save(entity);
+        int i = service.save(entity,null);
         if (i == -3) {
             return new ResponseDTO(false, "候选人手机号存在", entity.getId());
 
@@ -54,7 +58,11 @@ public class CandidatesController {
 
     @PostMapping("loadPage")
     public PageResultDTO loadPage(@RequestBody PageQueryParamDTO params) {
-        return service.loadPage(params);
+        //long start = new Date().getTime();
+        PageResultDTO dto = service.loadPage(params);
+        //long end = new Date().getTime();
+        //System.out.println("查询耗时:" + (end-start) );
+        return dto;
     }
 
     @GetMapping("remove/{id}")
@@ -172,14 +180,15 @@ public class CandidatesController {
                 // 解析简历
                 InputStream in = new FileInputStream(dest);
                 // 解析 简历
-                ResumeUtilAliy.parseResume(in,candidates,suffixName);
+                //ResumeUtilAliy.parseResume(in,candidates,suffixName);
+                int flag =resumeService.resolveResume(in,suffixName);
 
 
-                //mapper.insertSelective(candidates);
-                int flag = service.save(candidates);
                 if ( flag == -3) {
                     // 表示手机号码已经存在了
                     return new ResponseDTO(false, "手机号已经存在了", null);
+                } else if ( flag < 0) {
+                    return new ResponseDTO(false, "解析操作失败了", null);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -189,6 +198,17 @@ public class CandidatesController {
         return new ResponseDTO(true, "", null);
     }
 
+    /**
+     * 根据候选人的编号返回其对应的  简历详情
+     * @param candidatesId
+     */
+    @GetMapping(value = "/loadResumeDetails/{candidatesId}")
+    public ResponseDTO loadResumeDetails(@PathVariable Integer candidatesId){
+        if (candidatesId != null) {
+            return resumeService.loadResumeDetail(candidatesId);
+        }
+        return new ResponseDTO(false,"候选人编号不能为空",null);
+    }
 
 
 }

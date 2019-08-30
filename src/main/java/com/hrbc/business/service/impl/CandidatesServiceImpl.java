@@ -4,15 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.conf.aop.ProcessLog;
-import com.hrbc.business.domain.Candidates;
-import com.hrbc.business.domain.CandidatesExample;
-import com.hrbc.business.domain.CandidatesWithBLOBs;
+import com.hrbc.business.domain.*;
+import com.hrbc.business.domain.common.CandidatesDto;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
 import com.hrbc.business.mapper.CandidatesMapper;
+import com.hrbc.business.service.CandidatesResumeService;
 import com.hrbc.business.service.CandidatesService;
 import com.hrbc.business.util.QuickTimeUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,9 +26,24 @@ public class CandidatesServiceImpl implements CandidatesService {
     @Autowired
     private CandidatesMapper mapper;
 
+    @Autowired
+    private CandidatesResumeService resumeService;
+
     @Override
-    public CandidatesWithBLOBs getWithBLOBs(Integer id) {
-        return mapper.selectByPrimaryKey(id);
+    public CandidatesDto getWithBLOBs(Integer id) {
+        CandidatesWithBLOBs candidates = mapper.selectByPrimaryKey(id);
+        CandidatesResumeDetail detail = resumeService.queryResumeDetail(id);
+        CandidatesDto dto = new CandidatesDto();
+        BeanUtils.copyProperties(candidates,dto);
+        if (detail != null) {
+            List<CandidatesResumeProjectinfoWithBLOBs> projects = resumeService.queryResumePros(detail.getId());
+            dto.setProjects(projects);
+            List<CandidatesResumeExperienceinfoWithBLOBs> exprs = resumeService.queryResumeExprs(detail.getId());
+            dto.setExprs(exprs);
+            List<CandidatesResumeEducationinfo> edus = resumeService.queryResumeEdus(detail.getId());
+            dto.setEdus(edus);
+        }
+        return dto;
     }
 
     @Override
@@ -36,11 +52,20 @@ public class CandidatesServiceImpl implements CandidatesService {
     }
 
 
-
+    /**
+     *  保存 候选人 信息
+     *
+     * @param entity
+     * @param flag
+     *              null 表示手动添加
+     *              1    导入简历信息，同步的候选人信息
+     * @return
+     */
     @Override
     @ProcessLog(businessName = "候选人管理",methodName = "save")
-    public int save(CandidatesWithBLOBs entity) {
-
+    public int save(CandidatesDto entity, Integer flag) {
+        // 将工作经历中的详情数据更新到 候选人对象中
+        updateCandidatesWork(entity);
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             if(checkPhoneNo(entity,2)){
                 return -3;
@@ -50,7 +75,10 @@ public class CandidatesServiceImpl implements CandidatesService {
             int i = mapper.updateByPrimaryKeySelective(entity);
             //更新全文检索
             updateFulltext(entity, 2);
-
+            if ( i > 0 && flag == null) {
+                // 更新简历详情中的信息
+                i = resumeService.saveResumeByCandidates(entity);
+            }
             return i;
         } else {
 
@@ -60,8 +88,46 @@ public class CandidatesServiceImpl implements CandidatesService {
             entity.setCreateuser(JwtToken.getUser());
 
             updateFulltext(entity, 1);
-            return mapper.insertSelective(entity);
+            // 保存完候选人的信息，还需要将 候选人的信息同步到简历表中
+            int i = mapper.insertSelective(entity);
+            if ( i > 0 && flag == null) {
+                i = resumeService.saveResumeByCandidates(entity);
+            }
+            return i;
 
+        }
+    }
+
+    private void updateCandidatesWork(CandidatesDto dto){
+        List<CandidatesResumeExperienceinfoWithBLOBs> exprs = dto.getExprs();
+        if (exprs != null && exprs.size() > 0) {
+            for ( int i = 0 ; i < exprs.size() ;i++) {
+                CandidatesResumeExperienceinfoWithBLOBs e = exprs.get(i);
+                if(i==0){
+                    dto.setWork1(e.getCompany());
+                    dto.setWork1stdate(e.getStartdate());
+                    dto.setWork1eddate(e.getEnddate());
+                    dto.setWork1desc(e.getSummary());
+                }
+                if(i==1){
+                    dto.setWork2(e.getCompany());
+                    dto.setWork2stdate(e.getStartdate());
+                    dto.setWork2eddate(e.getEnddate());
+                    dto.setWork2desc(e.getSummary());
+                }
+                if(i==2){
+                    dto.setWork3(e.getCompany());
+                    dto.setWork3stdate(e.getStartdate());
+                    dto.setWork3eddate(e.getEnddate());
+                    dto.setWork3desc(e.getSummary());
+                }
+                if(i==3){
+                    dto.setWork4(e.getCompany());
+                    dto.setWork4stdate(e.getStartdate());
+                    dto.setWork4eddate(e.getEnddate());
+                    dto.setWork4desc(e.getSummary());
+                }
+            }
         }
     }
 
@@ -187,7 +253,7 @@ public class CandidatesServiceImpl implements CandidatesService {
     public PageResultDTO loadPage(PageQueryParamDTO params) {
 
         long count = 0;
-        List<CandidatesWithBLOBs> list = null;
+        List<Candidates> list = null;
         int page = 1;
         int size = 10;
         if (params != null) {
@@ -220,7 +286,7 @@ public class CandidatesServiceImpl implements CandidatesService {
                     example.getOredCriteria().get(0).andUsernameEqualTo(dto.getUsername());
                 }
                 if (!StringUtils.isEmpty(dto.getPhoneno())) {
-                    example.getOredCriteria().get(0).andPhonenobakEqualTo(dto.getPhoneno());
+                    example.getOredCriteria().get(0).andPhonenoEqualTo(dto.getPhoneno());
                 }
                 if (!StringUtils.isEmpty(dto.getEmail())) {
                     example.getOredCriteria().get(0).andEmailEqualTo(dto.getEmail());
@@ -240,9 +306,9 @@ public class CandidatesServiceImpl implements CandidatesService {
                 if (!StringUtils.isEmpty(dto.getEdu1())) {
                     example.getOredCriteria().get(0).andJobtitleLike("%" + dto.getEdu1() + "%");
                 }
-               /* if (!StringUtils.isEmpty(dto.getFulltexts())) {
+               if (!StringUtils.isEmpty(dto.getFulltexts())) {
                     example.getOredCriteria().get(0).andFulltextsLike("%" + dto.getFulltexts() + "%");
-                }*/
+                }
 
                 if (!StringUtils.isEmpty(dto.getWorkyears())) {
                     example.getOredCriteria().get(0).andWorkyearsGreaterThan(dto.getWorkyears());
@@ -263,7 +329,7 @@ public class CandidatesServiceImpl implements CandidatesService {
             if (count > 0) {
                 example.setOffset((page - 1) * size);
                 example.setLimit(size);
-                list = mapper.selectByExampleWithBLOBs(example);
+                list = mapper.selectByExample(example);
 
                 list.forEach(s -> {
                     if (!StringUtils.isEmpty(s.getPicpath())) {

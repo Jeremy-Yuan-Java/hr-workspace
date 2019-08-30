@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrbc.business.mapper.CandidatesResumeEducationinfoMapper">
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.CandidatesResumeEducationinfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="resumeid" jdbcType="INTEGER" property="resumeid" />
+    <result column="startdate" jdbcType="DATE" property="startdate" />
+    <result column="enddate" jdbcType="DATE" property="enddate" />
+    <result column="school" jdbcType="VARCHAR" property="school" />
+    <result column="schooltype" jdbcType="VARCHAR" property="schooltype" />
+    <result column="schoollabel" jdbcType="VARCHAR" property="schoollabel" />
+    <result column="speciality" jdbcType="VARCHAR" property="speciality" />
+    <result column="advanceddegree" jdbcType="VARCHAR" property="advanceddegree" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="department" jdbcType="VARCHAR" property="department" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="isstudii" jdbcType="VARCHAR" property="isstudii" />
+    <result column="candidatesnum" jdbcType="INTEGER" property="candidatesnum" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, resumeid, startdate, enddate, school, schooltype, schoollabel, speciality, advanceddegree, 
+    education, department, summary, isstudii, candidatesnum
+  </sql>
+  <select id="selectByExample" parameterType="com.hrbc.business.domain.CandidatesResumeEducationinfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from candidates_resume_educationinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from candidates_resume_educationinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from candidates_resume_educationinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.CandidatesResumeEducationinfoExample">
+    delete from candidates_resume_educationinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hrbc.business.domain.CandidatesResumeEducationinfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into candidates_resume_educationinfo (resumeid, startdate, enddate, 
+      school, schooltype, schoollabel, 
+      speciality, advanceddegree, education, 
+      department, summary, isstudii, 
+      candidatesnum)
+    values (#{resumeid,jdbcType=INTEGER}, #{startdate,jdbcType=DATE}, #{enddate,jdbcType=DATE}, 
+      #{school,jdbcType=VARCHAR}, #{schooltype,jdbcType=VARCHAR}, #{schoollabel,jdbcType=VARCHAR}, 
+      #{speciality,jdbcType=VARCHAR}, #{advanceddegree,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{isstudii,jdbcType=VARCHAR}, 
+      #{candidatesnum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.CandidatesResumeEducationinfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into candidates_resume_educationinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="resumeid != null">
+        resumeid,
+      </if>
+      <if test="startdate != null">
+        startdate,
+      </if>
+      <if test="enddate != null">
+        enddate,
+      </if>
+      <if test="school != null">
+        school,
+      </if>
+      <if test="schooltype != null">
+        schooltype,
+      </if>
+      <if test="schoollabel != null">
+        schoollabel,
+      </if>
+      <if test="speciality != null">
+        speciality,
+      </if>
+      <if test="advanceddegree != null">
+        advanceddegree,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="department != null">
+        department,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+      <if test="isstudii != null">
+        isstudii,
+      </if>
+      <if test="candidatesnum != null">
+        candidatesnum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="resumeid != null">
+        #{resumeid,jdbcType=INTEGER},
+      </if>
+      <if test="startdate != null">
+        #{startdate,jdbcType=DATE},
+      </if>
+      <if test="enddate != null">
+        #{enddate,jdbcType=DATE},
+      </if>
+      <if test="school != null">
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="schooltype != null">
+        #{schooltype,jdbcType=VARCHAR},
+      </if>
+      <if test="schoollabel != null">
+        #{schoollabel,jdbcType=VARCHAR},
+      </if>
+      <if test="speciality != null">
+        #{speciality,jdbcType=VARCHAR},
+      </if>
+      <if test="advanceddegree != null">
+        #{advanceddegree,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="isstudii != null">
+        #{isstudii,jdbcType=VARCHAR},
+      </if>
+      <if test="candidatesnum != null">
+        #{candidatesnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hrbc.business.domain.CandidatesResumeEducationinfoExample" resultType="java.lang.Long">
+    select count(*) from candidates_resume_educationinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update candidates_resume_educationinfo
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.resumeid != null">
+        resumeid = #{record.resumeid,jdbcType=INTEGER},
+      </if>
+      <if test="record.startdate != null">
+        startdate = #{record.startdate,jdbcType=DATE},
+      </if>
+      <if test="record.enddate != null">
+        enddate = #{record.enddate,jdbcType=DATE},
+      </if>
+      <if test="record.school != null">
+        school = #{record.school,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schooltype != null">
+        schooltype = #{record.schooltype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoollabel != null">
+        schoollabel = #{record.schoollabel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.speciality != null">
+        speciality = #{record.speciality,jdbcType=VARCHAR},
+      </if>
+      <if test="record.advanceddegree != null">
+        advanceddegree = #{record.advanceddegree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.education != null">
+        education = #{record.education,jdbcType=VARCHAR},
+      </if>
+      <if test="record.department != null">
+        department = #{record.department,jdbcType=VARCHAR},
+      </if>
+      <if test="record.summary != null">
+        summary = #{record.summary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isstudii != null">
+        isstudii = #{record.isstudii,jdbcType=VARCHAR},
+      </if>
+      <if test="record.candidatesnum != null">
+        candidatesnum = #{record.candidatesnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update candidates_resume_educationinfo
+    set id = #{record.id,jdbcType=INTEGER},
+      resumeid = #{record.resumeid,jdbcType=INTEGER},
+      startdate = #{record.startdate,jdbcType=DATE},
+      enddate = #{record.enddate,jdbcType=DATE},
+      school = #{record.school,jdbcType=VARCHAR},
+      schooltype = #{record.schooltype,jdbcType=VARCHAR},
+      schoollabel = #{record.schoollabel,jdbcType=VARCHAR},
+      speciality = #{record.speciality,jdbcType=VARCHAR},
+      advanceddegree = #{record.advanceddegree,jdbcType=VARCHAR},
+      education = #{record.education,jdbcType=VARCHAR},
+      department = #{record.department,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      isstudii = #{record.isstudii,jdbcType=VARCHAR},
+      candidatesnum = #{record.candidatesnum,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.CandidatesResumeEducationinfo">
+    update candidates_resume_educationinfo
+    <set>
+      <if test="resumeid != null">
+        resumeid = #{resumeid,jdbcType=INTEGER},
+      </if>
+      <if test="startdate != null">
+        startdate = #{startdate,jdbcType=DATE},
+      </if>
+      <if test="enddate != null">
+        enddate = #{enddate,jdbcType=DATE},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="schooltype != null">
+        schooltype = #{schooltype,jdbcType=VARCHAR},
+      </if>
+      <if test="schoollabel != null">
+        schoollabel = #{schoollabel,jdbcType=VARCHAR},
+      </if>
+      <if test="speciality != null">
+        speciality = #{speciality,jdbcType=VARCHAR},
+      </if>
+      <if test="advanceddegree != null">
+        advanceddegree = #{advanceddegree,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="isstudii != null">
+        isstudii = #{isstudii,jdbcType=VARCHAR},
+      </if>
+      <if test="candidatesnum != null">
+        candidatesnum = #{candidatesnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.CandidatesResumeEducationinfo">
+    update candidates_resume_educationinfo
+    set resumeid = #{resumeid,jdbcType=INTEGER},
+      startdate = #{startdate,jdbcType=DATE},
+      enddate = #{enddate,jdbcType=DATE},
+      school = #{school,jdbcType=VARCHAR},
+      schooltype = #{schooltype,jdbcType=VARCHAR},
+      schoollabel = #{schoollabel,jdbcType=VARCHAR},
+      speciality = #{speciality,jdbcType=VARCHAR},
+      advanceddegree = #{advanceddegree,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      isstudii = #{isstudii,jdbcType=VARCHAR},
+      candidatesnum = #{candidatesnum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into candidates_resume_educationinfo (
+    resumeid,
+    startdate,
+    enddate,
+    school,
+    schooltype,
+    schoollabel,
+    speciality,
+    advanceddegree,
+    education,
+    department,
+    summary,
+    isstudii,
+    candidatesnum
+    )
+    values
+    <foreach collection="recordList" index="index" item="item" separator=",">
+      (
+      #{item.resumeid,jdbcType=INTEGER},
+      #{item.startdate,jdbcType=DATE},
+      #{item.enddate,jdbcType=DATE},
+      #{item.school,jdbcType=VARCHAR},
+      #{item.schooltype,jdbcType=VARCHAR},
+      #{item.schoollabel,jdbcType=VARCHAR},
+      #{item.speciality,jdbcType=VARCHAR},
+      #{item.advanceddegree,jdbcType=VARCHAR},
+      #{item.education,jdbcType=VARCHAR},
+      #{item.department,jdbcType=VARCHAR},
+      #{item.summary,jdbcType=VARCHAR},
+      #{item.isstudii,jdbcType=VARCHAR},
+      #{item.candidatesnum,jdbcType=INTEGER}
+      )
+    </foreach>
+  </insert>
+</mapper>

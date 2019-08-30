@@ -65,43 +65,11 @@
     <result column="work2jobtitle" jdbcType="VARCHAR" property="work2jobtitle" />
     <result column="work3jobtitle" jdbcType="VARCHAR" property="work3jobtitle" />
     <result column="work4jobtitle" jdbcType="VARCHAR" property="work4jobtitle" />
-    <result column="work4desc" jdbcType="VARCHAR" property="work4desc" />
     <result column="updateuser" jdbcType="VARCHAR" property="updateuser" />
     <result column="createuser" jdbcType="VARCHAR" property="createuser" />
     <result column="createstaff" jdbcType="VARCHAR" property="createstaff" />
     <result column="updatestaff" jdbcType="VARCHAR" property="updatestaff" />
-    <result column="studenttype" jdbcType="VARCHAR" property="studenttype" />
-    <result column="jiguan" jdbcType="VARCHAR" property="jiguan" />
-    <result column="vocation" jdbcType="VARCHAR" property="vocation" />
-    <result column="forwordvocation" jdbcType="VARCHAR" property="forwordvocation" />
-    <result column="nowsalary" jdbcType="VARCHAR" property="nowsalary" />
-    <result column="aimsalary" jdbcType="VARCHAR" property="aimsalary" />
-    <result column="political" jdbcType="VARCHAR" property="political" />
-    <result column="startfrom" jdbcType="VARCHAR" property="startfrom" />
-    <result column="qq" jdbcType="VARCHAR" property="qq" />
-    <result column="encouragement" jdbcType="VARCHAR" property="encouragement" />
-    <result column="graduatetime" jdbcType="VARCHAR" property="graduatetime" />
-    <result column="beginworktime" jdbcType="VARCHAR" property="beginworktime" />
-    <result column="lesson" jdbcType="VARCHAR" property="lesson" />
-    <result column="computer" jdbcType="VARCHAR" property="computer" />
-    <result column="English" jdbcType="VARCHAR" property="english" />
-    <result column="schoolrankings" jdbcType="VARCHAR" property="schoolrankings" />
-    <result column="schooltype" jdbcType="VARCHAR" property="schooltype" />
-    <result column="postcode" jdbcType="VARCHAR" property="postcode" />
-    <result column="speciality" jdbcType="VARCHAR" property="speciality" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="notional" jdbcType="VARCHAR" property="notional" />
-    <result column="nationality" jdbcType="VARCHAR" property="nationality" />
-    <result column="href" jdbcType="VARCHAR" property="href" />
-    <result column="high" jdbcType="VARCHAR" property="high" />
-    <result column="tizhong" jdbcType="VARCHAR" property="tizhong" />
-    <result column="advanceddegree" jdbcType="VARCHAR" property="advanceddegree" />
-    <result column="isjobsearch" jdbcType="VARCHAR" property="isjobsearch" />
-    <result column="overseaswork" jdbcType="VARCHAR" property="overseaswork" />
-    <result column="jobhoppingfrequency" jdbcType="VARCHAR" property="jobhoppingfrequency" />
-    <result column="worktype" jdbcType="VARCHAR" property="worktype" />
-    <result column="webchat" jdbcType="VARCHAR" property="webchat" />
-    <result column="personalInterests" jdbcType="VARCHAR" property="personalinterests" />
+    <result column="fulltexts" jdbcType="VARCHAR" property="fulltexts" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.CandidatesWithBLOBs">
     <result column="resumedetail" jdbcType="LONGVARBINARY" property="resumedetail" />
@@ -117,16 +85,8 @@
     <result column="work2projs" jdbcType="LONGVARCHAR" property="work2projs" />
     <result column="work3desc" jdbcType="LONGVARCHAR" property="work3desc" />
     <result column="work3projs" jdbcType="LONGVARCHAR" property="work3projs" />
+    <result column="work4desc" jdbcType="LONGVARCHAR" property="work4desc" />
     <result column="work4projs" jdbcType="LONGVARCHAR" property="work4projs" />
-    <result column="fulltexts" jdbcType="LONGVARCHAR" property="fulltexts" />
-    <result column="educationdetail" jdbcType="LONGVARCHAR" property="educationdetail" />
-    <result column="experiencedetail" jdbcType="LONGVARCHAR" property="experiencedetail" />
-    <result column="training" jdbcType="LONGVARCHAR" property="training" />
-    <result column="skill" jdbcType="LONGVARCHAR" property="skill" />
-    <result column="team" jdbcType="LONGVARCHAR" property="team" />
-    <result column="volunteer" jdbcType="LONGVARCHAR" property="volunteer" />
-    <result column="projectdetails1" jdbcType="LONGVARCHAR" property="projectdetails1" />
-    <result column="projectdetails2" jdbcType="LONGVARCHAR" property="projectdetails2" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -194,18 +154,12 @@
     edu2, edu2stdate, edu2eddate, edu3, edu3stdate, edu3eddate, work1, work1stdate, work1eddate, 
     work2, work2stdate, work2eddate, work3, work3stdate, work3eddate, work4, work4stdate, 
     work4eddate, personaliy, birthday, remark, married, workyears, work2jobtitle, work3jobtitle, 
-    work4jobtitle, work4desc, updateuser, createuser, createstaff, updatestaff, studenttype, 
-    jiguan, vocation, forwordvocation, nowsalary, aimsalary, political, startfrom, qq, 
-    encouragement, graduatetime, beginworktime, lesson, computer, English, schoolrankings, 
-    schooltype, postcode, speciality, address, notional, nationality, href, high, tizhong, 
-    advanceddegree, isjobsearch, overseaswork, jobhoppingfrequency, worktype, webchat, 
-    personalInterests
+    work4jobtitle, updateuser, createuser, createstaff, updatestaff, fulltexts
   </sql>
   <sql id="Blob_Column_List">
     resumedetail, resumedetail1, resumedetail2, certifications, educations, workexperiences, 
     perprofile, work1desc, work1projs, work2desc, work2projs, work3desc, work3projs, 
-    work4projs, fulltexts, educationdetail, experiencedetail, training, skill, team, 
-    volunteer, projectdetails1, projectdetails2
+    work4desc, work4projs
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.hrbc.business.domain.CandidatesExample" resultMap="ResultMapWithBLOBs">
     select
@@ -287,28 +241,14 @@
       work4, work4stdate, work4eddate, 
       personaliy, birthday, remark, 
       married, workyears, work2jobtitle, 
-      work3jobtitle, work4jobtitle, work4desc, 
-      updateuser, createuser, createstaff, 
-      updatestaff, studenttype, jiguan, 
-      vocation, forwordvocation, nowsalary, 
-      aimsalary, political, startfrom, 
-      qq, encouragement, graduatetime, 
-      beginworktime, lesson, computer, 
-      English, schoolrankings, schooltype, 
-      postcode, speciality, address, 
-      notional, nationality, href, 
-      high, tizhong, advanceddegree, 
-      isjobsearch, overseaswork, jobhoppingfrequency, 
-      worktype, webchat, personalInterests, 
-      resumedetail, resumedetail1, 
+      work3jobtitle, work4jobtitle, updateuser, 
+      createuser, createstaff, updatestaff, 
+      fulltexts, resumedetail, resumedetail1, 
       resumedetail2, certifications, 
       educations, workexperiences, perprofile, 
       work1desc, work1projs, work2desc, 
       work2projs, work3desc, work3projs, 
-      work4projs, fulltexts, educationdetail, 
-      experiencedetail, training, skill, 
-      team, volunteer, projectdetails1, 
-      projectdetails2)
+      work4desc, work4projs)
     values (#{username,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{emailbak,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
       #{picpath,jdbcType=VARCHAR}, #{postcard,jdbcType=VARCHAR}, #{jobtitle,jdbcType=VARCHAR}, 
@@ -329,28 +269,14 @@
       #{work4,jdbcType=VARCHAR}, #{work4stdate,jdbcType=TIMESTAMP}, #{work4eddate,jdbcType=TIMESTAMP}, 
       #{personaliy,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
       #{married,jdbcType=VARCHAR}, #{workyears,jdbcType=INTEGER}, #{work2jobtitle,jdbcType=VARCHAR}, 
-      #{work3jobtitle,jdbcType=VARCHAR}, #{work4jobtitle,jdbcType=VARCHAR}, #{work4desc,jdbcType=VARCHAR}, 
-      #{updateuser,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, 
-      #{updatestaff,jdbcType=VARCHAR}, #{studenttype,jdbcType=VARCHAR}, #{jiguan,jdbcType=VARCHAR}, 
-      #{vocation,jdbcType=VARCHAR}, #{forwordvocation,jdbcType=VARCHAR}, #{nowsalary,jdbcType=VARCHAR}, 
-      #{aimsalary,jdbcType=VARCHAR}, #{political,jdbcType=VARCHAR}, #{startfrom,jdbcType=VARCHAR}, 
-      #{qq,jdbcType=VARCHAR}, #{encouragement,jdbcType=VARCHAR}, #{graduatetime,jdbcType=VARCHAR}, 
-      #{beginworktime,jdbcType=VARCHAR}, #{lesson,jdbcType=VARCHAR}, #{computer,jdbcType=VARCHAR}, 
-      #{english,jdbcType=VARCHAR}, #{schoolrankings,jdbcType=VARCHAR}, #{schooltype,jdbcType=VARCHAR}, 
-      #{postcode,jdbcType=VARCHAR}, #{speciality,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{notional,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR}, #{href,jdbcType=VARCHAR}, 
-      #{high,jdbcType=VARCHAR}, #{tizhong,jdbcType=VARCHAR}, #{advanceddegree,jdbcType=VARCHAR}, 
-      #{isjobsearch,jdbcType=VARCHAR}, #{overseaswork,jdbcType=VARCHAR}, #{jobhoppingfrequency,jdbcType=VARCHAR}, 
-      #{worktype,jdbcType=VARCHAR}, #{webchat,jdbcType=VARCHAR}, #{personalinterests,jdbcType=VARCHAR}, 
-      #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
+      #{work3jobtitle,jdbcType=VARCHAR}, #{work4jobtitle,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
+      #{createuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, 
+      #{fulltexts,jdbcType=VARCHAR}, #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
       #{resumedetail2,jdbcType=LONGVARBINARY}, #{certifications,jdbcType=LONGVARCHAR}, 
       #{educations,jdbcType=LONGVARCHAR}, #{workexperiences,jdbcType=LONGVARCHAR}, #{perprofile,jdbcType=LONGVARCHAR}, 
       #{work1desc,jdbcType=LONGVARCHAR}, #{work1projs,jdbcType=LONGVARCHAR}, #{work2desc,jdbcType=LONGVARCHAR}, 
       #{work2projs,jdbcType=LONGVARCHAR}, #{work3desc,jdbcType=LONGVARCHAR}, #{work3projs,jdbcType=LONGVARCHAR}, 
-      #{work4projs,jdbcType=LONGVARCHAR}, #{fulltexts,jdbcType=LONGVARCHAR}, #{educationdetail,jdbcType=LONGVARCHAR}, 
-      #{experiencedetail,jdbcType=LONGVARCHAR}, #{training,jdbcType=LONGVARCHAR}, #{skill,jdbcType=LONGVARCHAR}, 
-      #{team,jdbcType=LONGVARCHAR}, #{volunteer,jdbcType=LONGVARCHAR}, #{projectdetails1,jdbcType=LONGVARCHAR}, 
-      #{projectdetails2,jdbcType=LONGVARCHAR})
+      #{work4desc,jdbcType=LONGVARCHAR}, #{work4projs,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -544,9 +470,6 @@
       <if test="work4jobtitle != null">
         work4jobtitle,
       </if>
-      <if test="work4desc != null">
-        work4desc,
-      </if>
       <if test="updateuser != null">
         updateuser,
       </if>
@@ -559,101 +482,8 @@
       <if test="updatestaff != null">
         updatestaff,
       </if>
-      <if test="studenttype != null">
-        studenttype,
-      </if>
-      <if test="jiguan != null">
-        jiguan,
-      </if>
-      <if test="vocation != null">
-        vocation,
-      </if>
-      <if test="forwordvocation != null">
-        forwordvocation,
-      </if>
-      <if test="nowsalary != null">
-        nowsalary,
-      </if>
-      <if test="aimsalary != null">
-        aimsalary,
-      </if>
-      <if test="political != null">
-        political,
-      </if>
-      <if test="startfrom != null">
-        startfrom,
-      </if>
-      <if test="qq != null">
-        qq,
-      </if>
-      <if test="encouragement != null">
-        encouragement,
-      </if>
-      <if test="graduatetime != null">
-        graduatetime,
-      </if>
-      <if test="beginworktime != null">
-        beginworktime,
-      </if>
-      <if test="lesson != null">
-        lesson,
-      </if>
-      <if test="computer != null">
-        computer,
-      </if>
-      <if test="english != null">
-        English,
-      </if>
-      <if test="schoolrankings != null">
-        schoolrankings,
-      </if>
-      <if test="schooltype != null">
-        schooltype,
-      </if>
-      <if test="postcode != null">
-        postcode,
-      </if>
-      <if test="speciality != null">
-        speciality,
-      </if>
-      <if test="address != null">
-        address,
-      </if>
-      <if test="notional != null">
-        notional,
-      </if>
-      <if test="nationality != null">
-        nationality,
-      </if>
-      <if test="href != null">
-        href,
-      </if>
-      <if test="high != null">
-        high,
-      </if>
-      <if test="tizhong != null">
-        tizhong,
-      </if>
-      <if test="advanceddegree != null">
-        advanceddegree,
-      </if>
-      <if test="isjobsearch != null">
-        isjobsearch,
-      </if>
-      <if test="overseaswork != null">
-        overseaswork,
-      </if>
-      <if test="jobhoppingfrequency != null">
-        jobhoppingfrequency,
-      </if>
-      <if test="worktype != null">
-        worktype,
-      </if>
-      <if test="webchat != null">
-        webchat,
-      </if>
-      <if test="personalinterests != null">
-        personalInterests,
+      <if test="fulltexts != null">
+        fulltexts,
       </if>
       <if test="resumedetail != null">
         resumedetail,
@@ -694,35 +524,11 @@
       <if test="work3projs != null">
         work3projs,
       </if>
+      <if test="work4desc != null">
+        work4desc,
+      </if>
       <if test="work4projs != null">
         work4projs,
-      </if>
-      <if test="fulltexts != null">
-        fulltexts,
-      </if>
-      <if test="educationdetail != null">
-        educationdetail,
-      </if>
-      <if test="experiencedetail != null">
-        experiencedetail,
-      </if>
-      <if test="training != null">
-        training,
-      </if>
-      <if test="skill != null">
-        skill,
-      </if>
-      <if test="team != null">
-        team,
-      </if>
-      <if test="volunteer != null">
-        volunteer,
-      </if>
-      <if test="projectdetails1 != null">
-        projectdetails1,
-      </if>
-      <if test="projectdetails2 != null">
-        projectdetails2,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -912,9 +718,6 @@
       <if test="work4jobtitle != null">
         #{work4jobtitle,jdbcType=VARCHAR},
       </if>
-      <if test="work4desc != null">
-        #{work4desc,jdbcType=VARCHAR},
-      </if>
       <if test="updateuser != null">
         #{updateuser,jdbcType=VARCHAR},
       </if>
@@ -927,101 +730,8 @@
       <if test="updatestaff != null">
         #{updatestaff,jdbcType=VARCHAR},
       </if>
-      <if test="studenttype != null">
-        #{studenttype,jdbcType=VARCHAR},
-      </if>
-      <if test="jiguan != null">
-        #{jiguan,jdbcType=VARCHAR},
-      </if>
-      <if test="vocation != null">
-        #{vocation,jdbcType=VARCHAR},
-      </if>
-      <if test="forwordvocation != null">
-        #{forwordvocation,jdbcType=VARCHAR},
-      </if>
-      <if test="nowsalary != null">
-        #{nowsalary,jdbcType=VARCHAR},
-      </if>
-      <if test="aimsalary != null">
-        #{aimsalary,jdbcType=VARCHAR},
-      </if>
-      <if test="political != null">
-        #{political,jdbcType=VARCHAR},
-      </if>
-      <if test="startfrom != null">
-        #{startfrom,jdbcType=VARCHAR},
-      </if>
-      <if test="qq != null">
-        #{qq,jdbcType=VARCHAR},
-      </if>
-      <if test="encouragement != null">
-        #{encouragement,jdbcType=VARCHAR},
-      </if>
-      <if test="graduatetime != null">
-        #{graduatetime,jdbcType=VARCHAR},
-      </if>
-      <if test="beginworktime != null">
-        #{beginworktime,jdbcType=VARCHAR},
-      </if>
-      <if test="lesson != null">
-        #{lesson,jdbcType=VARCHAR},
-      </if>
-      <if test="computer != null">
-        #{computer,jdbcType=VARCHAR},
-      </if>
-      <if test="english != null">
-        #{english,jdbcType=VARCHAR},
-      </if>
-      <if test="schoolrankings != null">
-        #{schoolrankings,jdbcType=VARCHAR},
-      </if>
-      <if test="schooltype != null">
-        #{schooltype,jdbcType=VARCHAR},
-      </if>
-      <if test="postcode != null">
-        #{postcode,jdbcType=VARCHAR},
-      </if>
-      <if test="speciality != null">
-        #{speciality,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null">
-        #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="notional != null">
-        #{notional,jdbcType=VARCHAR},
-      </if>
-      <if test="nationality != null">
-        #{nationality,jdbcType=VARCHAR},
-      </if>
-      <if test="href != null">
-        #{href,jdbcType=VARCHAR},
-      </if>
-      <if test="high != null">
-        #{high,jdbcType=VARCHAR},
-      </if>
-      <if test="tizhong != null">
-        #{tizhong,jdbcType=VARCHAR},
-      </if>
-      <if test="advanceddegree != null">
-        #{advanceddegree,jdbcType=VARCHAR},
-      </if>
-      <if test="isjobsearch != null">
-        #{isjobsearch,jdbcType=VARCHAR},
-      </if>
-      <if test="overseaswork != null">
-        #{overseaswork,jdbcType=VARCHAR},
-      </if>
-      <if test="jobhoppingfrequency != null">
-        #{jobhoppingfrequency,jdbcType=VARCHAR},
-      </if>
-      <if test="worktype != null">
-        #{worktype,jdbcType=VARCHAR},
-      </if>
-      <if test="webchat != null">
-        #{webchat,jdbcType=VARCHAR},
-      </if>
-      <if test="personalinterests != null">
-        #{personalinterests,jdbcType=VARCHAR},
+      <if test="fulltexts != null">
+        #{fulltexts,jdbcType=VARCHAR},
       </if>
       <if test="resumedetail != null">
         #{resumedetail,jdbcType=LONGVARBINARY},
@@ -1062,35 +772,11 @@
       <if test="work3projs != null">
         #{work3projs,jdbcType=LONGVARCHAR},
       </if>
+      <if test="work4desc != null">
+        #{work4desc,jdbcType=LONGVARCHAR},
+      </if>
       <if test="work4projs != null">
         #{work4projs,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="fulltexts != null">
-        #{fulltexts,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="educationdetail != null">
-        #{educationdetail,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="experiencedetail != null">
-        #{experiencedetail,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="training != null">
-        #{training,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="skill != null">
-        #{skill,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="team != null">
-        #{team,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="volunteer != null">
-        #{volunteer,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="projectdetails1 != null">
-        #{projectdetails1,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="projectdetails2 != null">
-        #{projectdetails2,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -1292,9 +978,6 @@
       <if test="record.work4jobtitle != null">
         work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR},
       </if>
-      <if test="record.work4desc != null">
-        work4desc = #{record.work4desc,jdbcType=VARCHAR},
-      </if>
       <if test="record.updateuser != null">
         updateuser = #{record.updateuser,jdbcType=VARCHAR},
       </if>
@@ -1307,101 +990,8 @@
       <if test="record.updatestaff != null">
         updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
       </if>
-      <if test="record.studenttype != null">
-        studenttype = #{record.studenttype,jdbcType=VARCHAR},
-      </if>
-      <if test="record.jiguan != null">
-        jiguan = #{record.jiguan,jdbcType=VARCHAR},
-      </if>
-      <if test="record.vocation != null">
-        vocation = #{record.vocation,jdbcType=VARCHAR},
-      </if>
-      <if test="record.forwordvocation != null">
-        forwordvocation = #{record.forwordvocation,jdbcType=VARCHAR},
-      </if>
-      <if test="record.nowsalary != null">
-        nowsalary = #{record.nowsalary,jdbcType=VARCHAR},
-      </if>
-      <if test="record.aimsalary != null">
-        aimsalary = #{record.aimsalary,jdbcType=VARCHAR},
-      </if>
-      <if test="record.political != null">
-        political = #{record.political,jdbcType=VARCHAR},
-      </if>
-      <if test="record.startfrom != null">
-        startfrom = #{record.startfrom,jdbcType=VARCHAR},
-      </if>
-      <if test="record.qq != null">
-        qq = #{record.qq,jdbcType=VARCHAR},
-      </if>
-      <if test="record.encouragement != null">
-        encouragement = #{record.encouragement,jdbcType=VARCHAR},
-      </if>
-      <if test="record.graduatetime != null">
-        graduatetime = #{record.graduatetime,jdbcType=VARCHAR},
-      </if>
-      <if test="record.beginworktime != null">
-        beginworktime = #{record.beginworktime,jdbcType=VARCHAR},
-      </if>
-      <if test="record.lesson != null">
-        lesson = #{record.lesson,jdbcType=VARCHAR},
-      </if>
-      <if test="record.computer != null">
-        computer = #{record.computer,jdbcType=VARCHAR},
-      </if>
-      <if test="record.english != null">
-        English = #{record.english,jdbcType=VARCHAR},
-      </if>
-      <if test="record.schoolrankings != null">
-        schoolrankings = #{record.schoolrankings,jdbcType=VARCHAR},
-      </if>
-      <if test="record.schooltype != null">
-        schooltype = #{record.schooltype,jdbcType=VARCHAR},
-      </if>
-      <if test="record.postcode != null">
-        postcode = #{record.postcode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.speciality != null">
-        speciality = #{record.speciality,jdbcType=VARCHAR},
-      </if>
-      <if test="record.address != null">
-        address = #{record.address,jdbcType=VARCHAR},
-      </if>
-      <if test="record.notional != null">
-        notional = #{record.notional,jdbcType=VARCHAR},
-      </if>
-      <if test="record.nationality != null">
-        nationality = #{record.nationality,jdbcType=VARCHAR},
-      </if>
-      <if test="record.href != null">
-        href = #{record.href,jdbcType=VARCHAR},
-      </if>
-      <if test="record.high != null">
-        high = #{record.high,jdbcType=VARCHAR},
-      </if>
-      <if test="record.tizhong != null">
-        tizhong = #{record.tizhong,jdbcType=VARCHAR},
-      </if>
-      <if test="record.advanceddegree != null">
-        advanceddegree = #{record.advanceddegree,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isjobsearch != null">
-        isjobsearch = #{record.isjobsearch,jdbcType=VARCHAR},
-      </if>
-      <if test="record.overseaswork != null">
-        overseaswork = #{record.overseaswork,jdbcType=VARCHAR},
-      </if>
-      <if test="record.jobhoppingfrequency != null">
-        jobhoppingfrequency = #{record.jobhoppingfrequency,jdbcType=VARCHAR},
-      </if>
-      <if test="record.worktype != null">
-        worktype = #{record.worktype,jdbcType=VARCHAR},
-      </if>
-      <if test="record.webchat != null">
-        webchat = #{record.webchat,jdbcType=VARCHAR},
-      </if>
-      <if test="record.personalinterests != null">
-        personalInterests = #{record.personalinterests,jdbcType=VARCHAR},
+      <if test="record.fulltexts != null">
+        fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
       </if>
       <if test="record.resumedetail != null">
         resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
@@ -1442,35 +1032,11 @@
       <if test="record.work3projs != null">
         work3projs = #{record.work3projs,jdbcType=LONGVARCHAR},
       </if>
+      <if test="record.work4desc != null">
+        work4desc = #{record.work4desc,jdbcType=LONGVARCHAR},
+      </if>
       <if test="record.work4projs != null">
         work4projs = #{record.work4projs,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.fulltexts != null">
-        fulltexts = #{record.fulltexts,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.educationdetail != null">
-        educationdetail = #{record.educationdetail,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.experiencedetail != null">
-        experiencedetail = #{record.experiencedetail,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.training != null">
-        training = #{record.training,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.skill != null">
-        skill = #{record.skill,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.team != null">
-        team = #{record.team,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.volunteer != null">
-        volunteer = #{record.volunteer,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.projectdetails1 != null">
-        projectdetails1 = #{record.projectdetails1,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.projectdetails2 != null">
-        projectdetails2 = #{record.projectdetails2,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -1542,43 +1108,11 @@
       work2jobtitle = #{record.work2jobtitle,jdbcType=VARCHAR},
       work3jobtitle = #{record.work3jobtitle,jdbcType=VARCHAR},
       work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR},
-      work4desc = #{record.work4desc,jdbcType=VARCHAR},
       updateuser = #{record.updateuser,jdbcType=VARCHAR},
       createuser = #{record.createuser,jdbcType=VARCHAR},
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
-      studenttype = #{record.studenttype,jdbcType=VARCHAR},
-      jiguan = #{record.jiguan,jdbcType=VARCHAR},
-      vocation = #{record.vocation,jdbcType=VARCHAR},
-      forwordvocation = #{record.forwordvocation,jdbcType=VARCHAR},
-      nowsalary = #{record.nowsalary,jdbcType=VARCHAR},
-      aimsalary = #{record.aimsalary,jdbcType=VARCHAR},
-      political = #{record.political,jdbcType=VARCHAR},
-      startfrom = #{record.startfrom,jdbcType=VARCHAR},
-      qq = #{record.qq,jdbcType=VARCHAR},
-      encouragement = #{record.encouragement,jdbcType=VARCHAR},
-      graduatetime = #{record.graduatetime,jdbcType=VARCHAR},
-      beginworktime = #{record.beginworktime,jdbcType=VARCHAR},
-      lesson = #{record.lesson,jdbcType=VARCHAR},
-      computer = #{record.computer,jdbcType=VARCHAR},
-      English = #{record.english,jdbcType=VARCHAR},
-      schoolrankings = #{record.schoolrankings,jdbcType=VARCHAR},
-      schooltype = #{record.schooltype,jdbcType=VARCHAR},
-      postcode = #{record.postcode,jdbcType=VARCHAR},
-      speciality = #{record.speciality,jdbcType=VARCHAR},
-      address = #{record.address,jdbcType=VARCHAR},
-      notional = #{record.notional,jdbcType=VARCHAR},
-      nationality = #{record.nationality,jdbcType=VARCHAR},
-      href = #{record.href,jdbcType=VARCHAR},
-      high = #{record.high,jdbcType=VARCHAR},
-      tizhong = #{record.tizhong,jdbcType=VARCHAR},
-      advanceddegree = #{record.advanceddegree,jdbcType=VARCHAR},
-      isjobsearch = #{record.isjobsearch,jdbcType=VARCHAR},
-      overseaswork = #{record.overseaswork,jdbcType=VARCHAR},
-      jobhoppingfrequency = #{record.jobhoppingfrequency,jdbcType=VARCHAR},
-      worktype = #{record.worktype,jdbcType=VARCHAR},
-      webchat = #{record.webchat,jdbcType=VARCHAR},
-      personalInterests = #{record.personalinterests,jdbcType=VARCHAR},
+      fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
       resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{record.resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{record.resumedetail2,jdbcType=LONGVARBINARY},
@@ -1592,16 +1126,8 @@
       work2projs = #{record.work2projs,jdbcType=LONGVARCHAR},
       work3desc = #{record.work3desc,jdbcType=LONGVARCHAR},
       work3projs = #{record.work3projs,jdbcType=LONGVARCHAR},
-      work4projs = #{record.work4projs,jdbcType=LONGVARCHAR},
-      fulltexts = #{record.fulltexts,jdbcType=LONGVARCHAR},
-      educationdetail = #{record.educationdetail,jdbcType=LONGVARCHAR},
-      experiencedetail = #{record.experiencedetail,jdbcType=LONGVARCHAR},
-      training = #{record.training,jdbcType=LONGVARCHAR},
-      skill = #{record.skill,jdbcType=LONGVARCHAR},
-      team = #{record.team,jdbcType=LONGVARCHAR},
-      volunteer = #{record.volunteer,jdbcType=LONGVARCHAR},
-      projectdetails1 = #{record.projectdetails1,jdbcType=LONGVARCHAR},
-      projectdetails2 = #{record.projectdetails2,jdbcType=LONGVARCHAR}
+      work4desc = #{record.work4desc,jdbcType=LONGVARCHAR},
+      work4projs = #{record.work4projs,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -1671,43 +1197,11 @@
       work2jobtitle = #{record.work2jobtitle,jdbcType=VARCHAR},
       work3jobtitle = #{record.work3jobtitle,jdbcType=VARCHAR},
       work4jobtitle = #{record.work4jobtitle,jdbcType=VARCHAR},
-      work4desc = #{record.work4desc,jdbcType=VARCHAR},
       updateuser = #{record.updateuser,jdbcType=VARCHAR},
       createuser = #{record.createuser,jdbcType=VARCHAR},
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
-      studenttype = #{record.studenttype,jdbcType=VARCHAR},
-      jiguan = #{record.jiguan,jdbcType=VARCHAR},
-      vocation = #{record.vocation,jdbcType=VARCHAR},
-      forwordvocation = #{record.forwordvocation,jdbcType=VARCHAR},
-      nowsalary = #{record.nowsalary,jdbcType=VARCHAR},
-      aimsalary = #{record.aimsalary,jdbcType=VARCHAR},
-      political = #{record.political,jdbcType=VARCHAR},
-      startfrom = #{record.startfrom,jdbcType=VARCHAR},
-      qq = #{record.qq,jdbcType=VARCHAR},
-      encouragement = #{record.encouragement,jdbcType=VARCHAR},
-      graduatetime = #{record.graduatetime,jdbcType=VARCHAR},
-      beginworktime = #{record.beginworktime,jdbcType=VARCHAR},
-      lesson = #{record.lesson,jdbcType=VARCHAR},
-      computer = #{record.computer,jdbcType=VARCHAR},
-      English = #{record.english,jdbcType=VARCHAR},
-      schoolrankings = #{record.schoolrankings,jdbcType=VARCHAR},
-      schooltype = #{record.schooltype,jdbcType=VARCHAR},
-      postcode = #{record.postcode,jdbcType=VARCHAR},
-      speciality = #{record.speciality,jdbcType=VARCHAR},
-      address = #{record.address,jdbcType=VARCHAR},
-      notional = #{record.notional,jdbcType=VARCHAR},
-      nationality = #{record.nationality,jdbcType=VARCHAR},
-      href = #{record.href,jdbcType=VARCHAR},
-      high = #{record.high,jdbcType=VARCHAR},
-      tizhong = #{record.tizhong,jdbcType=VARCHAR},
-      advanceddegree = #{record.advanceddegree,jdbcType=VARCHAR},
-      isjobsearch = #{record.isjobsearch,jdbcType=VARCHAR},
-      overseaswork = #{record.overseaswork,jdbcType=VARCHAR},
-      jobhoppingfrequency = #{record.jobhoppingfrequency,jdbcType=VARCHAR},
-      worktype = #{record.worktype,jdbcType=VARCHAR},
-      webchat = #{record.webchat,jdbcType=VARCHAR},
-      personalInterests = #{record.personalinterests,jdbcType=VARCHAR}
+      fulltexts = #{record.fulltexts,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -1901,9 +1395,6 @@
       <if test="work4jobtitle != null">
         work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR},
       </if>
-      <if test="work4desc != null">
-        work4desc = #{work4desc,jdbcType=VARCHAR},
-      </if>
       <if test="updateuser != null">
         updateuser = #{updateuser,jdbcType=VARCHAR},
       </if>
@@ -1916,101 +1407,8 @@
       <if test="updatestaff != null">
         updatestaff = #{updatestaff,jdbcType=VARCHAR},
       </if>
-      <if test="studenttype != null">
-        studenttype = #{studenttype,jdbcType=VARCHAR},
-      </if>
-      <if test="jiguan != null">
-        jiguan = #{jiguan,jdbcType=VARCHAR},
-      </if>
-      <if test="vocation != null">
-        vocation = #{vocation,jdbcType=VARCHAR},
-      </if>
-      <if test="forwordvocation != null">
-        forwordvocation = #{forwordvocation,jdbcType=VARCHAR},
-      </if>
-      <if test="nowsalary != null">
-        nowsalary = #{nowsalary,jdbcType=VARCHAR},
-      </if>
-      <if test="aimsalary != null">
-        aimsalary = #{aimsalary,jdbcType=VARCHAR},
-      </if>
-      <if test="political != null">
-        political = #{political,jdbcType=VARCHAR},
-      </if>
-      <if test="startfrom != null">
-        startfrom = #{startfrom,jdbcType=VARCHAR},
-      </if>
-      <if test="qq != null">
-        qq = #{qq,jdbcType=VARCHAR},
-      </if>
-      <if test="encouragement != null">
-        encouragement = #{encouragement,jdbcType=VARCHAR},
-      </if>
-      <if test="graduatetime != null">
-        graduatetime = #{graduatetime,jdbcType=VARCHAR},
-      </if>
-      <if test="beginworktime != null">
-        beginworktime = #{beginworktime,jdbcType=VARCHAR},
-      </if>
-      <if test="lesson != null">
-        lesson = #{lesson,jdbcType=VARCHAR},
-      </if>
-      <if test="computer != null">
-        computer = #{computer,jdbcType=VARCHAR},
-      </if>
-      <if test="english != null">
-        English = #{english,jdbcType=VARCHAR},
-      </if>
-      <if test="schoolrankings != null">
-        schoolrankings = #{schoolrankings,jdbcType=VARCHAR},
-      </if>
-      <if test="schooltype != null">
-        schooltype = #{schooltype,jdbcType=VARCHAR},
-      </if>
-      <if test="postcode != null">
-        postcode = #{postcode,jdbcType=VARCHAR},
-      </if>
-      <if test="speciality != null">
-        speciality = #{speciality,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null">
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="notional != null">
-        notional = #{notional,jdbcType=VARCHAR},
-      </if>
-      <if test="nationality != null">
-        nationality = #{nationality,jdbcType=VARCHAR},
-      </if>
-      <if test="href != null">
-        href = #{href,jdbcType=VARCHAR},
-      </if>
-      <if test="high != null">
-        high = #{high,jdbcType=VARCHAR},
-      </if>
-      <if test="tizhong != null">
-        tizhong = #{tizhong,jdbcType=VARCHAR},
-      </if>
-      <if test="advanceddegree != null">
-        advanceddegree = #{advanceddegree,jdbcType=VARCHAR},
-      </if>
-      <if test="isjobsearch != null">
-        isjobsearch = #{isjobsearch,jdbcType=VARCHAR},
-      </if>
-      <if test="overseaswork != null">
-        overseaswork = #{overseaswork,jdbcType=VARCHAR},
-      </if>
-      <if test="jobhoppingfrequency != null">
-        jobhoppingfrequency = #{jobhoppingfrequency,jdbcType=VARCHAR},
-      </if>
-      <if test="worktype != null">
-        worktype = #{worktype,jdbcType=VARCHAR},
-      </if>
-      <if test="webchat != null">
-        webchat = #{webchat,jdbcType=VARCHAR},
-      </if>
-      <if test="personalinterests != null">
-        personalInterests = #{personalinterests,jdbcType=VARCHAR},
+      <if test="fulltexts != null">
+        fulltexts = #{fulltexts,jdbcType=VARCHAR},
       </if>
       <if test="resumedetail != null">
         resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
@@ -2051,35 +1449,11 @@
       <if test="work3projs != null">
         work3projs = #{work3projs,jdbcType=LONGVARCHAR},
       </if>
+      <if test="work4desc != null">
+        work4desc = #{work4desc,jdbcType=LONGVARCHAR},
+      </if>
       <if test="work4projs != null">
         work4projs = #{work4projs,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="fulltexts != null">
-        fulltexts = #{fulltexts,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="educationdetail != null">
-        educationdetail = #{educationdetail,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="experiencedetail != null">
-        experiencedetail = #{experiencedetail,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="training != null">
-        training = #{training,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="skill != null">
-        skill = #{skill,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="team != null">
-        team = #{team,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="volunteer != null">
-        volunteer = #{volunteer,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="projectdetails1 != null">
-        projectdetails1 = #{projectdetails1,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="projectdetails2 != null">
-        projectdetails2 = #{projectdetails2,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -2148,43 +1522,11 @@
       work2jobtitle = #{work2jobtitle,jdbcType=VARCHAR},
       work3jobtitle = #{work3jobtitle,jdbcType=VARCHAR},
       work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR},
-      work4desc = #{work4desc,jdbcType=VARCHAR},
       updateuser = #{updateuser,jdbcType=VARCHAR},
       createuser = #{createuser,jdbcType=VARCHAR},
       createstaff = #{createstaff,jdbcType=VARCHAR},
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
-      studenttype = #{studenttype,jdbcType=VARCHAR},
-      jiguan = #{jiguan,jdbcType=VARCHAR},
-      vocation = #{vocation,jdbcType=VARCHAR},
-      forwordvocation = #{forwordvocation,jdbcType=VARCHAR},
-      nowsalary = #{nowsalary,jdbcType=VARCHAR},
-      aimsalary = #{aimsalary,jdbcType=VARCHAR},
-      political = #{political,jdbcType=VARCHAR},
-      startfrom = #{startfrom,jdbcType=VARCHAR},
-      qq = #{qq,jdbcType=VARCHAR},
-      encouragement = #{encouragement,jdbcType=VARCHAR},
-      graduatetime = #{graduatetime,jdbcType=VARCHAR},
-      beginworktime = #{beginworktime,jdbcType=VARCHAR},
-      lesson = #{lesson,jdbcType=VARCHAR},
-      computer = #{computer,jdbcType=VARCHAR},
-      English = #{english,jdbcType=VARCHAR},
-      schoolrankings = #{schoolrankings,jdbcType=VARCHAR},
-      schooltype = #{schooltype,jdbcType=VARCHAR},
-      postcode = #{postcode,jdbcType=VARCHAR},
-      speciality = #{speciality,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      notional = #{notional,jdbcType=VARCHAR},
-      nationality = #{nationality,jdbcType=VARCHAR},
-      href = #{href,jdbcType=VARCHAR},
-      high = #{high,jdbcType=VARCHAR},
-      tizhong = #{tizhong,jdbcType=VARCHAR},
-      advanceddegree = #{advanceddegree,jdbcType=VARCHAR},
-      isjobsearch = #{isjobsearch,jdbcType=VARCHAR},
-      overseaswork = #{overseaswork,jdbcType=VARCHAR},
-      jobhoppingfrequency = #{jobhoppingfrequency,jdbcType=VARCHAR},
-      worktype = #{worktype,jdbcType=VARCHAR},
-      webchat = #{webchat,jdbcType=VARCHAR},
-      personalInterests = #{personalinterests,jdbcType=VARCHAR},
+      fulltexts = #{fulltexts,jdbcType=VARCHAR},
       resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{resumedetail2,jdbcType=LONGVARBINARY},
@@ -2198,16 +1540,8 @@
       work2projs = #{work2projs,jdbcType=LONGVARCHAR},
       work3desc = #{work3desc,jdbcType=LONGVARCHAR},
       work3projs = #{work3projs,jdbcType=LONGVARCHAR},
-      work4projs = #{work4projs,jdbcType=LONGVARCHAR},
-      fulltexts = #{fulltexts,jdbcType=LONGVARCHAR},
-      educationdetail = #{educationdetail,jdbcType=LONGVARCHAR},
-      experiencedetail = #{experiencedetail,jdbcType=LONGVARCHAR},
-      training = #{training,jdbcType=LONGVARCHAR},
-      skill = #{skill,jdbcType=LONGVARCHAR},
-      team = #{team,jdbcType=LONGVARCHAR},
-      volunteer = #{volunteer,jdbcType=LONGVARCHAR},
-      projectdetails1 = #{projectdetails1,jdbcType=LONGVARCHAR},
-      projectdetails2 = #{projectdetails2,jdbcType=LONGVARCHAR}
+      work4desc = #{work4desc,jdbcType=LONGVARCHAR},
+      work4projs = #{work4projs,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.Candidates">
@@ -2274,43 +1608,11 @@
       work2jobtitle = #{work2jobtitle,jdbcType=VARCHAR},
       work3jobtitle = #{work3jobtitle,jdbcType=VARCHAR},
       work4jobtitle = #{work4jobtitle,jdbcType=VARCHAR},
-      work4desc = #{work4desc,jdbcType=VARCHAR},
       updateuser = #{updateuser,jdbcType=VARCHAR},
       createuser = #{createuser,jdbcType=VARCHAR},
       createstaff = #{createstaff,jdbcType=VARCHAR},
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
-      studenttype = #{studenttype,jdbcType=VARCHAR},
-      jiguan = #{jiguan,jdbcType=VARCHAR},
-      vocation = #{vocation,jdbcType=VARCHAR},
-      forwordvocation = #{forwordvocation,jdbcType=VARCHAR},
-      nowsalary = #{nowsalary,jdbcType=VARCHAR},
-      aimsalary = #{aimsalary,jdbcType=VARCHAR},
-      political = #{political,jdbcType=VARCHAR},
-      startfrom = #{startfrom,jdbcType=VARCHAR},
-      qq = #{qq,jdbcType=VARCHAR},
-      encouragement = #{encouragement,jdbcType=VARCHAR},
-      graduatetime = #{graduatetime,jdbcType=VARCHAR},
-      beginworktime = #{beginworktime,jdbcType=VARCHAR},
-      lesson = #{lesson,jdbcType=VARCHAR},
-      computer = #{computer,jdbcType=VARCHAR},
-      English = #{english,jdbcType=VARCHAR},
-      schoolrankings = #{schoolrankings,jdbcType=VARCHAR},
-      schooltype = #{schooltype,jdbcType=VARCHAR},
-      postcode = #{postcode,jdbcType=VARCHAR},
-      speciality = #{speciality,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      notional = #{notional,jdbcType=VARCHAR},
-      nationality = #{nationality,jdbcType=VARCHAR},
-      href = #{href,jdbcType=VARCHAR},
-      high = #{high,jdbcType=VARCHAR},
-      tizhong = #{tizhong,jdbcType=VARCHAR},
-      advanceddegree = #{advanceddegree,jdbcType=VARCHAR},
-      isjobsearch = #{isjobsearch,jdbcType=VARCHAR},
-      overseaswork = #{overseaswork,jdbcType=VARCHAR},
-      jobhoppingfrequency = #{jobhoppingfrequency,jdbcType=VARCHAR},
-      worktype = #{worktype,jdbcType=VARCHAR},
-      webchat = #{webchat,jdbcType=VARCHAR},
-      personalInterests = #{personalinterests,jdbcType=VARCHAR}
+      fulltexts = #{fulltexts,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -2377,43 +1679,11 @@
     work2jobtitle,
     work3jobtitle,
     work4jobtitle,
-    work4desc,
     updateuser,
     createuser,
     createstaff,
     updatestaff,
-    studenttype,
-    jiguan,
-    vocation,
-    forwordvocation,
-    nowsalary,
-    aimsalary,
-    political,
-    startfrom,
-    qq,
-    encouragement,
-    graduatetime,
-    beginworktime,
-    lesson,
-    computer,
-    English,
-    schoolrankings,
-    schooltype,
-    postcode,
-    speciality,
-    address,
-    notional,
-    nationality,
-    href,
-    high,
-    tizhong,
-    advanceddegree,
-    isjobsearch,
-    overseaswork,
-    jobhoppingfrequency,
-    worktype,
-    webchat,
-    personalInterests,
+    fulltexts,
     resumedetail,
     resumedetail1,
     resumedetail2,
@@ -2427,16 +1697,8 @@
     work2projs,
     work3desc,
     work3projs,
-    work4projs,
-    fulltexts,
-    educationdetail,
-    experiencedetail,
-    training,
-    skill,
-    team,
-    volunteer,
-    projectdetails1,
-    projectdetails2
+    work4desc,
+    work4projs
     )
     values
     <foreach collection="recordList" index="index" item="item" separator=",">
@@ -2503,43 +1765,11 @@
       #{item.work2jobtitle,jdbcType=VARCHAR},
       #{item.work3jobtitle,jdbcType=VARCHAR},
       #{item.work4jobtitle,jdbcType=VARCHAR},
-      #{item.work4desc,jdbcType=VARCHAR},
       #{item.updateuser,jdbcType=VARCHAR},
       #{item.createuser,jdbcType=VARCHAR},
       #{item.createstaff,jdbcType=VARCHAR},
       #{item.updatestaff,jdbcType=VARCHAR},
-      #{item.studenttype,jdbcType=VARCHAR},
-      #{item.jiguan,jdbcType=VARCHAR},
-      #{item.vocation,jdbcType=VARCHAR},
-      #{item.forwordvocation,jdbcType=VARCHAR},
-      #{item.nowsalary,jdbcType=VARCHAR},
-      #{item.aimsalary,jdbcType=VARCHAR},
-      #{item.political,jdbcType=VARCHAR},
-      #{item.startfrom,jdbcType=VARCHAR},
-      #{item.qq,jdbcType=VARCHAR},
-      #{item.encouragement,jdbcType=VARCHAR},
-      #{item.graduatetime,jdbcType=VARCHAR},
-      #{item.beginworktime,jdbcType=VARCHAR},
-      #{item.lesson,jdbcType=VARCHAR},
-      #{item.computer,jdbcType=VARCHAR},
-      #{item.english,jdbcType=VARCHAR},
-      #{item.schoolrankings,jdbcType=VARCHAR},
-      #{item.schooltype,jdbcType=VARCHAR},
-      #{item.postcode,jdbcType=VARCHAR},
-      #{item.speciality,jdbcType=VARCHAR},
-      #{item.address,jdbcType=VARCHAR},
-      #{item.notional,jdbcType=VARCHAR},
-      #{item.nationality,jdbcType=VARCHAR},
-      #{item.href,jdbcType=VARCHAR},
-      #{item.high,jdbcType=VARCHAR},
-      #{item.tizhong,jdbcType=VARCHAR},
-      #{item.advanceddegree,jdbcType=VARCHAR},
-      #{item.isjobsearch,jdbcType=VARCHAR},
-      #{item.overseaswork,jdbcType=VARCHAR},
-      #{item.jobhoppingfrequency,jdbcType=VARCHAR},
-      #{item.worktype,jdbcType=VARCHAR},
-      #{item.webchat,jdbcType=VARCHAR},
-      #{item.personalinterests,jdbcType=VARCHAR},
+      #{item.fulltexts,jdbcType=VARCHAR},
       #{item.resumedetail,jdbcType=LONGVARBINARY},
       #{item.resumedetail1,jdbcType=LONGVARBINARY},
       #{item.resumedetail2,jdbcType=LONGVARBINARY},
@@ -2553,16 +1783,8 @@
       #{item.work2projs,jdbcType=LONGVARCHAR},
       #{item.work3desc,jdbcType=LONGVARCHAR},
       #{item.work3projs,jdbcType=LONGVARCHAR},
-      #{item.work4projs,jdbcType=LONGVARCHAR},
-      #{item.fulltexts,jdbcType=LONGVARCHAR},
-      #{item.educationdetail,jdbcType=LONGVARCHAR},
-      #{item.experiencedetail,jdbcType=LONGVARCHAR},
-      #{item.training,jdbcType=LONGVARCHAR},
-      #{item.skill,jdbcType=LONGVARCHAR},
-      #{item.team,jdbcType=LONGVARCHAR},
-      #{item.volunteer,jdbcType=LONGVARCHAR},
-      #{item.projectdetails1,jdbcType=LONGVARCHAR},
-      #{item.projectdetails2,jdbcType=LONGVARCHAR}
+      #{item.work4desc,jdbcType=LONGVARCHAR},
+      #{item.work4projs,jdbcType=LONGVARCHAR}
       )
     </foreach>
   </insert>
