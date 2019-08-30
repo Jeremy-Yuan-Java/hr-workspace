@@ -14,7 +14,7 @@ public class TestTask {
     @Autowired
     private CandidatesResumeService resumeService;
 
-    @Scheduled(cron = "0 30 23 * * ?")
+    @Scheduled(cron = "0 50 23 * * ?")
     public void test() {
         // 1.将通过简历解析获取的数据 重新解析一遍，信息保存在 resumedetail 字段中
         // 注意此操作不需要 插入新的候选人信息
