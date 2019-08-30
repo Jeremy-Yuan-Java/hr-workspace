@@ -72,7 +72,7 @@ public class CandidatesResumeServiceImpl implements CandidatesResumeService {
                     // 说明候选人添加失败
                     // 将简历信息保存到 简历对象中
                     CandidatesResumeDetailWithBLOBs detail = ResumeUtilAliy.resolveResumeDetails(info);
-                    detail.setResumejson(json);
+                    //detail.setResumejson(json);
                     detail.setCandidatesid(candidates.getId());
                     saveCandidatesResumeDetail(detail);
                     // 保存 各个详细信息
