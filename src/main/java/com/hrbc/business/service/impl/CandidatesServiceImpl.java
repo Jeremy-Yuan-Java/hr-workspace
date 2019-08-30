@@ -321,6 +321,9 @@ public class CandidatesServiceImpl implements CandidatesService {
                     createtimeed = QuickTimeUtil.lastDate(createtimeed);
                     example.getOredCriteria().get(0).andCreatetimeLessThanOrEqualTo(createtimeed);
                 }
+                if (!StringUtils.isEmpty(dto.getCreateuser())) {
+                    example.getOredCriteria().get(0).andCreateuserEqualTo(dto.getCreateuser());
+                }
 
 
             }
