@@ -295,6 +295,10 @@ public class CandidatesServiceImpl implements CandidatesService {
                     example.getOredCriteria().get(0).andUsernameEqualTo(dto.getExpectworkbase());
                 }
 
+                if (!StringUtils.isEmpty(dto.getCreateuser())) {
+                    example.getOredCriteria().get(0).andCreateuserEqualTo(dto.getCreateuser());
+                }
+
                 if (!StringUtils.isEmpty(dto.getJobtitle())) {
                     example.getOredCriteria().get(0).andJobtitleLike("%" + dto.getJobtitle() + "%");
                 }
