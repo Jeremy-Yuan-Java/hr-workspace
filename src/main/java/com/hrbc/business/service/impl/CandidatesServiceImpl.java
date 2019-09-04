@@ -150,6 +150,8 @@ public class CandidatesServiceImpl implements CandidatesService {
         if(mapper.countByExample(candidatesExample)>0){
             return true;
         }else{
+            logger.info(JSONObject.toJSONString(candidates));
+
             return false;
         }
 
