@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.conf.aop.ProcessLog;
+import com.hrbc.business.controller.CustomersJobsController;
 import com.hrbc.business.domain.*;
 import com.hrbc.business.domain.common.CandidatesDto;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
@@ -13,6 +14,8 @@ import com.hrbc.business.mapper.CandidatesMapper;
 import com.hrbc.business.service.CandidatesResumeService;
 import com.hrbc.business.service.CandidatesService;
 import com.hrbc.business.util.QuickTimeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,8 @@ import java.util.List;
 
 @Service
 public class CandidatesServiceImpl implements CandidatesService {
+    private static final Logger logger = LoggerFactory.getLogger(CustomersJobsController.class);
+
     @Autowired
     private CandidatesMapper mapper;
 
@@ -133,6 +138,7 @@ public class CandidatesServiceImpl implements CandidatesService {
 
     private boolean checkPhoneNo(CandidatesWithBLOBs candidates ,int op ){
         if(org.apache.commons.lang3.StringUtils.isBlank(candidates.getPhoneno())){
+            logger.info(JSONObject.toJSONString(candidates));
             return false;
         }
         //1 代表新增 2代表编辑
