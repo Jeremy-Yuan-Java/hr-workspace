@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="log.context.name" value="hrbc"/>
+    <property name="log.context.name" value="ibms"/>
     <property name="log.charset" value="UTF-8"/>
     <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS}[%p][%c][%M][%L] %msg%n "/>
 
