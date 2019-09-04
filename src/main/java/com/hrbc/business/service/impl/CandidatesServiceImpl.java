@@ -137,7 +137,7 @@ public class CandidatesServiceImpl implements CandidatesService {
     }
 
     private boolean checkPhoneNo(CandidatesWithBLOBs candidates ,int op ){
-        if(org.apache.commons.lang3.StringUtils.isBlank(candidates.getPhoneno())){
+        if(org.apache.commons.lang3.StringUtils.isBlank(candidates.getPhoneno())||"无".equalsIgnoreCase(candidates.getPhoneno())){
             logger.info(JSONObject.toJSONString(candidates));
             return false;
         }
