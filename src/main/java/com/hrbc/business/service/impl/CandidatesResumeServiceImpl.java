@@ -2,25 +2,29 @@ package com.hrbc.business.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hrbc.business.common.Constants;
-import com.hrbc.business.common.ResumeUtilAliy;
+import com.hrbc.business.common.ResumeUtil;
+import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.conf.aop.ProcessLog;
 import com.hrbc.business.domain.*;
+import com.hrbc.business.domain.aliylincv.EducationInfo;
+import com.hrbc.business.domain.aliylincv.ExperienceInfo;
+import com.hrbc.business.domain.aliylincv.ProjectInfo;
 import com.hrbc.business.domain.aliylincv.ResumeInfo;
 import com.hrbc.business.domain.common.CandidatesDto;
 import com.hrbc.business.domain.common.ResponseDTO;
 import com.hrbc.business.mapper.*;
 import com.hrbc.business.service.CandidatesResumeService;
 import com.hrbc.business.service.CandidatesService;
+import com.hrbc.business.util.QuickTimeUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import sun.misc.BASE64Encoder;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 /**
  * @program: hr-workspace
@@ -33,68 +37,76 @@ public class CandidatesResumeServiceImpl implements CandidatesResumeService {
 
     @Autowired
     private CandidatesService candidatesService;
+    @Autowired
+    private CandidatesResumeMapper resumeMapper;
 
-    @Autowired
-    private CandidatesResumeDetailMapper candidatesResumeDetailMapper;
 
-    @Autowired
-    private CandidatesResumeEducationinfoMapper candidatesResumeEducationinfoMapper;
-    @Autowired
-    private CandidatesResumeExperienceinfoMapper candidatesResumeExperienceinfoMapper;
-    @Autowired
-    private CandidatesResumeTraininginfoMapper candidatesResumeTraininginfoMapper;
-    @Autowired
-    private CandidatesResumeProjectinfoMapper candidatesResumeProjectinfoMapper;
+    @Override
+    public List<CandidatesResume> query(CandidatesResume resume) {
+        CandidatesResumeExample example = new CandidatesResumeExample();
+        if (resume != null) {
+            if (resume.getCandidatesId() != null && resume.getCandidatesId() > 0) {
+                example.createCriteria().andCandidatesIdEqualTo(resume.getCandidatesId());
+            }
+        }
+        return resumeMapper.selectByExampleWithBLOBs(example);
+    }
 
+    /**
+     * 获取 简历的json数据对应的 ResumeInfo对象
+     * @param candidatesId
+     * @return
+     */
+    @Override
+    public ResumeInfo getResumeInfo(Integer candidatesId) {
+        CandidatesResume r = getCandidatesResume(candidatesId);
+        if(r != null){
+            byte[] b = r.getResumeJson();
+            if (b != null) {
+                String json = new String(b);
+                return JSONObject.parseObject(json,ResumeInfo.class);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public CandidatesResume getCandidatesResume(Integer candidatesId){
+        // 获取 候选简历的json数据
+        CandidatesResume resume = new CandidatesResume();
+        resume.setCandidatesId(candidatesId);
+        List<CandidatesResume> list = this.query(resume);
+        if (list != null && list.size() == 1) {
+           return list.get(0);
+        }
+        return null;
+    }
 
     @Override
     @ProcessLog(businessName = "简历解析",methodName = "resolveResume")
     public Integer resolveResume(InputStream in, String suffixName) {
         Integer flag = 1;
         // 字节流转换为字节数组
-        byte[] data = ResumeUtilAliy.inputStreamConvertByteArray(in);
+        byte[] data = ResumeUtil.inputStreamConvertByteArray(in);
         try {
             // 解析 简历 获取到对应的包装对象
-            Map<String,Object> map = ResumeUtilAliy.getResume(data, suffixName);
-            Object infoMap =map.get("info");
-            if(infoMap == null){
-                return 0;
+            String json = ResumeUtil.getResume(data, suffixName);
+            if (json == null) {
+                return 0 ;
             }
-            String json = (String)map.get("msg");
-            ResumeInfo info = (ResumeInfo)infoMap;
+            ResumeInfo info = JSONObject.parseObject(json, ResumeInfo.class);
             if (info != null) {
                 // 将简历信息 保存到 候选人对象中
-                CandidatesDto candidates = ResumeUtilAliy.resolveResumeCandidates(info);
-                // 保存简历详情信息
-                candidates.setResumedetail(json.getBytes());
+                CandidatesDto candidates = ResumeUtil.resolveResumeCandidates(info);
+
                 flag = candidatesService.save(candidates,1);
                 if (flag > 0) {
-                    // 说明候选人添加失败
                     // 将简历信息保存到 简历对象中
-                    CandidatesResumeDetailWithBLOBs detail = ResumeUtilAliy.resolveResumeDetails(info);
-                    //detail.setResumejson(json);
-                    detail.setCandidatesid(candidates.getId());
-                    saveCandidatesResumeDetail(detail);
-                    // 保存 各个详细信息
-                    List<CandidatesResumeEducationinfo> edus = ResumeUtilAliy.resolveResumeEducation(info, detail.getId());
-                    if (edus != null && edus.size() > 0) {
-                        saveCandidatesResumeEdus(edus,detail.getId());
-                    }
-                    List<CandidatesResumeExperienceinfoWithBLOBs> exps = ResumeUtilAliy.resolveResumeExperience(info,detail.getId());
-                    if (exps != null && exps.size() > 0) {
-                        saveCandidatesResumeExpr(exps,detail.getId());
-                    }
-                    List<CandidatesResumeProjectinfoWithBLOBs> pros = ResumeUtilAliy.resolveResumeProjects(info, detail.getId());
-                    if ( pros != null && pros.size() > 0) {
-                        saveCandidatesResumeProjs(pros,detail.getId());
-                    }
-
-                    List<CandidatesResumeTraininginfo> trans = ResumeUtilAliy.resolveResumeTraining(info, detail.getId());
-                    if (trans != null && trans.size() > 0) {
-                        saveCandidatesResumeTrans(trans,detail.getId());
-                    }
+                    CandidatesResume resume = new CandidatesResume();
+                    resume.setCandidatesId(candidates.getId());
+                    resume.setResumeJson(json.getBytes());
+                    resumeMapper.insertSelective(resume);
                 }
-
             }
         }catch (Exception e){
             // 简历解析异常
@@ -110,114 +122,25 @@ public class CandidatesResumeServiceImpl implements CandidatesResumeService {
      */
     @Override
     public ResponseDTO loadResumeDetail(Integer candidatesId) {
-        CandidatesResumeDetailWithBLOBs detail = queryResumeDetail(candidatesId);
-        Map<String,Object> map = new HashMap<>();
-        if (detail != null ) {
-            // 简历记录编号
-            Integer detailId = detail.getId();
-            map.put(Constants.RESUME_DETAIL,detail);
-            map.put(Constants.RESUME_EDUS,queryResumeEdus(detailId));
-            map.put(Constants.RESUME_EXPRS,queryResumeExprs(detailId));
-            map.put(Constants.RESUME_PROS,queryResumePros(detailId));
-            map.put(Constants.RESUME_TRANS,queryResumeTrans(detailId));
-        }
-        return new ResponseDTO(true,"数据获取成功",map);
-    }
-
-    @Override
-    public CandidatesResumeDetailWithBLOBs queryResumeDetail(Integer candidatesId) {
-        CandidatesResumeDetailExample detailExample = new CandidatesResumeDetailExample();
-        detailExample.createCriteria().andCandidatesidEqualTo(candidatesId);
-        List<CandidatesResumeDetailWithBLOBs> list =candidatesResumeDetailMapper.selectByExampleWithBLOBs(detailExample);
+        // 查询 简历的json 数据
+        CandidatesResumeExample example = new CandidatesResumeExample();
+        example.createCriteria().andCandidatesIdEqualTo(candidatesId);
+        List<CandidatesResume> list = resumeMapper.selectByExampleWithBLOBs(example);
+        //Map<String,Object> map = new HashMap<>();
+        //map.put("",de)
         if (list != null && list.size() == 1) {
-            return list.get(0);
+            CandidatesResume resume = list.get(0);
+            byte[] bytes = resume.getResumeJson();
+            if (bytes != null) {
+                String json = new String(bytes);
+                ResumeInfo info = JSONObject.parseObject(json,ResumeInfo.class);
+                return new ResponseDTO(true,"数据获取成功",info);
+            }
         }
-        return null;
+        return new ResponseDTO(false,"数据获取失败",null);
     }
 
-    @Override
-    public List<CandidatesResumeEducationinfo> queryResumeEdus(Integer resumeId) {
-        CandidatesResumeEducationinfoExample eduExample = new CandidatesResumeEducationinfoExample();
-        eduExample.createCriteria().andResumeidEqualTo(resumeId);
-        return candidatesResumeEducationinfoMapper.selectByExample(eduExample);
-    }
 
-    @Override
-    public List<CandidatesResumeExperienceinfoWithBLOBs> queryResumeExprs(Integer resumeId) {
-        CandidatesResumeExperienceinfoExample expExample = new CandidatesResumeExperienceinfoExample();
-        expExample.createCriteria().andResumeidEqualTo(resumeId);
-       return candidatesResumeExperienceinfoMapper.selectByExampleWithBLOBs(expExample);
-    }
-
-    @Override
-    public List<CandidatesResumeProjectinfoWithBLOBs> queryResumePros(Integer resumeId) {
-        CandidatesResumeProjectinfoExample prosExample = new CandidatesResumeProjectinfoExample();
-        prosExample.createCriteria().andResumeidEqualTo(resumeId);
-        return candidatesResumeProjectinfoMapper.selectByExampleWithBLOBs(prosExample);
-    }
-
-    @Override
-    public List<CandidatesResumeTraininginfo> queryResumeTrans(Integer resumeId) {
-        CandidatesResumeTraininginfoExample tranExample = new CandidatesResumeTraininginfoExample();
-        tranExample.createCriteria().andResumeidEqualTo(resumeId);
-        return  candidatesResumeTraininginfoMapper.selectByExampleWithBLOBs(tranExample);
-    }
-
-    @Override
-    public Integer saveCandidatesResumeDetail(CandidatesResumeDetailWithBLOBs detail) {
-        if (detail.getId() != null) {
-            // 更新数据
-            return candidatesResumeDetailMapper.updateByPrimaryKeyWithBLOBs(detail);
-        }
-        // 插入数据
-        return  candidatesResumeDetailMapper.insertSelective(detail);
-    }
-
-    @Override
-    public Integer saveCandidatesResumeEdus(List<CandidatesResumeEducationinfo> edus,Integer resumeId) {
-
-        if (resumeId != null && resumeId > 0) {
-            // 删除原有的信息
-            CandidatesResumeEducationinfoExample example = new CandidatesResumeEducationinfoExample();
-            example.createCriteria().andResumeidEqualTo(resumeId);
-            candidatesResumeEducationinfoMapper.deleteByExample(example);
-        }
-
-        return candidatesResumeEducationinfoMapper.batchInsert(edus);
-    }
-
-    @Override
-    public Integer saveCandidatesResumeExpr(List<CandidatesResumeExperienceinfoWithBLOBs> expr,Integer resumeId) {
-        if (resumeId != null && resumeId > 0) {
-            // 删除原有的信息
-            CandidatesResumeExperienceinfoExample example = new CandidatesResumeExperienceinfoExample();
-            example.createCriteria().andResumeidEqualTo(resumeId);
-            candidatesResumeExperienceinfoMapper.deleteByExample(example);
-        }
-        return candidatesResumeExperienceinfoMapper.batchInsert(expr);
-    }
-
-    @Override
-    public Integer saveCandidatesResumeProjs(List<CandidatesResumeProjectinfoWithBLOBs> pros,Integer resumeId) {
-        if (resumeId != null && resumeId > 0) {
-            // 删除原有的信息
-            CandidatesResumeProjectinfoExample example = new CandidatesResumeProjectinfoExample();
-            example.createCriteria().andResumeidEqualTo(resumeId);
-            candidatesResumeProjectinfoMapper.deleteByExample(example);
-        }
-        return candidatesResumeProjectinfoMapper.batchInsert(pros);
-    }
-
-    @Override
-    public Integer saveCandidatesResumeTrans(List<CandidatesResumeTraininginfo> trans,Integer resumeId) {
-        if (resumeId != null && resumeId > 0) {
-            // 删除原有的信息
-            CandidatesResumeTraininginfoExample example = new CandidatesResumeTraininginfoExample();
-            example.createCriteria().andResumeidEqualTo(resumeId);
-            candidatesResumeTraininginfoMapper.deleteByExample(example);
-        }
-        return candidatesResumeTraininginfoMapper.batchInsert(trans);
-    }
 
     /**
      *  手动添加 候选信息 同步添加简历信息
@@ -226,424 +149,479 @@ public class CandidatesResumeServiceImpl implements CandidatesResumeService {
      */
     @Override
     public Integer saveResumeByCandidates(CandidatesDto candidates) {
-        CandidatesResumeDetailWithBLOBs detail = this.queryResumeDetail(candidates.getId());
-        if (detail == null ) {
-            detail = new CandidatesResumeDetailWithBLOBs();
+        CandidatesResume candidatesResume = getCandidatesResume(candidates.getId());
+        if (candidatesResume == null) {
+            candidatesResume = new CandidatesResume();
+            candidatesResume.setCandidatesId(candidates.getId());
         }
-        detail.setCandidatesid(candidates.getId());
-        detail.setName(candidates.getUsername());
-        detail.setMobile(candidates.getPhoneno());
-        detail.setPhone(candidates.getPhonenobak());
-        detail.setEmail(candidates.getEmail());
-        //detail.setForwardvocation(candidates.getExpectjob());
-        detail.setIdno(candidates.getIdcard());
+
+        // 获取 ResumeInfo对象
+        ResumeInfo info = getResumeInfo(candidates.getId());
+        if( info == null){
+            info = new ResumeInfo();
+        }
+        if(StringUtils.isNotBlank(candidates.getMarried())){
+            info.setMarried(candidates.getMarried());
+        }
+        if (StringUtils.isNotBlank(candidates.getIdcard())) {
+            info.setIDNO(candidates.getIdcard());
+        }
+        if(StringUtils.isNotBlank(candidates.getUsername())){
+            info.setName(candidates.getUsername());
+        }
+        if (StringUtils.isNotBlank(candidates.getPhoneno())) {
+            info.setMobile(candidates.getPhoneno());
+        }
+        if (StringUtils.isNotBlank(candidates.getEmail())) {
+            info.setEmail(candidates.getEmail());
+        }
+        if (candidates.getAge() != null) {
+            info.setAge(candidates.getAge()+"");
+        }
+        if (StringUtils.isNotBlank(candidates.getGender())) {
+            info.setSex(candidates.getGender());
+        }
+
+        if (candidates.getBirthday() != null) {
+            info.setBirth(QuickTimeUtil.dateParseString(candidates.getBirthday(),"yyyy-MM-dd"));
+        }
+        if (StringUtils.isNotBlank(candidates.getLivebase())) {
+            info.setNowLocation(candidates.getLivebase());
+        }
+        if (StringUtils.isNotBlank(candidates.getDegree())) {
+            info.setEducation(candidates.getDegree());
+        }
+        if (StringUtils.isNotBlank(candidates.getExpectworkbase())) {
+            info.setForwardlocation(candidates.getExpectworkbase());
+        }
+
+        if (StringUtils.isNotBlank(candidates.getExpectjob())) {
+            info.setForwardVocation(candidates.getExpectjob());
+        }
+
+        if (candidates.getSalarymin() != null && candidates.getSalarymax() != null) {
+            info.setAimSalary(candidates.getSalarymin() + "-" + candidates.getSalarymax() + "元/月");
+        }
+
+        if( StringUtils.isNotBlank(candidates.getWorkbase())){
+            info.setSwitch(candidates.getWorkbase());
+        }
+
+        if (StringUtils.isNotBlank(candidates.getMajor())) {
+            info.setVocation(candidates.getMajor());
+        }
+
+        if (StringUtils.isNotBlank(candidates.getStartfrom())) {
+            info.setStartFrom(candidates.getStartfrom());
+        }
+
+        if (StringUtils.isNotBlank(candidates.getPersonaliy())) {
+            info.setSkill(candidates.getPersonaliy());
+        }
+
+        if (StringUtils.isNotBlank(candidates.getHxys())) {
+            info.setHxys(candidates.getHxys());
+        }
+
+        if (StringUtils.isNotBlank(candidates.getQzyy())) {
+            info.setQzyy(candidates.getQzyy());
+        }
+
+        if (StringUtils.isNotBlank(candidates.getJtqk())) {
+            info.setJtqk(candidates.getJtqk());
+        }
+
+        if (StringUtils.isNotBlank(candidates.getPerprofile())) {
+            info.setPersonal(candidates.getPerprofile());
+        }
+
+        if (StringUtils.isNotBlank(candidates.getCertifications())) {
+            info.setCertificate(candidates.getCertifications());
+        }
+
+        // 设置 工作经历  项目经历   教育经历
+        info.setExperienceInfo(candidates.getExprs());
+        info.setProjectInfo(candidates.getProjects());
+        info.setEducationInfo(candidates.getEdus());
+        // 将 ResumeInfo 转换为 json数据
+        candidatesResume.setResumeJson(JSONObject.toJSON(info).toString().getBytes());
         try {
-            detail.setAge(NumberUtils.toByte(candidates.getAge()+""));
+            if (candidatesResume.getId() != null) {
+                // 更新数据
+                return resumeMapper.updateByPrimaryKeyWithBLOBs(candidatesResume);
+            }else {
+                // 新增数据
+                return resumeMapper.insertSelective(candidatesResume);
+            }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
-
-        detail.setSex(candidates.getGender());
-        detail.setBirth(candidates.getBirthday());
-        detail.setNowlocation(candidates.getLivebase());
-        detail.setEducation(candidates.getDegree());
-        detail.setForwardlocation(candidates.getExpectworkbase());
-        detail.setTitle(candidates.getExpectjob());
-        detail.setIsjobsearch(candidates.getWorkbase());
-        detail.setVocation(candidates.getMajor());
-        detail.setLastcompany(candidates.getWork1());
-        detail.setLasttitle(candidates.getJobtitle());
-        detail.setMarryied(candidates.getMarried());
-        // 期望薪资
-       Integer minSalary = candidates.getSalarymin();
-       Integer maxSalary = candidates.getSalarymax();
-       if (maxSalary != null || minSalary != null) {
-           StringBuilder sb = new StringBuilder();
-           sb.append(minSalary + "-" + maxSalary + "元/月");
-
-           //detail.setSalary(sb.toString());
-           detail.setAimsalary(sb.toString());
-       }
-       // 当前薪资
-        List<CandidatesResumeExperienceinfoWithBLOBs> exprs = candidates.getExprs();
-       if (exprs != null && exprs.size() > 0) {
-           CandidatesResumeExperienceinfoWithBLOBs expr = exprs.get(0);
-           if (StringUtils.isNotEmpty(expr.getSalary()) && !expr.getSalary().contains("元/月")) {
-               detail.setSalary(expr.getSalary() + "元/月");
-           }
-       }
-        if (candidates.getWorkyears() == null) {
-            detail.setExperience("0");
-        }else {
-            detail.setExperience(candidates.getWorkyears() + "");
-        }
-
-        detail.setGradeofenglishs(candidates.getCertifications());
-        detail.setPersonal(candidates.getPerprofile());
-        detail.setCertificate(candidates.getCertifications());
-        // 技能
-        detail.setSkill(candidates.getPersonaliy());
-        int i = saveCandidatesResumeDetail(detail);
-        if ( i > 0) {
-            // 教育经历
-            List<CandidatesResumeEducationinfo> edus =  candidates.getEdus();
-            if (edus != null && edus.size() > 0) {
-                for (CandidatesResumeEducationinfo e: edus) {
-                    e.setResumeid(detail.getId());
-                }
-                saveCandidatesResumeEdus(edus,detail.getId());
-            }
-            // 工作经历
-            List<CandidatesResumeExperienceinfoWithBLOBs> exps = candidates.getExprs();
-            if (exps != null && exps.size() > 0) {
-                for (CandidatesResumeExperienceinfoWithBLOBs e: exps) {
-                    e.setResumeid(detail.getId());
-                }
-                saveCandidatesResumeExpr(exps,detail.getId());
-            }
-            // 项目经历
-            List<CandidatesResumeProjectinfoWithBLOBs> pros = candidates.getProjects();
-
-            if (pros != null && pros.size() > 0) {
-                for (CandidatesResumeProjectinfoWithBLOBs p:pros) {
-                    p.setResumeid(detail.getId());
-                }
-                saveCandidatesResumeProjs(pros,detail.getId());
-            }
-        }
-        return i;
+        return -1;
     }
 
-    public void saveResumeByCandidatesSynchronization(CandidatesDto candidates) {
-        CandidatesResumeDetailWithBLOBs detail = this.queryResumeDetail(candidates.getId());
-        if (detail == null ) {
-            detail = new CandidatesResumeDetailWithBLOBs();
-        }
-        detail.setCandidatesid(candidates.getId());
-        detail.setName(candidates.getUsername());
-        detail.setMobile(candidates.getPhoneno());
-        detail.setPhone(candidates.getPhonenobak());
-        detail.setEmail(candidates.getEmail());
-        //detail.setForwardvocation(candidates.getExpectjob());
-        detail.setIdno(candidates.getIdcard());
-        try {
-            detail.setAge(NumberUtils.toByte(candidates.getAge()+""));
-        }catch (Exception e){
-
-        }
-
-        detail.setSex(candidates.getGender());
-        detail.setBirth(candidates.getBirthday());
-        detail.setNowlocation(candidates.getLivebase());
-        detail.setEducation(candidates.getDegree());
-        detail.setForwardlocation(candidates.getExpectworkbase());
-        detail.setTitle(candidates.getExpectjob());
-        detail.setIsjobsearch(candidates.getWorkbase());
-        detail.setVocation(candidates.getMajor());
-        detail.setLastcompany(candidates.getWork1());
-        detail.setLasttitle(candidates.getJobtitle());
-        detail.setMarryied(candidates.getMarried());
-        // 期望薪资
-        Integer minSalary = candidates.getSalarymin();
-        Integer maxSalary = candidates.getSalarymax();
-        if (maxSalary != null || minSalary != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(minSalary + "-" + maxSalary + "元/月");
-
-            //detail.setSalary(sb.toString());
-            detail.setAimsalary(sb.toString());
-        }
-        // 当前薪资
-        List<CandidatesResumeExperienceinfoWithBLOBs> exprs = candidates.getExprs();
-        if (exprs != null && exprs.size() > 0) {
-            CandidatesResumeExperienceinfoWithBLOBs expr = exprs.get(0);
-            if (!expr.getSalary().contains("元/月")) {
-                detail.setSalary(expr.getSalary() + "元/月");
-            }
-        }
-        if (candidates.getWorkyears() == null) {
-            detail.setExperience("0");
-        }else {
-            detail.setExperience(candidates.getWorkyears() + "");
-        }
-
-        detail.setGradeofenglishs(candidates.getCertifications());
-        detail.setPersonal(candidates.getPerprofile());
-        detail.setCertificate(candidates.getCertifications());
-        // 技能
-        detail.setSkill(candidates.getPersonaliy());
-        int i = saveCandidatesResumeDetail(detail);
-        if ( i > 0) {
-            // 教育经历
-            List<CandidatesResumeEducationinfo> edus =  new ArrayList<>();
-            if(StringUtils.isNotEmpty(candidates.getEdu1())){
-                CandidatesResumeEducationinfo e1 = new CandidatesResumeEducationinfo();
-                e1.setResumeid(detail.getId());
-                e1.setSchool(candidates.getEdu1());
-                e1.setStartdate(candidates.getEdu1stdate());
-                e1.setEnddate(candidates.getEdu1eddate());
-                e1.setEducation(candidates.getDegree());
-                edus.add(e1);
-            }
-            if(StringUtils.isNotEmpty(candidates.getEdu2())){
-                CandidatesResumeEducationinfo e2 = new CandidatesResumeEducationinfo();
-                e2.setResumeid(detail.getId());
-                e2.setSchool(candidates.getEdu2());
-                e2.setStartdate(candidates.getEdu2stdate());
-                e2.setEnddate(candidates.getEdu2eddate());
-                edus.add(e2);
-            }
-            if(StringUtils.isNotEmpty(candidates.getEdu3())){
-                CandidatesResumeEducationinfo e3 = new CandidatesResumeEducationinfo();
-                e3.setResumeid(detail.getId());
-                e3.setSchool(candidates.getEdu3());
-                e3.setStartdate(candidates.getEdu3stdate());
-                e3.setEnddate(candidates.getEdu3eddate());
-                edus.add(e3);
-            }
-            if(edus.size() > 0){
-                saveCandidatesResumeEdus(edus,detail.getId());
-            }
-
-
-
-            // 工作经历
-            List<CandidatesResumeExperienceinfoWithBLOBs> exps = new ArrayList<>();
-            if (StringUtils.isNotEmpty(candidates.getWork1())) {
-                CandidatesResumeExperienceinfoWithBLOBs c = new CandidatesResumeExperienceinfoWithBLOBs();
-                c.setResumeid(detail.getId());
-                c.setCompany(candidates.getWork1());
-                c.setStartdate(candidates.getWork1stdate());
-                c.setEnddate(candidates.getWork1eddate());
-                c.setTitle(candidates.getJobtitle());
-                c.setSummary(candidates.getWork1desc());
-                exps.add(c);
-            }
-            if (StringUtils.isNotEmpty(candidates.getWork2())) {
-                CandidatesResumeExperienceinfoWithBLOBs c = new CandidatesResumeExperienceinfoWithBLOBs();
-                c.setResumeid(detail.getId());
-                c.setCompany(candidates.getWork2());
-                c.setStartdate(candidates.getWork2stdate());
-                c.setEnddate(candidates.getWork2eddate());
-                c.setTitle(candidates.getWork2jobtitle());
-                c.setSummary(candidates.getWork2desc());
-                exps.add(c);
-            }
-
-            if (StringUtils.isNotEmpty(candidates.getWork3())) {
-                CandidatesResumeExperienceinfoWithBLOBs c = new CandidatesResumeExperienceinfoWithBLOBs();
-                c.setResumeid(detail.getId());
-                c.setCompany(candidates.getWork3());
-                c.setStartdate(candidates.getWork3stdate());
-                c.setEnddate(candidates.getWork3eddate());
-                c.setTitle(candidates.getWork3jobtitle());
-                c.setSummary(candidates.getWork3desc());
-                exps.add(c);
-            }
-            if (StringUtils.isNotEmpty(candidates.getWork4())) {
-                CandidatesResumeExperienceinfoWithBLOBs c = new CandidatesResumeExperienceinfoWithBLOBs();
-                c.setResumeid(detail.getId());
-                c.setCompany(candidates.getWork4());
-                c.setStartdate(candidates.getWork4stdate());
-                c.setEnddate(candidates.getWork4eddate());
-                c.setTitle(candidates.getWork4jobtitle());
-                c.setSummary(candidates.getWork4desc());
-                exps.add(c);
-            }
-            if (exps.size() > 0) {
-                saveCandidatesResumeExpr(exps,detail.getId());
-            }
-        }
-
-    }
-
-
-    /**
-     * 同步 数据 （执行一次）
-     */
     @Override
-    public void updateSynchronizationCandidatesInfo() {
-        // 1.同步有解析简历的情况
+    public Map<String, Object> resolveExportCandidatesInfo(Integer candidatesId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        // 获取的 候选人信息
+        Candidates candidates = candidatesService.get(candidatesId);
+        ResumeInfo resume = getResumeInfo(candidatesId);
+        // 应聘职位
+        map.put("forwardvocation",ResumeUtil.resolveMsgIsNull(resume.getForwardVocation()));
+        // 应聘时间
+        map.put("now", QuickTimeUtil.dateParseString(new Date(),"yyyy.MM.dd"));
+        // 姓名
+        map.put("name",ResumeUtil.resolveMsgIsNull(resume.getName()));
+        // 性别
+        map.put("sex",ResumeUtil.resolveMsgIsNull(resume.getSex()));
+        // 年龄
+        map.put("age",ResumeUtil.resolveMsgIsNull(resume.getAge()));
+        // 籍贯
+        map.put("jiguan",ResumeUtil.resolveMsgIsNull(resume.getJiguan()));
+        // 婚姻
+        map.put("m",ResumeUtil.resolveMsgIsNull(resume.getMarried()));
+        // 现居
+        map.put("location",ResumeUtil.resolveMsgIsNull(resume.getNowLocation()));
+        // 学历
+        map.put("education",ResumeUtil.resolveMsgIsNull(resume.getEducation()));
+        // 是否统招
+        map.put("studenttype",ResumeUtil.resolveMsgIsNull(resume.getStudentType()));
+        map.put("hxys",ResumeUtil.resolveMsgIsNull(resume.getHxys()));
+        map.put("qzyy",ResumeUtil.resolveMsgIsNull(resume.getQzyy()));
+        map.put("jtqk",ResumeUtil.resolveMsgIsNull(resume.getJtqk()));
+        // 头像
+        String imgPath = candidates.getPicpath();
+        if (StringUtils.isNotEmpty(imgPath)) {
+            try {
+                map.put("img",1);
+                map.put("imgcode", getImageBase64(PathConf.getSavePathPic() + candidates.getPicpath()));
+            }catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }else {
+            map.put("img",0);
+            map.put("imgcode", "未上传");
+        }
+        map.put("exprs",parseExperienceInfoToMap(resume.getExperienceInfo()));
+        // 职业状态
+        map.put("jobstatus",ResumeUtil.resolveMsgIsNull(resume.getSwitch())) ;
+        // 薪资
+        map.put("nowsalary",ResumeUtil.resolveMsgIsNull(resume.getSalary()) );
+        map.put("aimsalary",ResumeUtil.resolveMsgIsNull(resume.getAimSalary()));
+        // 到岗时间
+        map.put("startfrom",ResumeUtil.resolveMsgIsNull(resume.getStartFrom()));
+
+        // 项目经历
+        map.put("proj",parseProjectInfoMap(resume.getProjectInfo())  );
+        // 教育经历
+        map.put("edus",parseEducationInfoMap(resume.getEducationInfo() ));
+        return map;
+    }
+
+    @Autowired
+    private CandidatesMapper candidatesMapper;
+    @Autowired
+    private CandidatesResumeExperienceinfoMapper experienceinfoMapper;
+    @Autowired
+    private CandidatesResumeProjectinfoMapper projectinfoMapper;
+    @Autowired
+    private CandidatesResumeEducationinfoMapper educationinfoMapper;
+    @Autowired
+    private CandidatesResumeDetailMapper detailMapper;
+
+    @Transactional
+    @Override
+    public void updateCandidatesInfo() {
+        // 查询出所有的候选人信息
         CandidatesExample example = new CandidatesExample();
         List<Candidates> list = candidatesService.query(example);
-        for (Candidates c:list) {
-            CandidatesDto dto = candidatesService.getWithBLOBs(c.getId());
-            byte[] data = dto.getResumedetail();
-            if (data != null) {
-                // 解析简历
-                ResumeInfo info = JSONObject.parseObject(data,ResumeInfo.class);
-                if (info != null) {
-                    // 将简历信息 保存到 候选人对象中
-                    CandidatesDto candidates = ResumeUtilAliy.resolveResumeCandidates(info);
-                    candidates.setId(c.getId());
-                    int flag = candidatesService.save(candidates,1);
-                    if (flag > 0) {
-                        // 说明候选人添加失败
-                        // 将简历信息保存到 简历对象中
-                        CandidatesResumeDetailWithBLOBs detail = ResumeUtilAliy.resolveResumeDetails(info);
-                        //detail.setResumejson(new String(data));
-                        detail.setCandidatesid(candidates.getId());
-                        saveCandidatesResumeDetail(detail);
-                        // 保存 各个详细信息
-                        List<CandidatesResumeEducationinfo> edus = ResumeUtilAliy.resolveResumeEducation(info, detail.getId());
-                        if (edus != null && edus.size() > 0) {
-                            saveCandidatesResumeEdus(edus,detail.getId());
-                        }
-                        List<CandidatesResumeExperienceinfoWithBLOBs> exps = ResumeUtilAliy.resolveResumeExperience(info,detail.getId());
-                        if (exps != null && exps.size() > 0) {
-                            saveCandidatesResumeExpr(exps,detail.getId());
-                        }
-                        List<CandidatesResumeProjectinfoWithBLOBs> pros = ResumeUtilAliy.resolveResumeProjects(info, detail.getId());
-                        if ( pros != null && pros.size() > 0) {
-                            saveCandidatesResumeProjs(pros,detail.getId());
-                        }
+        for (Candidates c:list){
+            if(c.getId() == 629){
+                System.out.println("----");
+            }
+            CandidatesWithBLOBs candidatesWithBLOBs = candidatesMapper.selectByPrimaryKey(c.getId());
+            CandidatesDto dto = new CandidatesDto();
+            BeanUtils.copyProperties(candidatesWithBLOBs,dto);
 
-                        List<CandidatesResumeTraininginfo> trans = ResumeUtilAliy.resolveResumeTraining(info, detail.getId());
-                        if (trans != null && trans.size() > 0) {
-                            saveCandidatesResumeTrans(trans,detail.getId());
-                        }
+            CandidatesResumeDetailExample detailExample = new CandidatesResumeDetailExample();
+            detailExample.createCriteria().andCandidatesidEqualTo(c.getId());
+            List<CandidatesResumeDetailWithBLOBs> details = detailMapper.selectByExampleWithBLOBs(detailExample);
+            CandidatesResumeDetailWithBLOBs detail = null;
+            if (details != null && details.size() == 1 ) {
+                detail = details.get(0);
+            }
+            if(detail != null){
+                Integer id = detail.getId();
+
+                // 项目经历
+                CandidatesResumeProjectinfoExample projectExample = new CandidatesResumeProjectinfoExample();
+                projectExample.createCriteria().andResumeidEqualTo(id);
+                List<CandidatesResumeProjectinfoWithBLOBs> projs = projectinfoMapper.selectByExampleWithBLOBs(projectExample);
+                ProjectInfo[] projectInfos = null;
+                if (projs != null && projs.size() > 0) {
+                    projectInfos = new ProjectInfo[projs.size()];
+                    for (int i = 0 ; i < projs.size();i++){
+                        CandidatesResumeProjectinfoWithBLOBs dp = projs.get(i);
+                        ProjectInfo pj = new ProjectInfo();
+                        pj.setStartDate(QuickTimeUtil.dateParseString(dp.getStartdate(),"yyyy-MM-dd"));
+                        pj.setEndDate(QuickTimeUtil.dateParseString(dp.getEnddate(),"yyyy-MM-dd"));
+                        pj.setProjectName(dp.getProjectname());
+                        pj.setTitle(dp.getTitle());
+                        pj.setProjectDescription(dp.getProjectdescription());
+                        pj.setResponsibilities(dp.getResponsiblities());
+                        projectInfos[i] = pj;
                     }
-                }
-            }else{
-                // 同步数据
-                saveResumeByCandidatesSynchronization(dto);
 
+                }else{
+                    projectInfos = new ProjectInfo[]{new ProjectInfo()};
+                }
+                dto.setProjects(projectInfos);
+                // 工作经历
+                CandidatesResumeExperienceinfoExample experienceinfoExample = new CandidatesResumeExperienceinfoExample();
+                experienceinfoExample.createCriteria().andResumeidEqualTo(id);
+                List<CandidatesResumeExperienceinfoWithBLOBs> exps = experienceinfoMapper.selectByExampleWithBLOBs(experienceinfoExample);
+                ExperienceInfo[] experienceInfos = null;
+                if (exps != null && exps.size() > 0) {
+                    experienceInfos = new ExperienceInfo[exps.size()];
+                    for ( int i = 0 ; i < exps.size(); i ++) {
+                        CandidatesResumeExperienceinfoWithBLOBs ex =exps.get(i);
+                        ExperienceInfo ei = new ExperienceInfo();
+                        ei.setStartDate(QuickTimeUtil.dateParseString(ex.getStartdate(),"yyyy-MM-dd"));
+                        ei.setEndDate(QuickTimeUtil.dateParseString(ex.getEnddate(),"yyyy-MM-dd"));
+                        ei.setCompany(ex.getCompany());
+                        ei.setCompanyDescription(ex.getCompanydescription());
+                        ei.setDepartment(ex.getDepartment());
+                        ei.setLeader(ex.getLeader());
+                        ei.setLocation(ex.getLocation());
+                        ei.setDeponent(ex.getDeponent());
+                        ei.setWorkType(ex.getWorktype());
+                        ei.setUnderlingNumber(ex.getUnderlingnumber());
+                        ei.setVocation(ex.getVocation());
+                        ei.setTitle(ex.getTitle());
+                        ei.setSummary(ex.getSummary());
+                        ei.setSalary(ex.getSalary());
+                        ei.setReasonOfLeaving(ex.getReasonofleaving());
+                        ei.setPeriodsOfTime(ex.getPeriodsoftime());
+                        ei.setType(ex.getTypecompany());
+                        experienceInfos[i] = ei;
+                    }
+
+                }else{
+                    // 将candidates 中的信息处理过来
+                    List<ExperienceInfo> es = new ArrayList<>();
+                    ExperienceInfo ex1 = new ExperienceInfo();
+                    ex1.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork1stdate(),Constants.DATE_PATTERN_YMD));
+                    ex1.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork1eddate(),Constants.DATE_PATTERN_YMD));
+                    ex1.setCompany(candidatesWithBLOBs.getWork1());
+                    ex1.setTitle(candidatesWithBLOBs.getJobtitle());
+                    ex1.setSummary(candidatesWithBLOBs.getWork1desc());
+                    es.add(ex1);
+                    if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork2())) {
+                        ExperienceInfo ex2 = new ExperienceInfo();
+                        ex2.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork2stdate(),Constants.DATE_PATTERN_YMD));
+                        ex2.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork2eddate(),Constants.DATE_PATTERN_YMD));
+                        ex2.setCompany(candidatesWithBLOBs.getWork2());
+                        ex2.setTitle(candidatesWithBLOBs.getWork2jobtitle());
+                        ex2.setSummary(candidatesWithBLOBs.getWork2desc());
+                        es.add(ex2);
+                    }
+
+                    if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork3())) {
+                        ExperienceInfo ex3 = new ExperienceInfo();
+                        ex3.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork3stdate(),Constants.DATE_PATTERN_YMD));
+                        ex3.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork3eddate(),Constants.DATE_PATTERN_YMD));
+                        ex3.setCompany(candidatesWithBLOBs.getWork3());
+                        ex3.setTitle(candidatesWithBLOBs.getWork3jobtitle());
+                        ex3.setSummary(candidatesWithBLOBs.getWork3desc());
+                        es.add(ex3);
+                    }
+
+                    if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork4())) {
+                        ExperienceInfo ex4 = new ExperienceInfo();
+                        ex4.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork4stdate(),Constants.DATE_PATTERN_YMD));
+                        ex4.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork4eddate(),Constants.DATE_PATTERN_YMD));
+                        ex4.setCompany(candidatesWithBLOBs.getWork4());
+                        ex4.setTitle(candidatesWithBLOBs.getWork4jobtitle());
+                        ex4.setSummary(candidatesWithBLOBs.getWork4desc());
+                        es.add(ex4);
+                    }
+                    experienceInfos = es.toArray(new ExperienceInfo[es.size()]);
+                }
+
+                dto.setExprs(experienceInfos);
+                // 教育经历
+                CandidatesResumeEducationinfoExample educationinfoExample = new CandidatesResumeEducationinfoExample();
+                educationinfoExample.createCriteria().andResumeidEqualTo(id);
+                List<CandidatesResumeEducationinfo> edus = educationinfoMapper.selectByExample(educationinfoExample);
+                EducationInfo[] educationInfos = null;
+                if (edus != null && edus.size() > 0) {
+                    educationInfos = new EducationInfo[edus.size()];
+                    for ( int i = 0 ; i < edus.size() ; i ++) {
+                        CandidatesResumeEducationinfo ex = edus.get(i);
+                        EducationInfo ei = new EducationInfo();
+                        ei.setStartDate(QuickTimeUtil.dateParseString(ex.getStartdate(),"yyyy-MM-dd"));
+                        ei.setEndDate(QuickTimeUtil.dateParseString(ex.getEnddate(),"yyyy-MM-dd"));
+                        ei.setAdvancedDegree(ex.getAdvanceddegree());
+                        ei.setDepartment(ex.getDepartment());
+                        ei.setEducation(ex.getEducation());
+                        ei.setSchool(ex.getSchool());
+                        ei.setSchoolLabel(ex.getSchoollabel());
+                        ei.setSchoolType(ex.getSchooltype());
+                        ei.setSpeciality(ex.getSpeciality());
+                        ei.setSummary(ex.getSummary());
+                        educationInfos[i] = ei;
+                    }
+
+                }else {
+                    educationInfos = new EducationInfo[]{new EducationInfo()};
+                }
+                dto.setEdus(educationInfos);
+            }else{
+                System.out.println("--------" + c.getId());
+
+                List<EducationInfo> educationInfos =  new ArrayList<>();
+                EducationInfo e = new EducationInfo();
+                e.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu1stdate(), Constants.DATE_PATTERN_YMD));
+                e.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu1eddate(),Constants.DATE_PATTERN_YMD));
+                e.setSchool(candidatesWithBLOBs.getEdu1());
+                e.setEducation(candidatesWithBLOBs.getEducations());
+                educationInfos.add(e);
+                if (StringUtils.isNotBlank(candidatesWithBLOBs.getEdu2())) {
+                    EducationInfo e1 = new EducationInfo();
+                    e1.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu2stdate(), Constants.DATE_PATTERN_YMD));
+                    e1.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu2eddate(),Constants.DATE_PATTERN_YMD));
+                    e1.setSchool(candidatesWithBLOBs.getEdu2());
+                    educationInfos.add(e1);
+                }
+                if (StringUtils.isNotBlank(candidatesWithBLOBs.getEdu3())) {
+                    EducationInfo e2 = new EducationInfo();
+                    e2.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu3stdate(), Constants.DATE_PATTERN_YMD));
+                    e2.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu3eddate(),Constants.DATE_PATTERN_YMD));
+                    e2.setSchool(candidatesWithBLOBs.getEdu3());
+                    educationInfos.add(e2);
+                }
+
+
+                // 将candidates 中的信息处理过来
+                List<ExperienceInfo> experienceInfos = new ArrayList<>();
+                ExperienceInfo ex1 = new ExperienceInfo();
+                ex1.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork1stdate(),Constants.DATE_PATTERN_YMD));
+                ex1.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork1eddate(),Constants.DATE_PATTERN_YMD));
+                ex1.setCompany(candidatesWithBLOBs.getWork1());
+                ex1.setTitle(candidatesWithBLOBs.getJobtitle());
+                ex1.setSummary(candidatesWithBLOBs.getWork1desc());
+                experienceInfos.add(ex1);
+                if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork2())) {
+                    ExperienceInfo ex2 = new ExperienceInfo();
+                    ex2.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork2stdate(),Constants.DATE_PATTERN_YMD));
+                    ex2.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork2eddate(),Constants.DATE_PATTERN_YMD));
+                    ex2.setCompany(candidatesWithBLOBs.getWork2());
+                    ex2.setTitle(candidatesWithBLOBs.getWork2jobtitle());
+                    ex2.setSummary(candidatesWithBLOBs.getWork2desc());
+                    experienceInfos.add(ex2);
+                }
+
+                if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork3())) {
+                    ExperienceInfo ex3 = new ExperienceInfo();
+                    ex3.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork3stdate(),Constants.DATE_PATTERN_YMD));
+                    ex3.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork3eddate(),Constants.DATE_PATTERN_YMD));
+                    ex3.setCompany(candidatesWithBLOBs.getWork3());
+                    ex3.setTitle(candidatesWithBLOBs.getWork3jobtitle());
+                    ex3.setSummary(candidatesWithBLOBs.getWork3desc());
+                    experienceInfos.add(ex3);
+                }
+
+                if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork4())) {
+                    ExperienceInfo ex4 = new ExperienceInfo();
+                    ex4.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork4stdate(),Constants.DATE_PATTERN_YMD));
+                    ex4.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork4eddate(),Constants.DATE_PATTERN_YMD));
+                    ex4.setCompany(candidatesWithBLOBs.getWork4());
+                    ex4.setTitle(candidatesWithBLOBs.getWork4jobtitle());
+                    ex4.setSummary(candidatesWithBLOBs.getWork4desc());
+                    experienceInfos.add(ex4);
+                }
+
+                ProjectInfo[] projectInfos = new ProjectInfo[]{new ProjectInfo()};
+                dto.setEdus(educationInfos.toArray(new EducationInfo[educationInfos.size()]));
+                dto.setProjects(projectInfos);
+                dto.setExprs(experienceInfos.toArray(new ExperienceInfo[experienceInfos.size()]));
+            }
+
+            // 更新数据
+            candidatesService.save(dto,null);
+        }
+    }
+
+    public String getImageBase64(String path) throws FileNotFoundException {
+        BASE64Encoder encoder = new BASE64Encoder();
+        //InputStream input = this.getClass().getResourceAsStream("/image.jpg");
+        System.out.println(path);
+        File file = new File(path);
+        InputStream input = new FileInputStream(file);
+        byte[] fileBytes = new byte[(int) file.length()];
+        try {
+            input.read(fileBytes);//读进fileBytes数组里面
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (input != null)
+                    input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-
-        // 2.同步没有解析简历的情况
+        return encoder.encodeBuffer(fileBytes).trim();
     }
 
-
-    public List<CandidatesResumeExperienceinfoWithBLOBs> candidatesParseExps(CandidatesWithBLOBs candidates,Integer resumeId){
-        List<CandidatesResumeExperienceinfoWithBLOBs> exps = new ArrayList<>();
-        java.lang.String e1 = candidates.getWork1();
-        if ( StringUtils.isNotBlank(e1)) {
-            CandidatesResumeExperienceinfoWithBLOBs e = new CandidatesResumeExperienceinfoWithBLOBs();
-            e.setCandidatesnum(1);
-            e.setCompany(e1);
-            e.setStartdate(candidates.getWork1stdate());
-            e.setEnddate(candidates.getWork1eddate());
-            e.setResumeid(resumeId);
-            e.setSummary(candidates.getWork1desc());
-            exps.add(e);
+    public List<Map<String,Object>> parseExperienceInfoToMap(ExperienceInfo[] exprs){
+        List<Map<String,Object>> list = new ArrayList<>();
+        if(exprs != null && exprs.length > 0){
+            for (ExperienceInfo e: exprs) {
+                Map<String,Object> map = new HashMap<>();
+                map.put("startDate",ResumeUtil.resolveMsgIsNull(e.getStartDate()));
+                map.put("endDate",ResumeUtil.resolveMsgIsNull(e.getEndDate()));
+                map.put("company",ResumeUtil.resolveMsgIsNull(e.getCompany()));
+                map.put("leader",ResumeUtil.resolveMsgIsNull(e.getLeader()));
+                map.put("title",ResumeUtil.resolveMsgIsNull(e.getTitle()));
+                map.put("summary",ResumeUtil.resolveMsgIsNull(e.getSummary()));
+                map.put("companyDescription",ResumeUtil.resolveMsgIsNull(e.getCompanyDescription()));
+                map.put("underlingNumber",ResumeUtil.resolveMsgIsNull(e.getUnderlingNumber()));
+                map.put("reasonOfLeaving",ResumeUtil.resolveMsgIsNull(e.getReasonOfLeaving()));
+                list.add(map);
+            }
         }
-        String e2 = candidates.getWork2();
-        if ( StringUtils.isNotBlank(e2)) {
-            CandidatesResumeExperienceinfoWithBLOBs e = new CandidatesResumeExperienceinfoWithBLOBs();
-            e.setCandidatesnum(2);
-            e.setCompany(e2);
-            e.setStartdate(candidates.getWork2stdate());
-            e.setEnddate(candidates.getWork2eddate());
-            e.setResumeid(resumeId);
-            e.setSummary(candidates.getWork2desc());
-            exps.add(e);
-        }
-        String e3 = candidates.getWork3();
-        if ( StringUtils.isNotBlank(e3)) {
-            CandidatesResumeExperienceinfoWithBLOBs e = new CandidatesResumeExperienceinfoWithBLOBs();
-            e.setCandidatesnum(3);
-            e.setCompany(e3);
-            e.setStartdate(candidates.getWork3stdate());
-            e.setEnddate(candidates.getWork3eddate());
-            e.setResumeid(resumeId);
-            e.setSummary(candidates.getWork3desc());
-            exps.add(e);
-        }
-
-        String e4 = candidates.getWork4();
-        if ( StringUtils.isNotBlank(e4)) {
-            CandidatesResumeExperienceinfoWithBLOBs e = new CandidatesResumeExperienceinfoWithBLOBs();
-            e.setCandidatesnum(4);
-            e.setCompany(e4);
-            e.setStartdate(candidates.getWork4stdate());
-            e.setEnddate(candidates.getWork4eddate());
-            e.setResumeid(resumeId);
-            e.setSummary(candidates.getWork4desc());
-            exps.add(e);
-        }
-        return exps;
+        return list;
     }
 
-    public List<CandidatesResumeProjectinfoWithBLOBs> candidatesParseProj(CandidatesWithBLOBs candidates,Integer resumeId){
-        List<CandidatesResumeProjectinfoWithBLOBs> pros = new ArrayList<>();
-        String p1 = candidates.getWork1();
-        if (StringUtils.isNotBlank(p1)) {
-            CandidatesResumeProjectinfoWithBLOBs p = new CandidatesResumeProjectinfoWithBLOBs();
-            p.setProjectname(p1);
-            p.setStartdate(candidates.getWork1stdate());
-            p.setEnddate(candidates.getWork1eddate());
-            p.setProjectdescription(candidates.getWork1projs());
-            p.setResponsiblities(candidates.getWork1desc());
-            p.setResumeid(resumeId);
-            pros.add(p);
+    public List<Map<String,Object>> parseEducationInfoMap(EducationInfo[] edus){
+        List<Map<String,Object>> list = new ArrayList<>();
+        if (edus != null && edus.length > 0) {
+            for (EducationInfo e:edus) {
+                Map<String,Object> map = new HashMap<>();
+                map.put("startDate",ResumeUtil.resolveMsgIsNull(e.getStartDate()));
+                map.put("endDate",ResumeUtil.resolveMsgIsNull(e.getEndDate()));
+                map.put("school",ResumeUtil.resolveMsgIsNull(e.getSchool()));
+                map.put("speciality",ResumeUtil.resolveMsgIsNull(e.getSpeciality()));
+                map.put("education",ResumeUtil.resolveMsgIsNull(e.getEducation()));
+                list.add(map);
+            }
         }
-        String p2 = candidates.getWork2();
-        if (StringUtils.isNotBlank(p2)) {
-            CandidatesResumeProjectinfoWithBLOBs p = new CandidatesResumeProjectinfoWithBLOBs();
-            p.setProjectname(p2);
-            p.setStartdate(candidates.getWork2stdate());
-            p.setEnddate(candidates.getWork2eddate());
-            p.setProjectdescription(candidates.getWork2projs());
-            p.setResponsiblities(candidates.getWork2desc());
-            p.setResumeid(resumeId);
-            pros.add(p);
-        }
-        String p3 = candidates.getWork3();
-        if (StringUtils.isNotBlank(p3)) {
-            CandidatesResumeProjectinfoWithBLOBs p = new CandidatesResumeProjectinfoWithBLOBs();
-            p.setProjectname(p3);
-            p.setStartdate(candidates.getWork3stdate());
-            p.setEnddate(candidates.getWork3eddate());
-            p.setProjectdescription(candidates.getWork3projs());
-            p.setResponsiblities(candidates.getWork3desc());
-            p.setResumeid(resumeId);
-            pros.add(p);
-        }
-        String p4 = candidates.getWork4();
-        if (StringUtils.isNotBlank(p4)) {
-            CandidatesResumeProjectinfoWithBLOBs p = new CandidatesResumeProjectinfoWithBLOBs();
-            p.setProjectname(p4);
-            p.setStartdate(candidates.getWork4stdate());
-            p.setEnddate(candidates.getWork4eddate());
-            p.setProjectdescription(candidates.getWork4projs());
-            p.setResponsiblities(candidates.getWork4desc());
-            p.setResumeid(resumeId);
-            pros.add(p);
-        }
-        return pros;
+        return list;
     }
 
-    public List<CandidatesResumeEducationinfo> candidatesParseEdus(CandidatesWithBLOBs candidates,Integer resumeId){
-        List<CandidatesResumeEducationinfo> edus = new ArrayList<>();
-        String school = candidates.getEdu1();
-        if (StringUtils.isNotBlank(school)) {
-            CandidatesResumeEducationinfo e = new CandidatesResumeEducationinfo();
-            e.setSchool(school);
-            e.setStartdate(candidates.getEdu1stdate());
-            e.setEnddate(candidates.getEdu1eddate());
-            e.setSpeciality(candidates.getDegree());
-            e.setResumeid(resumeId);
-            edus.add(e);
+    public List<Map<String,Object>> parseProjectInfoMap(ProjectInfo[] pros){
+        List<Map<String,Object>> list = new ArrayList<>();
+        if (pros != null && pros.length > 0) {
+            for (ProjectInfo e:pros) {
+                Map<String,Object> map = new HashMap<>();
+                map.put("startDate",ResumeUtil.resolveMsgIsNull(e.getStartDate()));
+                map.put("endDate",ResumeUtil.resolveMsgIsNull(e.getEndDate()));
+                map.put("projectName", ResumeUtil.resolveMsgIsNull(e.getProjectName()));
+                map.put("projectDescription",ResumeUtil.resolveMsgIsNull(e.getProjectDescription()));
+                map.put("responsibilities",ResumeUtil.resolveMsgIsNull(e.getResponsibilities()));
+                list.add(map);
+            }
         }
-        String school2 = candidates.getEdu2();
-        if (StringUtils.isNotBlank(school2)) {
-            CandidatesResumeEducationinfo e = new CandidatesResumeEducationinfo();
-            e.setSchool(school2);
-            e.setStartdate(candidates.getEdu2stdate());
-            e.setEnddate(candidates.getEdu2eddate());
-            e.setResumeid(resumeId);
-            edus.add(e);
-        }
-        String school3 = candidates.getEdu3();
-        if (StringUtils.isNotBlank(school3)) {
-            CandidatesResumeEducationinfo e = new CandidatesResumeEducationinfo();
-            e.setSchool(school3);
-            e.setStartdate(candidates.getEdu3stdate());
-            e.setEnddate(candidates.getEdu3eddate());
-            e.setResumeid(resumeId);
-            edus.add(e);
-        }
-        return edus;
+        return list;
     }
 }

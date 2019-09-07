@@ -5,6 +5,8 @@ import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.PathConf;
 import com.hrbc.business.conf.aop.ProcessLog;
 import com.hrbc.business.domain.*;
+import com.hrbc.business.domain.aliylincv.ExperienceInfo;
+import com.hrbc.business.domain.aliylincv.ResumeInfo;
 import com.hrbc.business.domain.common.CandidatesDto;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
@@ -16,6 +18,7 @@ import com.hrbc.business.util.QuickTimeUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -32,16 +35,16 @@ public class CandidatesServiceImpl implements CandidatesService {
     @Override
     public CandidatesDto getWithBLOBs(Integer id) {
         CandidatesWithBLOBs candidates = mapper.selectByPrimaryKey(id);
-        CandidatesResumeDetail detail = resumeService.queryResumeDetail(id);
+        ResumeInfo resumeInfo = resumeService.getResumeInfo(id);
         CandidatesDto dto = new CandidatesDto();
         BeanUtils.copyProperties(candidates,dto);
-        if (detail != null) {
-            List<CandidatesResumeProjectinfoWithBLOBs> projects = resumeService.queryResumePros(detail.getId());
-            dto.setProjects(projects);
-            List<CandidatesResumeExperienceinfoWithBLOBs> exprs = resumeService.queryResumeExprs(detail.getId());
-            dto.setExprs(exprs);
-            List<CandidatesResumeEducationinfo> edus = resumeService.queryResumeEdus(detail.getId());
-            dto.setEdus(edus);
+        if (resumeInfo != null) {
+            dto.setEdus(resumeInfo.getEducationInfo());
+            dto.setExprs(resumeInfo.getExperienceInfo());
+            dto.setProjects(resumeInfo.getProjectInfo());
+            dto.setHxys(resumeInfo.getHxys());
+            dto.setJtqk(resumeInfo.getJtqk());
+            dto.setQzyy(resumeInfo.getQzyy());
         }
         return dto;
     }
@@ -63,6 +66,7 @@ public class CandidatesServiceImpl implements CandidatesService {
      */
     @Override
     @ProcessLog(businessName = "候选人管理",methodName = "save")
+    @Transactional
     public int save(CandidatesDto entity, Integer flag) {
         // 将工作经历中的详情数据更新到 候选人对象中
         updateCandidatesWork(entity);
@@ -99,32 +103,35 @@ public class CandidatesServiceImpl implements CandidatesService {
     }
 
     private void updateCandidatesWork(CandidatesDto dto){
-        List<CandidatesResumeExperienceinfoWithBLOBs> exprs = dto.getExprs();
-        if (exprs != null && exprs.size() > 0) {
-            for ( int i = 0 ; i < exprs.size() ;i++) {
-                CandidatesResumeExperienceinfoWithBLOBs e = exprs.get(i);
+        ExperienceInfo[] exprs = dto.getExprs();
+        if (exprs != null && exprs.length > 0) {
+            for ( int i = 0 ; i < exprs.length ;i++) {
+                ExperienceInfo e = exprs[i];
+                if (StringUtils.isEmpty(e.getCompany())) {
+                    continue;
+                }
                 if(i==0){
                     dto.setWork1(e.getCompany());
-                    dto.setWork1stdate(e.getStartdate());
-                    dto.setWork1eddate(e.getEnddate());
+                    dto.setWork1stdate(QuickTimeUtil.stringParseDate(e.getStartDate(),"yyyy-MM-dd"));
+                    dto.setWork1eddate(QuickTimeUtil.stringParseDate(e.getEndDate(),"yyyy-MM-dd"));
                     dto.setWork1desc(e.getSummary());
                 }
                 if(i==1){
                     dto.setWork2(e.getCompany());
-                    dto.setWork2stdate(e.getStartdate());
-                    dto.setWork2eddate(e.getEnddate());
+                    dto.setWork2stdate(QuickTimeUtil.stringParseDate(e.getStartDate(),"yyyy-MM-dd"));
+                    dto.setWork2eddate(QuickTimeUtil.stringParseDate(e.getEndDate(),"yyyy-MM-dd"));
                     dto.setWork2desc(e.getSummary());
                 }
                 if(i==2){
                     dto.setWork3(e.getCompany());
-                    dto.setWork3stdate(e.getStartdate());
-                    dto.setWork3eddate(e.getEnddate());
+                    dto.setWork3stdate(QuickTimeUtil.stringParseDate(e.getStartDate(),"yyyy-MM-dd"));
+                    dto.setWork3eddate(QuickTimeUtil.stringParseDate(e.getEndDate(),"yyyy-MM-dd"));
                     dto.setWork3desc(e.getSummary());
                 }
                 if(i==3){
                     dto.setWork4(e.getCompany());
-                    dto.setWork4stdate(e.getStartdate());
-                    dto.setWork4eddate(e.getEnddate());
+                    dto.setWork4stdate(QuickTimeUtil.stringParseDate(e.getStartDate(),"yyyy-MM-dd"));
+                    dto.setWork4eddate(QuickTimeUtil.stringParseDate(e.getEndDate(),"yyyy-MM-dd"));
                     dto.setWork4desc(e.getSummary());
                 }
             }
