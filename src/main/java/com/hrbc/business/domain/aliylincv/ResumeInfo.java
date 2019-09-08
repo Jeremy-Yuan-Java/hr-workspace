@@ -119,6 +119,34 @@ public class ResumeInfo {
     public TrainingInfo[] TrainingInfo ;// 培训情况组成机构
     public ProjectInfo[] ProjectInfo ;// 项目经验组成结构
 
+    public String hxys; // 核心优势
+    public String qzyy; // 求职原因
+    public String jtqk; // 家庭情况
+
+    public String getHxys() {
+        return hxys;
+    }
+
+    public void setHxys(String hxys) {
+        this.hxys = hxys;
+    }
+
+    public String getQzyy() {
+        return qzyy;
+    }
+
+    public void setQzyy(String qzyy) {
+        this.qzyy = qzyy;
+    }
+
+    public String getJtqk() {
+        return jtqk;
+    }
+
+    public void setJtqk(String jtqk) {
+        this.jtqk = jtqk;
+    }
+
     public int getType() {
         return Type;
     }

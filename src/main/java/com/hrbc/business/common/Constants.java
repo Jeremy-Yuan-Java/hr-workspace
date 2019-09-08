@@ -56,14 +56,8 @@ public class Constants {
     public static final int DEFAULT_TIMEOUT = 1000;
     //参与签名的系统Header前缀,只有指定前缀的Header才会参与到签名中
     public static final String CA_HEADER_TO_SIGN_PREFIX_SYSTEM = "X-Ca-";
-    // 简历详情
-    public static final String RESUME_DETAIL = "details";
-    // 教育详情
-    public static final String RESUME_EDUS = "edus";
-    // 工作详情
-    public static final String RESUME_EXPRS = "exps";
-    // 项目详情
-    public static final String RESUME_PROS = "pros";
-    // 培训详情
-    public static final String RESUME_TRANS = "trans";
+
+    public static final String DATE_PATTERN_YMD = "yyyy-MM-dd";
+
+
 }
