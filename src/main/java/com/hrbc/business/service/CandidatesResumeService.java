@@ -33,6 +33,5 @@ public interface CandidatesResumeService {
 
     Map<String,Object> resolveExportCandidatesInfo(Integer candidatesId);
 
-    void updateCandidatesInfo();
 
 }

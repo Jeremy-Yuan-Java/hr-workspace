@@ -240,7 +240,29 @@ public class CandidatesResumeServiceImpl implements CandidatesResumeService {
         }
 
         // 设置 工作经历  项目经历   教育经历
-        info.setExperienceInfo(candidates.getExprs());
+        // 更新 工作经验
+        ExperienceInfo[] exprs = candidates.getExprs();
+        if (exprs != null && exprs.length > 0) {
+            ExperienceInfo experienceInfo = exprs[0];
+            if (StringUtils.isBlank(experienceInfo.getCompany())) {
+                experienceInfo.setCompany(candidates.getWork1());
+            }
+            if (StringUtils.isBlank(experienceInfo.getTitle())) {
+                experienceInfo.setTitle(candidates.getJobtitle());
+            }
+            if (StringUtils.isBlank(experienceInfo.getPeriodsOfTime())) {
+                experienceInfo.setPeriodsOfTime(candidates.getWorkyears()+"");
+            }
+            if (StringUtils.isBlank(experienceInfo.getStartDate())) {
+                experienceInfo.setStartDate(QuickTimeUtil.dateParseString(candidates.getWork1stdate(),Constants.DATE_PATTERN_YMD));
+            }
+
+            if (StringUtils.isBlank(experienceInfo.getEndDate())) {
+                experienceInfo.setEndDate(QuickTimeUtil.dateParseString(candidates.getWork1eddate(),Constants.DATE_PATTERN_YMD));
+            }
+        }
+
+        info.setExperienceInfo(exprs);
         info.setProjectInfo(candidates.getProjects());
         info.setEducationInfo(candidates.getEdus());
         // 将 ResumeInfo 转换为 json数据
@@ -317,239 +339,6 @@ public class CandidatesResumeServiceImpl implements CandidatesResumeService {
         return map;
     }
 
-    @Autowired
-    private CandidatesMapper candidatesMapper;
-    @Autowired
-    private CandidatesResumeExperienceinfoMapper experienceinfoMapper;
-    @Autowired
-    private CandidatesResumeProjectinfoMapper projectinfoMapper;
-    @Autowired
-    private CandidatesResumeEducationinfoMapper educationinfoMapper;
-    @Autowired
-    private CandidatesResumeDetailMapper detailMapper;
-
-    @Transactional
-    @Override
-    public void updateCandidatesInfo() {
-        // 查询出所有的候选人信息
-        CandidatesExample example = new CandidatesExample();
-        List<Candidates> list = candidatesService.query(example);
-        for (Candidates c:list){
-            if(c.getId() == 629){
-                System.out.println("----");
-            }
-            CandidatesWithBLOBs candidatesWithBLOBs = candidatesMapper.selectByPrimaryKey(c.getId());
-            CandidatesDto dto = new CandidatesDto();
-            BeanUtils.copyProperties(candidatesWithBLOBs,dto);
-
-            CandidatesResumeDetailExample detailExample = new CandidatesResumeDetailExample();
-            detailExample.createCriteria().andCandidatesidEqualTo(c.getId());
-            List<CandidatesResumeDetailWithBLOBs> details = detailMapper.selectByExampleWithBLOBs(detailExample);
-            CandidatesResumeDetailWithBLOBs detail = null;
-            if (details != null && details.size() == 1 ) {
-                detail = details.get(0);
-            }
-            if(detail != null){
-                Integer id = detail.getId();
-
-                // 项目经历
-                CandidatesResumeProjectinfoExample projectExample = new CandidatesResumeProjectinfoExample();
-                projectExample.createCriteria().andResumeidEqualTo(id);
-                List<CandidatesResumeProjectinfoWithBLOBs> projs = projectinfoMapper.selectByExampleWithBLOBs(projectExample);
-                ProjectInfo[] projectInfos = null;
-                if (projs != null && projs.size() > 0) {
-                    projectInfos = new ProjectInfo[projs.size()];
-                    for (int i = 0 ; i < projs.size();i++){
-                        CandidatesResumeProjectinfoWithBLOBs dp = projs.get(i);
-                        ProjectInfo pj = new ProjectInfo();
-                        pj.setStartDate(QuickTimeUtil.dateParseString(dp.getStartdate(),"yyyy-MM-dd"));
-                        pj.setEndDate(QuickTimeUtil.dateParseString(dp.getEnddate(),"yyyy-MM-dd"));
-                        pj.setProjectName(dp.getProjectname());
-                        pj.setTitle(dp.getTitle());
-                        pj.setProjectDescription(dp.getProjectdescription());
-                        pj.setResponsibilities(dp.getResponsiblities());
-                        projectInfos[i] = pj;
-                    }
-
-                }else{
-                    projectInfos = new ProjectInfo[]{new ProjectInfo()};
-                }
-                dto.setProjects(projectInfos);
-                // 工作经历
-                CandidatesResumeExperienceinfoExample experienceinfoExample = new CandidatesResumeExperienceinfoExample();
-                experienceinfoExample.createCriteria().andResumeidEqualTo(id);
-                List<CandidatesResumeExperienceinfoWithBLOBs> exps = experienceinfoMapper.selectByExampleWithBLOBs(experienceinfoExample);
-                ExperienceInfo[] experienceInfos = null;
-                if (exps != null && exps.size() > 0) {
-                    experienceInfos = new ExperienceInfo[exps.size()];
-                    for ( int i = 0 ; i < exps.size(); i ++) {
-                        CandidatesResumeExperienceinfoWithBLOBs ex =exps.get(i);
-                        ExperienceInfo ei = new ExperienceInfo();
-                        ei.setStartDate(QuickTimeUtil.dateParseString(ex.getStartdate(),"yyyy-MM-dd"));
-                        ei.setEndDate(QuickTimeUtil.dateParseString(ex.getEnddate(),"yyyy-MM-dd"));
-                        ei.setCompany(ex.getCompany());
-                        ei.setCompanyDescription(ex.getCompanydescription());
-                        ei.setDepartment(ex.getDepartment());
-                        ei.setLeader(ex.getLeader());
-                        ei.setLocation(ex.getLocation());
-                        ei.setDeponent(ex.getDeponent());
-                        ei.setWorkType(ex.getWorktype());
-                        ei.setUnderlingNumber(ex.getUnderlingnumber());
-                        ei.setVocation(ex.getVocation());
-                        ei.setTitle(ex.getTitle());
-                        ei.setSummary(ex.getSummary());
-                        ei.setSalary(ex.getSalary());
-                        ei.setReasonOfLeaving(ex.getReasonofleaving());
-                        ei.setPeriodsOfTime(ex.getPeriodsoftime());
-                        ei.setType(ex.getTypecompany());
-                        experienceInfos[i] = ei;
-                    }
-
-                }else{
-                    // 将candidates 中的信息处理过来
-                    List<ExperienceInfo> es = new ArrayList<>();
-                    ExperienceInfo ex1 = new ExperienceInfo();
-                    ex1.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork1stdate(),Constants.DATE_PATTERN_YMD));
-                    ex1.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork1eddate(),Constants.DATE_PATTERN_YMD));
-                    ex1.setCompany(candidatesWithBLOBs.getWork1());
-                    ex1.setTitle(candidatesWithBLOBs.getJobtitle());
-                    ex1.setSummary(candidatesWithBLOBs.getWork1desc());
-                    es.add(ex1);
-                    if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork2())) {
-                        ExperienceInfo ex2 = new ExperienceInfo();
-                        ex2.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork2stdate(),Constants.DATE_PATTERN_YMD));
-                        ex2.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork2eddate(),Constants.DATE_PATTERN_YMD));
-                        ex2.setCompany(candidatesWithBLOBs.getWork2());
-                        ex2.setTitle(candidatesWithBLOBs.getWork2jobtitle());
-                        ex2.setSummary(candidatesWithBLOBs.getWork2desc());
-                        es.add(ex2);
-                    }
-
-                    if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork3())) {
-                        ExperienceInfo ex3 = new ExperienceInfo();
-                        ex3.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork3stdate(),Constants.DATE_PATTERN_YMD));
-                        ex3.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork3eddate(),Constants.DATE_PATTERN_YMD));
-                        ex3.setCompany(candidatesWithBLOBs.getWork3());
-                        ex3.setTitle(candidatesWithBLOBs.getWork3jobtitle());
-                        ex3.setSummary(candidatesWithBLOBs.getWork3desc());
-                        es.add(ex3);
-                    }
-
-                    if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork4())) {
-                        ExperienceInfo ex4 = new ExperienceInfo();
-                        ex4.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork4stdate(),Constants.DATE_PATTERN_YMD));
-                        ex4.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork4eddate(),Constants.DATE_PATTERN_YMD));
-                        ex4.setCompany(candidatesWithBLOBs.getWork4());
-                        ex4.setTitle(candidatesWithBLOBs.getWork4jobtitle());
-                        ex4.setSummary(candidatesWithBLOBs.getWork4desc());
-                        es.add(ex4);
-                    }
-                    experienceInfos = es.toArray(new ExperienceInfo[es.size()]);
-                }
-
-                dto.setExprs(experienceInfos);
-                // 教育经历
-                CandidatesResumeEducationinfoExample educationinfoExample = new CandidatesResumeEducationinfoExample();
-                educationinfoExample.createCriteria().andResumeidEqualTo(id);
-                List<CandidatesResumeEducationinfo> edus = educationinfoMapper.selectByExample(educationinfoExample);
-                EducationInfo[] educationInfos = null;
-                if (edus != null && edus.size() > 0) {
-                    educationInfos = new EducationInfo[edus.size()];
-                    for ( int i = 0 ; i < edus.size() ; i ++) {
-                        CandidatesResumeEducationinfo ex = edus.get(i);
-                        EducationInfo ei = new EducationInfo();
-                        ei.setStartDate(QuickTimeUtil.dateParseString(ex.getStartdate(),"yyyy-MM-dd"));
-                        ei.setEndDate(QuickTimeUtil.dateParseString(ex.getEnddate(),"yyyy-MM-dd"));
-                        ei.setAdvancedDegree(ex.getAdvanceddegree());
-                        ei.setDepartment(ex.getDepartment());
-                        ei.setEducation(ex.getEducation());
-                        ei.setSchool(ex.getSchool());
-                        ei.setSchoolLabel(ex.getSchoollabel());
-                        ei.setSchoolType(ex.getSchooltype());
-                        ei.setSpeciality(ex.getSpeciality());
-                        ei.setSummary(ex.getSummary());
-                        educationInfos[i] = ei;
-                    }
-
-                }else {
-                    educationInfos = new EducationInfo[]{new EducationInfo()};
-                }
-                dto.setEdus(educationInfos);
-            }else{
-                System.out.println("--------" + c.getId());
-
-                List<EducationInfo> educationInfos =  new ArrayList<>();
-                EducationInfo e = new EducationInfo();
-                e.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu1stdate(), Constants.DATE_PATTERN_YMD));
-                e.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu1eddate(),Constants.DATE_PATTERN_YMD));
-                e.setSchool(candidatesWithBLOBs.getEdu1());
-                e.setEducation(candidatesWithBLOBs.getEducations());
-                educationInfos.add(e);
-                if (StringUtils.isNotBlank(candidatesWithBLOBs.getEdu2())) {
-                    EducationInfo e1 = new EducationInfo();
-                    e1.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu2stdate(), Constants.DATE_PATTERN_YMD));
-                    e1.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu2eddate(),Constants.DATE_PATTERN_YMD));
-                    e1.setSchool(candidatesWithBLOBs.getEdu2());
-                    educationInfos.add(e1);
-                }
-                if (StringUtils.isNotBlank(candidatesWithBLOBs.getEdu3())) {
-                    EducationInfo e2 = new EducationInfo();
-                    e2.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu3stdate(), Constants.DATE_PATTERN_YMD));
-                    e2.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getEdu3eddate(),Constants.DATE_PATTERN_YMD));
-                    e2.setSchool(candidatesWithBLOBs.getEdu3());
-                    educationInfos.add(e2);
-                }
-
-
-                // 将candidates 中的信息处理过来
-                List<ExperienceInfo> experienceInfos = new ArrayList<>();
-                ExperienceInfo ex1 = new ExperienceInfo();
-                ex1.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork1stdate(),Constants.DATE_PATTERN_YMD));
-                ex1.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork1eddate(),Constants.DATE_PATTERN_YMD));
-                ex1.setCompany(candidatesWithBLOBs.getWork1());
-                ex1.setTitle(candidatesWithBLOBs.getJobtitle());
-                ex1.setSummary(candidatesWithBLOBs.getWork1desc());
-                experienceInfos.add(ex1);
-                if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork2())) {
-                    ExperienceInfo ex2 = new ExperienceInfo();
-                    ex2.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork2stdate(),Constants.DATE_PATTERN_YMD));
-                    ex2.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork2eddate(),Constants.DATE_PATTERN_YMD));
-                    ex2.setCompany(candidatesWithBLOBs.getWork2());
-                    ex2.setTitle(candidatesWithBLOBs.getWork2jobtitle());
-                    ex2.setSummary(candidatesWithBLOBs.getWork2desc());
-                    experienceInfos.add(ex2);
-                }
-
-                if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork3())) {
-                    ExperienceInfo ex3 = new ExperienceInfo();
-                    ex3.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork3stdate(),Constants.DATE_PATTERN_YMD));
-                    ex3.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork3eddate(),Constants.DATE_PATTERN_YMD));
-                    ex3.setCompany(candidatesWithBLOBs.getWork3());
-                    ex3.setTitle(candidatesWithBLOBs.getWork3jobtitle());
-                    ex3.setSummary(candidatesWithBLOBs.getWork3desc());
-                    experienceInfos.add(ex3);
-                }
-
-                if (StringUtils.isNotBlank(candidatesWithBLOBs.getWork4())) {
-                    ExperienceInfo ex4 = new ExperienceInfo();
-                    ex4.setStartDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork4stdate(),Constants.DATE_PATTERN_YMD));
-                    ex4.setEndDate(QuickTimeUtil.dateParseString(candidatesWithBLOBs.getWork4eddate(),Constants.DATE_PATTERN_YMD));
-                    ex4.setCompany(candidatesWithBLOBs.getWork4());
-                    ex4.setTitle(candidatesWithBLOBs.getWork4jobtitle());
-                    ex4.setSummary(candidatesWithBLOBs.getWork4desc());
-                    experienceInfos.add(ex4);
-                }
-
-                ProjectInfo[] projectInfos = new ProjectInfo[]{new ProjectInfo()};
-                dto.setEdus(educationInfos.toArray(new EducationInfo[educationInfos.size()]));
-                dto.setProjects(projectInfos);
-                dto.setExprs(experienceInfos.toArray(new ExperienceInfo[experienceInfos.size()]));
-            }
-
-            // 更新数据
-            candidatesService.save(dto,null);
-        }
-    }
 
     public String getImageBase64(String path) throws FileNotFoundException {
         BASE64Encoder encoder = new BASE64Encoder();
