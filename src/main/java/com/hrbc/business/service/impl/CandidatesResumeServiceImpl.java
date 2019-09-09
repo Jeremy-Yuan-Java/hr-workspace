@@ -150,6 +150,7 @@ public class CandidatesResumeServiceImpl implements CandidatesResumeService {
     @Override
     public Integer saveResumeByCandidates(CandidatesDto candidates) {
         CandidatesResume candidatesResume = getCandidatesResume(candidates.getId());
+
         if (candidatesResume == null) {
             candidatesResume = new CandidatesResume();
             candidatesResume.setCandidatesId(candidates.getId());
@@ -244,22 +245,11 @@ public class CandidatesResumeServiceImpl implements CandidatesResumeService {
         ExperienceInfo[] exprs = candidates.getExprs();
         if (exprs != null && exprs.length > 0) {
             ExperienceInfo experienceInfo = exprs[0];
-            if (StringUtils.isBlank(experienceInfo.getCompany())) {
-                experienceInfo.setCompany(candidates.getWork1());
-            }
-            if (StringUtils.isBlank(experienceInfo.getTitle())) {
-                experienceInfo.setTitle(candidates.getJobtitle());
-            }
-            if (StringUtils.isBlank(experienceInfo.getPeriodsOfTime())) {
-                experienceInfo.setPeriodsOfTime(candidates.getWorkyears()+"");
-            }
-            if (StringUtils.isBlank(experienceInfo.getStartDate())) {
-                experienceInfo.setStartDate(QuickTimeUtil.dateParseString(candidates.getWork1stdate(),Constants.DATE_PATTERN_YMD));
-            }
-
-            if (StringUtils.isBlank(experienceInfo.getEndDate())) {
-                experienceInfo.setEndDate(QuickTimeUtil.dateParseString(candidates.getWork1eddate(),Constants.DATE_PATTERN_YMD));
-            }
+            experienceInfo.setCompany(candidates.getWork1());
+            experienceInfo.setTitle(candidates.getJobtitle());
+            experienceInfo.setPeriodsOfTime(candidates.getWorkyears()+"");
+            experienceInfo.setStartDate(QuickTimeUtil.dateParseString(candidates.getWork1stdate(),Constants.DATE_PATTERN_YMD));
+            experienceInfo.setEndDate(QuickTimeUtil.dateParseString(candidates.getWork1eddate(),Constants.DATE_PATTERN_YMD));
         }
 
         info.setExperienceInfo(exprs);

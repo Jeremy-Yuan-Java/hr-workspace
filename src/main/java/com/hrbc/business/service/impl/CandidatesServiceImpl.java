@@ -116,10 +116,10 @@ public class CandidatesServiceImpl implements CandidatesService {
                     continue;
                 }
                 if(i==0){
-                    dto.setWork1(e.getCompany());
+                    /*dto.setWork1(e.getCompany());
                     dto.setWork1stdate(QuickTimeUtil.stringParseDate(e.getStartDate(),"yyyy-MM-dd"));
                     dto.setWork1eddate(QuickTimeUtil.stringParseDate(e.getEndDate(),"yyyy-MM-dd"));
-                    dto.setWork1desc(e.getSummary());
+                    dto.setWork1desc(e.getSummary());*/
                 }
                 if(i==1){
                     dto.setWork2(e.getCompany());
