@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrbc.business.mapper.PerformanceMapper">
+
+    <resultMap id="baseMap" type="com.hrbc.business.domain.Performance">
+        <id column="id" property="id"/>
+        <result column="opdate" property="opdate"/>
+        <result column="opuser" property="opuser"/>
+        <result column="opusername" property="opusername"/>
+        <result column="khs" property="khs"/>
+        <result column="tjl" property="tjl"/>
+        <result column="interview" property="interview"/>
+        <result column="offer" property="offer"/>
+        <result column="rzdg" property="rzdg"/>
+        <result column="rzfq" property="rzfq"/>
+        <result column="byqlz" property="byqlz"/>
+        <result column="msl" property="msl"/>
+        <result column="offerl" property="offerl"/>
+        <result column="pdl" property="pdl"/>
+    </resultMap>
+
+    <select id="queryDay" resultMap="baseMap" parameterType="com.hrbc.business.domain.Performance">
+        SELECT
+        t3.*,
+        CONCAT((@i:=@i+1 ),'') id,
+        CONCAT(
+        round(
+
+        IF (
+        t3.interview / t3.tjl IS NULL,
+        0,
+        t3.interview / t3.tjl
+        ),
+        2
+        )*100,
+        '%'
+        ) msl,
+        CONCAT(
+        round(
+
+        IF (
+        t3.offer / t3.interview IS NULL,
+        0,
+        t3.offer / t3.interview
+        ),
+        2
+        )*100,
+        '%'
+        ) offerl,
+        CONCAT(
+        round(
+
+        IF (
+        t3.rzfq / t3.offer IS NULL,
+        0,
+        t3.rzfq / t3.offer
+        ),
+        2
+        )*100,
+        '%'
+        ) pdl
+        FROM
+        (SELECT @i:=0) as i,
+        (
+        SELECT
+        t2.optday opdate,
+        t2.opuser,
+        (
+        SELECT
+        s.cnname
+        FROM
+        sys_user s
+        WHERE
+        s.username = t2.opuser
+        ) opusername,
+        count(DISTINCT(t2.jcid)) khs,
+        count(DISTINCT(t2.jobdesc)) jobnum,
+        sum(IF(t2.flowstate = 2, 1, 0)) tjl,
+        sum(IF(t2.flowstate = 4, 1, 0)) interview,
+        sum(IF(t2.flowstate = 5, 1, 0)) offer,
+        sum(IF(t2.flowstate = 6, 1, 0)) rzdg,
+        sum(IF(t2.flowstate = 8, 1, 0)) rzfq,
+        sum(IF(t2.flowstate = 11, 1, 0)) byqlz
+        FROM
+        (
+        SELECT
+        t1.*, DATE_FORMAT(t1.optime, '%Y-%m-%d') optday,
+        DATE_FORMAT(t1.optime, '%Y-%m') optmonth,
+        DATE_FORMAT(t1.optime, '%Y') optyear,
+        tj.jobid,
+        tj.jobtitle,
+        j2.jobdesc,
+        j2.cno,
+        j2.cname
+        FROM
+        ( select * from jobs_candidates_state <where> <if test="currentuser != null"> and opuser = #{currentuser}</if> </where> ) t1
+        LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
+        LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
+        <where>
+            <if test="createtimest != null">
+                and t1.optime &gt;= #{createtimest}
+            </if>
+            <if test="createtimeed != null">
+                and t1.optime &lt;= #{createtimeed}
+            </if>
+            <if test="qcustomername != null">
+                and j2.cname like  #{qcustomername}
+            </if>
+            <if test="qjobname != null">
+                and tj.jobtitle like  #{qjobname}
+            </if>
+            <if test="qopusername != null">
+                and t1.opusername like  #{qopusername}
+            </if>
+
+        </where>
+        ) t2
+        WHERE
+        1 = 1
+        GROUP BY
+        t2.optday,
+        t2.opuser
+        ORDER BY
+        t2.optday DESC
+        ) t3
+
+    </select>
+
+    <select id="queryMonth" resultMap="baseMap" parameterType="com.hrbc.business.domain.Performance">
+       SELECT
+            t3.*,
+        CONCAT((@i:=@i+1 ),'') id,
+            CONCAT(
+                round(
+
+                    IF (
+                        t3.interview / t3.tjl IS NULL,
+                        0,
+                        t3.interview / t3.tjl
+                    ),
+                    2
+                )*100,
+                '%'
+            ) msl,
+            CONCAT(
+                round(
+
+                    IF (
+                        t3.offer / t3.interview IS NULL,
+                        0,
+                        t3.offer / t3.interview
+                    ),
+                    2
+                )*100,
+                '%'
+            ) offerl,
+            CONCAT(
+                round(
+
+                    IF (
+                        t3.rzfq / t3.offer IS NULL,
+                        0,
+                        t3.rzfq / t3.offer
+                    ),
+                    2
+                )*100,
+                '%'
+            ) pdl
+        FROM
+        (SELECT @i:=0) as i,
+            (
+                SELECT
+                    t2.optmonth opdate,
+                    t2.opuser,
+                    (
+                        SELECT
+                            s.cnname
+                        FROM
+                            sys_user s
+                        WHERE
+                            s.username = t2.opuser
+                    ) opusername,
+                    count(DISTINCT(t2.jcid)) khs,
+                    count(DISTINCT(t2.jobdesc)) jobnum,
+                    sum(IF(t2.flowstate = 2, 1, 0)) tjl,
+                    sum(IF(t2.flowstate = 4, 1, 0)) interview,
+                    sum(IF(t2.flowstate = 5, 1, 0)) offer,
+                    sum(IF(t2.flowstate = 6, 1, 0)) rzdg,
+                    sum(IF(t2.flowstate = 8, 1, 0)) rzfq,
+                    sum(IF(t2.flowstate = 11, 1, 0)) byqlz
+                FROM
+                    (
+                        SELECT
+                            t1.*, DATE_FORMAT(t1.optime, '%Y-%m-%d') optday,
+                            DATE_FORMAT(t1.optime, '%Y-%m') optmonth,
+                            DATE_FORMAT(t1.optime, '%Y') optyear,
+                            tj.jobid,
+                            tj.jobtitle,
+                            j2.jobdesc,
+                            j2.cno,
+                            j2.cname
+                        FROM
+        ( select * from jobs_candidates_state <where> <if test="currentuser != null"> and opuser = #{currentuser}</if> </where> ) t1
+                        LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
+                        LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
+                    <where>
+                        <if test="createtimest != null">
+                            and t1.optime &gt;= #{createtimest}
+                        </if>
+                        <if test="createtimeed != null">
+                            and t1.optime &lt;= #{createtimeed}
+                        </if>
+                        <if test="qcustomername != null">
+                            and j2.cname like  #{qcustomername}
+                        </if>
+                        <if test="qjobname != null">
+                            and tj.jobtitle like  #{qjobname}
+                        </if>
+                        <if test="qopusername != null">
+                            and t1.opusername like  #{qopusername}
+                        </if>
+                    </where>
+                    ) t2
+                WHERE
+                    1 = 1
+                GROUP BY
+                    t2.optmonth,
+                    t2.opuser
+                ORDER BY
+                    t2.optmonth DESC
+            ) t3
+
+    </select>
+
+    <select id="queryYear" resultMap="baseMap" parameterType="com.hrbc.business.domain.Performance">
+        SELECT
+        t3.*,
+        CONCAT((@i:=@i+1 ),'') id,
+        CONCAT(
+        round(
+
+        IF (
+        t3.interview / t3.tjl IS NULL,
+        0,
+        t3.interview / t3.tjl
+        ),
+        2
+        )*100,
+        '%'
+        ) msl,
+        CONCAT(
+        round(
+
+        IF (
+        t3.offer / t3.interview IS NULL,
+        0,
+        t3.offer / t3.interview
+        ),
+        2
+        )*100,
+        '%'
+        ) offerl,
+        CONCAT(
+        round(
+
+        IF (
+        t3.rzfq / t3.offer IS NULL,
+        0,
+        t3.rzfq / t3.offer
+        ),
+        2
+        )*100,
+        '%'
+        ) pdl
+        FROM
+        (SELECT @i:=0) as i,
+        (
+        SELECT
+        t2.optyear opdate,
+        t2.opuser,
+        (
+        SELECT
+        s.cnname
+        FROM
+        sys_user s
+        WHERE
+        s.username = t2.opuser
+        ) opusername,
+        count(DISTINCT(t2.jcid)) khs,
+        count(DISTINCT(t2.jobdesc)) jobnum,
+        sum(IF(t2.flowstate = 2, 1, 0)) tjl,
+        sum(IF(t2.flowstate = 4, 1, 0)) interview,
+        sum(IF(t2.flowstate = 5, 1, 0)) offer,
+        sum(IF(t2.flowstate = 6, 1, 0)) rzdg,
+        sum(IF(t2.flowstate = 8, 1, 0)) rzfq,
+        sum(IF(t2.flowstate = 11, 1, 0)) byqlz
+        FROM
+        (
+        SELECT
+        t1.*, DATE_FORMAT(t1.optime, '%Y-%m-%d') optday,
+        DATE_FORMAT(t1.optime, '%Y-%m') optmonth,
+        DATE_FORMAT(t1.optime, '%Y') optyear,
+        tj.jobid,
+        tj.jobtitle,
+        j2.jobdesc,
+        j2.cno,
+        j2.cname
+        FROM
+        ( select * from jobs_candidates_state <where> <if test="currentuser != null"> and opuser = #{currentuser}</if> </where> ) t1
+        LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
+        LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
+        <where>
+            <if test="createtimest != null">
+                and t1.optime &gt;= #{createtimest}
+            </if>
+            <if test="createtimeed != null">
+                and t1.optime &lt;= #{createtimeed}
+            </if>
+            <if test="qcustomername != null">
+                and j2.cname like  #{qcustomername}
+            </if>
+            <if test="qjobname != null">
+                and tj.jobtitle like  #{qjobname}
+            </if>
+            <if test="qopusername != null">
+                and t1.opusername like  #{qopusername}
+            </if>
+        </where>
+        ) t2
+        WHERE
+        1 = 1
+        GROUP BY
+        t2.optyear,
+        t2.opuser
+        ORDER BY
+        t2.optyear DESC
+        ) t3
+
+    </select>
+
+    <select id="queryRowDay" resultMap="baseMap">
+        SELECT
+            CONCAT('d-',(@i:=@i+1 )) id,
+                t3.*,
+                CONCAT(
+                    round(
+                        IF (
+                            t3.interview / t3.tjl IS NULL,
+                            0,
+                            t3.interview / t3.tjl
+                        ),
+                        2
+                    ),
+                    '%'
+                ) msl,
+                CONCAT(
+                    round(
+
+                        IF (
+                            t3.offer / t3.interview IS NULL,
+                            0,
+                            t3.offer / t3.interview
+                        ),
+                        2
+                    ),
+                    '%'
+                ) offerl,
+                CONCAT(
+                    round(
+
+                        IF (
+                            t3.rzfq / t3.offer IS NULL,
+                            0,
+                            t3.rzfq / t3.offer
+                        ),
+                        2
+                    ),
+                    '%'
+                ) pdl
+            FROM
+            (SELECT @i:=0) as i,
+                (
+                    SELECT
+                        t2.optday opdate,
+
+                        (
+                            SELECT
+                            s.cnname
+                            FROM
+                            sys_user s
+                            WHERE
+                            s.username = t2.opuser
+                  ) opusername,
+                        t2.opuser,
+                        t2.cname khs,
+                        t2.cno,
+                        t2.jobid,
+                        t2.jobdesc jobnum,
+                        sum(IF(t2.flowstate = 2, 1, 0)) tjl,
+                        sum(IF(t2.flowstate = 4, 1, 0)) interview,
+                        sum(IF(t2.flowstate = 5, 1, 0)) offer,
+                        sum(IF(t2.flowstate = 6, 1, 0)) rzdg,
+                        sum(IF(t2.flowstate = 8, 1, 0)) rzfq,
+                        sum(IF(t2.flowstate = 11, 1, 0)) byqlz
+                    FROM
+                        (
+                            SELECT
+                                t1.*, DATE_FORMAT(t1.optime, '%Y-%m-%d') optday,
+                                DATE_FORMAT(t1.optime, '%Y-%m') optmonth,
+                                DATE_FORMAT(t1.optime, '%Y') optyear,
+                                tj.jobid,
+                                tj.jobtitle,
+                                j2.jobdesc,
+                                j2.cno,
+                                j2.cname
+                            FROM
+                                jobs_candidates_state t1
+                            LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
+                            LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
+                            where
+                               (
+                                    DATE_FORMAT(t1.optime, '%Y-%m')=#{opdate}
+                                or
+                                    DATE_FORMAT(t1.optime, '%Y-%m-%d')=#{opdate}
+                                or
+                                    DATE_FORMAT(t1.optime, '%Y')=#{opdate}
+                                )
+                                and t1.opuser=#{opuser}
+                        ) t2
+                    WHERE
+                        1 = 1
+                    GROUP BY
+                        t2.optday,
+                        t2.opuser,
+                        t2.jobid,
+                        t2.cname
+                    ORDER BY
+                        t2.optday DESC
+                ) t3
+    </select>
+    <select id="queryRowMonth" resultMap="baseMap">
+        SELECT
+            CONCAT('d-',(@i:=@i+1 )) id,
+                t3.*,
+                CONCAT(
+                    round(
+
+                        IF (
+                            t3.interview / t3.tjl IS NULL,
+                            0,
+                            t3.interview / t3.tjl
+                        ),
+                        2
+                    ),
+                    '%'
+                ) msl,
+                CONCAT(
+                    round(
+
+                        IF (
+                            t3.offer / t3.interview IS NULL,
+                            0,
+                            t3.offer / t3.interview
+                        ),
+                        2
+                    ),
+                    '%'
+                ) offerl,
+                CONCAT(
+                    round(
+
+                        IF (
+                            t3.rzfq / t3.offer IS NULL,
+                            0,
+                            t3.rzfq / t3.offer
+                        ),
+                        2
+                    ),
+                    '%'
+                ) pdl
+            FROM
+            (SELECT @i:=0) as i,
+                (
+                    SELECT
+                        t2.optmonth opdate,
+
+                        (
+                            SELECT
+                            s.cnname
+                            FROM
+                            sys_user s
+                            WHERE
+                            s.username = t2.opuser
+                  ) opusername,
+                        t2.opuser,
+                        t2.cname khs,
+                        t2.cno,
+                        t2.jobid,
+                        t2.jobdesc jobnum,
+                        sum(IF(t2.flowstate = 2, 1, 0)) tjl,
+                        sum(IF(t2.flowstate = 4, 1, 0)) interview,
+                        sum(IF(t2.flowstate = 5, 1, 0)) offer,
+                        sum(IF(t2.flowstate = 6, 1, 0)) rzdg,
+                        sum(IF(t2.flowstate = 8, 1, 0)) rzfq,
+                        sum(IF(t2.flowstate = 11, 1, 0)) byqlz
+                    FROM
+                        (
+                            SELECT
+                                t1.*, DATE_FORMAT(t1.optime, '%Y-%m-%d') optday,
+                                DATE_FORMAT(t1.optime, '%Y-%m') optmonth,
+                                DATE_FORMAT(t1.optime, '%Y') optyear,
+                                tj.jobid,
+                                tj.jobtitle,
+                                j2.jobdesc,
+                                j2.cno,
+                                j2.cname
+                            FROM
+                                jobs_candidates_state t1
+                            LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
+                            LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
+                            where
+                               (
+                                    DATE_FORMAT(t1.optime, '%Y-%m')=#{opdate}
+                                or
+                                    DATE_FORMAT(t1.optime, '%Y-%m-%d')=#{opdate}
+                                or
+                                    DATE_FORMAT(t1.optime, '%Y')=#{opdate}
+                                )
+                                and t1.opuser=#{opuser}
+                        ) t2
+                    WHERE
+                        1 = 1
+                    GROUP BY
+                        t2.optmonth,
+                        t2.opuser,
+                        t2.jobid,
+                        t2.cname
+
+                    ORDER BY
+                        t2.optmonth DESC
+                ) t3
+    </select>
+
+    <select id="queryRowYear" resultMap="baseMap">
+        SELECT
+            CONCAT('d-',(@i:=@i+1 )) id,
+                t3.*,
+                CONCAT(
+                    round(
+
+                        IF (
+                            t3.interview / t3.tjl IS NULL,
+                            0,
+                            t3.interview / t3.tjl
+                        ),
+                        2
+                    ),
+                    '%'
+                ) msl,
+                CONCAT(
+                    round(
+
+                        IF (
+                            t3.offer / t3.interview IS NULL,
+                            0,
+                            t3.offer / t3.interview
+                        ),
+                        2
+                    ),
+                    '%'
+                ) offerl,
+                CONCAT(
+                    round(
+
+                        IF (
+                            t3.rzfq / t3.offer IS NULL,
+                            0,
+                            t3.rzfq / t3.offer
+                        ),
+                        2
+                    ),
+                    '%'
+                ) pdl
+            FROM
+            (SELECT @i:=0) as i,
+                (
+                    SELECT
+                        t2.optyear opdate,
+
+                        (
+                            SELECT
+                            s.cnname
+                            FROM
+                            sys_user s
+                            WHERE
+                            s.username = t2.opuser
+                  ) opusername,
+                        t2.opuser,
+                        t2.cname khs,
+                        t2.cno,
+                        t2.jobid,
+                        t2.jobdesc jobnum,
+                        sum(IF(t2.flowstate = 2, 1, 0)) tjl,
+                        sum(IF(t2.flowstate = 4, 1, 0)) interview,
+                        sum(IF(t2.flowstate = 5, 1, 0)) offer,
+                        sum(IF(t2.flowstate = 6, 1, 0)) rzdg,
+                        sum(IF(t2.flowstate = 8, 1, 0)) rzfq,
+                        sum(IF(t2.flowstate = 11, 1, 0)) byqlz
+                    FROM
+                        (
+                            SELECT
+                                t1.*, DATE_FORMAT(t1.optime, '%Y-%m-%d') optday,
+                                DATE_FORMAT(t1.optime, '%Y-%m') optmonth,
+                                DATE_FORMAT(t1.optime, '%Y') optyear,
+                                tj.jobid,
+                                tj.jobtitle,
+                                j2.jobdesc,
+                                j2.cno,
+                                j2.cname
+                            FROM
+                                jobs_candidates_state t1
+                            LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
+                            LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
+                            where
+                               (
+                                    DATE_FORMAT(t1.optime, '%Y-%m')=#{opdate}
+                                or
+                                    DATE_FORMAT(t1.optime, '%Y-%m-%d')=#{opdate}
+                                or
+                                    DATE_FORMAT(t1.optime, '%Y')=#{opdate}
+                                )
+                                and t1.opuser=#{opuser}
+                        ) t2
+                    WHERE
+                        1 = 1
+                    GROUP BY
+                        t2.optyear,
+                        t2.opuser,
+                        t2.jobid,
+                        t2.cname
+
+                    ORDER BY
+                        t2.optyear DESC
+                ) t3
+    </select>
+    <resultMap id="detailResultMap" type="com.hrbc.business.domain.PerformanceDetail">
+        <id column="id" property="id"></id>
+        <result column="flowstate" property="flowstate"></result>
+        <result column="text1" property="text1"></result>
+        <result column="text2" property="text2"></result>
+        <result column="text3" property="text3"></result>
+        <result column="text4" property="text4"></result>
+        <result column="text5" property="text5"></result>
+        <result column="date1" property="date1"></result>
+        <result column="candidateid" property="candidateid"></result>
+        <result column="candidatename" property="candidatename"></result>
+        <result column="cno" property="cno"></result>
+        <result column="cname" property="cname"></result>
+        <result column="opdate" property="opdate"></result>
+        <result column="opuser" property="opuser"></result>
+        <result column="jobid" property="jobid"></result>
+        <result column="jobtitle" property="jobtitle"></result>
+        <result column="optime" property="optime"></result>
+
+    </resultMap>
+    <!-- 查看 统计数据的相关详情信息 -->
+    <select id="queryDetail" resultMap="detailResultMap">
+        SELECT
+            t1.*, DATE_FORMAT(t1.optime, '%Y-%m-%d') optday,
+            DATE_FORMAT(t1.optime, '%Y-%m') optmonth,
+            DATE_FORMAT(t1.optime, '%Y') optyear,
+            tj.jobid,
+            tj.jobtitle,
+            j2.jobdesc,
+            tj.candidateid,
+            tj.candidatename,
+            j2.cno,
+            j2.cname
+        FROM
+            jobs_candidates_state t1
+        LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
+        LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
+        WHERE
+        1=1
+        <if test="opdate != null">
+            AND (
+            DATE_FORMAT(t1.optime, '%Y-%m') = #{opdate}
+            OR DATE_FORMAT(t1.optime, '%Y-%m-%d') = #{opdate}
+            OR DATE_FORMAT(t1.optime, '%Y') = #{opdate}
+            )
+        </if>
+        <if test="opuser != null">
+        AND t1.opuser = #{opuser}
+        </if>
+        <if test="cno != null">
+        AND cno = #{cno}
+        </if>
+        <if test="jobid != null">
+        AND jobid = #{jobid}
+        </if>
+        <if test="flowstate != null">
+        AND flowstate = #{flowstate}
+        </if>
+    </select>
+
+
+    <select id="queryMonthlyPerformance"  resultMap="baseMap">
+        SELECT
+            t4.*, (t4.tjf + t4.msf + t4.off) total
+        FROM
+            (
+                SELECT
+                    CONCAT((@i :=@i + 1), '') id,
+                    t3.*,
+                IF (t3.tjl >= 16, 16, t3.tjl) tjf,
+
+            IF (
+                t3.interview * 2 >= 30,
+                30,
+                t3.interview * 2
+            ) msf,
+            t3.offer * 10 + if(t3.money is null,0, round(t3.money / 50000, 2)) off
+        FROM
+            (SELECT @i := 0) AS i,
+            (
+                SELECT
+                    t2.optmonth opdate,
+                    t2.opuser,
+                    (
+                        SELECT
+                            s.cnname
+                        FROM
+                            sys_user s
+                        WHERE
+                            s.username = t2.opuser
+                    ) opusername,
+                    count(DISTINCT(t2.jcid)) khs,
+                    sum(IF(t2.flowstate = 2, 1, 0)) tjl,
+                    sum(IF(t2.flowstate = 4, 1, 0)) interview,
+                    sum(IF(t2.flowstate = 5, 1, 0)) offer,
+                    (
+                        SELECT
+                            sum(money)
+                        FROM
+                            v_allocate_performance v1
+                        WHERE
+                            v1.opuser = t2.opuser
+                        AND v1.opmonth = t2.optmonth
+                    ) money
+                FROM
+                    (
+                        SELECT
+                            t1.*, DATE_FORMAT(t1.optime, '%Y-%m') optmonth,
+                            tj.jobid,
+                            tj.jobtitle,
+                            j2.jobdesc,
+                            j2.cno,
+                            j2.cname
+                        FROM
+                            ( select * from jobs_candidates_state <where> <if test="currentuser != null"> and opuser = #{currentuser}</if> </where> ) t1
+                        LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
+                        LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
+                        where 1=1
+                            <if test="opdate != null">
+                                and DATE_FORMAT(t1.optime, '%Y-%m') = #{opdate}
+                            </if>
+                            <if test="opusername != null">
+                                and t1.opusername like #{opusername}
+                            </if>
+                    ) t2
+                WHERE
+                    1 = 1
+                GROUP BY
+                    t2.optmonth,
+                    t2.opuser
+                ORDER BY
+                    t2.optmonth DESC
+            ) t3
+            ) t4
+    </select>
+</mapper>

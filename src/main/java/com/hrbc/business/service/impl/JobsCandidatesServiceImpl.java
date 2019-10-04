@@ -93,7 +93,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
                 state.setText1(entity.getRemark());
                 state.setJcid(entity.getId());
                 state.setOpusername(JwtToken.getUserName(username));
-                entity.setOpuser(username);
+                state.setOpuser(username);
                 state.setFlowstate(JobFlowE.匹配职位.code);
                 state.setFlowstatedesc(JobFlowE.匹配职位.toString());
                 stateMapper.insertSelective(state);
