@@ -742,7 +742,58 @@
                         SELECT
                             sum(money)
                         FROM
-                            v_allocate_performance v1
+                        (SELECT
+                        `cs1`.`id` AS `id`,
+                        `cs1`.`optime` AS `optime`,
+                        `cs1`.`text4` AS `text4`,
+                        `cs1`.`t1` AS `t1`,
+                        date_format(`cs1`.`optime`, '%Y-%m') AS `opmonth`,
+                        substring_index(`cs1`.`t1`, ':', 1) AS `opuser`,
+                        substring_index(`cs1`.`t1`, ':' ,-(1)) AS `money`
+                        FROM
+                        (
+                        SELECT
+                        `cs`.`id` AS `id`,
+                        `cs`.`optime` AS `optime`,
+                        `cs`.`text4` AS `text4`,
+                        substring_index(`cs`.`text4`, ';', 1) AS `t1`
+                        FROM
+                        `jobs_candidates_state` `cs`
+                        WHERE
+                        (
+                        (`cs`.`flowstate` = 5)
+                        AND (`cs`.`text4` IS NOT NULL)
+                        )
+                        UNION
+                        SELECT
+                        `cs`.`id` AS `id`,
+                        `cs`.`optime` AS `optime`,
+                        `cs`.`text4` AS `text4`,
+                        substring_index(
+                        substring_index(`cs`.`text4`, ';', 2),
+                        ';' ,- (1)
+                        ) AS `t1`
+                        FROM
+                        `jobs_candidates_state` `cs`
+                        WHERE
+                        (
+                        (`cs`.`flowstate` = 5)
+                        AND (`cs`.`text4` IS NOT NULL)
+                        )
+                        UNION
+                        SELECT
+                        `cs`.`id` AS `id`,
+                        `cs`.`optime` AS `optime`,
+                        `cs`.`text4` AS `text4`,
+                        substring_index(`cs`.`text4`, ';' ,-(1)) AS `t1`
+                        FROM
+                        `jobs_candidates_state` `cs`
+                        WHERE
+                        (
+                        (`cs`.`flowstate` = 5)
+                        AND (`cs`.`text4` IS NOT NULL)
+                        )
+                        ) `cs1`) v1
                         WHERE
                             v1.opuser = t2.opuser
                         AND v1.opmonth = t2.optmonth

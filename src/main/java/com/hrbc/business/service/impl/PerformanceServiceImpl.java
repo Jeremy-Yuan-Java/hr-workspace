@@ -44,7 +44,6 @@ public class PerformanceServiceImpl  implements PerformanceService {
             if(!StringUtils.isEmpty(ismy) && "yes".equals(ismy)){
                 performance.setCurrentuser(JwtToken.getUser());
             }
-            System.out.println(customername + " " + jobname + " "+opusername );
 
             // 分组条件
             String group1 = params.getQuery().getString("group1");
