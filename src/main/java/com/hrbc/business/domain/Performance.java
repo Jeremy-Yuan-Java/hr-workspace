@@ -46,6 +46,8 @@ public class Performance {
 
     private Integer msf; // 面试积分
 
+    private Integer qyf; // 签约分
+
     private Double off; // 面试积分
 
     private Double total; // 累加总分
@@ -80,6 +82,14 @@ public class Performance {
 
     public void setCurrentuser(String currentuser) {
         this.currentuser = currentuser;
+    }
+
+    public Integer getQyf() {
+        return qyf;
+    }
+
+    public void setQyf(Integer qyf) {
+        this.qyf = qyf;
     }
 
     public String getJobdesc() {

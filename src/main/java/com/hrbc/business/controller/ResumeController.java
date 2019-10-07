@@ -17,6 +17,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.Map;
 
@@ -54,6 +55,39 @@ public class ResumeController {
             response.setCharacterEncoding("utf-8");
             response.setContentType("multipart/form-data");
             response.setHeader("Content-Disposition", "attachment;fileName=" + map.get("name") + "的简历报告.doc" );
+            ServletOutputStream out = response.getOutputStream();
+            byte[] b = new byte[1024];
+            int num = 0 ;
+            while( (num = in.read(b)) != -1 ){
+                out.write(b,0,num);
+            }
+            in.close();
+            out.flush();
+            out.close();
+            // 删除临时文件
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 导出简历模板
+     * @param reportfile
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/exportResumeReportFile/{reportfile}")
+    public void exportResumeReportFile(@PathVariable String reportfile, HttpServletRequest request, HttpServletResponse response){
+
+        try {
+            // 通过freemarker创建一个文档
+            File file = new File(PathConf.getSavePathReport(),reportfile);
+            InputStream in = new FileInputStream(file);
+            //设置响应头和客户端保存文件名
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("multipart/form-data");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + reportfile + "的简历报告.doc" );
             ServletOutputStream out = response.getOutputStream();
             byte[] b = new byte[1024];
             int num = 0 ;

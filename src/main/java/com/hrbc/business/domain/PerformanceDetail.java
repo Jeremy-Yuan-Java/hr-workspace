@@ -13,7 +13,11 @@ import java.util.Date;
 public class PerformanceDetail {
     private String id;
 
+    private String jcid;
+
     private Integer flowstate;
+
+    private String flowstatedesc;
 
     private String text1;
 
@@ -41,6 +45,8 @@ public class PerformanceDetail {
 
     private String opuser;
 
+    private String opusername;
+
     private String jobid;
 
     private String jobtitle;
@@ -48,6 +54,13 @@ public class PerformanceDetail {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date optime;
 
+    public String getJcid() {
+        return jcid;
+    }
+
+    public void setJcid(String jcid) {
+        this.jcid = jcid;
+    }
 
     public Date getDate1() {
         return date1;
@@ -176,7 +189,21 @@ public class PerformanceDetail {
         this.jobtitle = jobtitle;
     }
 
+    public String getFlowstatedesc() {
+        return flowstatedesc;
+    }
 
+    public void setFlowstatedesc(String flowstatedesc) {
+        this.flowstatedesc = flowstatedesc;
+    }
+
+    public String getOpusername() {
+        return opusername;
+    }
+
+    public void setOpusername(String opusername) {
+        this.opusername = opusername;
+    }
 
     public Date getOptime() {
         return optime;

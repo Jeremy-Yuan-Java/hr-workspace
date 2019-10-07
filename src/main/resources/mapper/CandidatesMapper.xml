@@ -70,6 +70,7 @@
     <result column="createstaff" jdbcType="VARCHAR" property="createstaff" />
     <result column="updatestaff" jdbcType="VARCHAR" property="updatestaff" />
     <result column="fulltexts" jdbcType="VARCHAR" property="fulltexts" />
+    <result column="resumereportfile" jdbcType="VARCHAR" property="resumereportfile" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.CandidatesWithBLOBs">
     <result column="resumedetail" jdbcType="LONGVARBINARY" property="resumedetail" />
@@ -154,7 +155,7 @@
     edu2, edu2stdate, edu2eddate, edu3, edu3stdate, edu3eddate, work1, work1stdate, work1eddate, 
     work2, work2stdate, work2eddate, work3, work3stdate, work3eddate, work4, work4stdate, 
     work4eddate, personaliy, birthday, remark, married, workyears, work2jobtitle, work3jobtitle, 
-    work4jobtitle, updateuser, createuser, createstaff, updatestaff, fulltexts
+    work4jobtitle, updateuser, createuser, createstaff, updatestaff, fulltexts, resumereportfile
   </sql>
   <sql id="Blob_Column_List">
     resumedetail, resumedetail1, resumedetail2, certifications, educations, workexperiences, 
@@ -175,14 +176,6 @@
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
-    </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
     </if>
   </select>
   <select id="selectByExample" parameterType="com.hrbc.business.domain.CandidatesExample" resultMap="BaseResultMap">
@@ -251,12 +244,13 @@
       married, workyears, work2jobtitle, 
       work3jobtitle, work4jobtitle, updateuser, 
       createuser, createstaff, updatestaff, 
-      fulltexts, resumedetail, resumedetail1, 
-      resumedetail2, certifications, 
-      educations, workexperiences, perprofile, 
-      work1desc, work1projs, work2desc, 
-      work2projs, work3desc, work3projs, 
-      work4desc, work4projs)
+      fulltexts, resumereportfile, resumedetail, 
+      resumedetail1, resumedetail2, 
+      certifications, educations, workexperiences, 
+      perprofile, work1desc, work1projs, 
+      work2desc, work2projs, work3desc, 
+      work3projs, work4desc, work4projs
+      )
     values (#{username,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{phonenobak,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{emailbak,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
       #{picpath,jdbcType=VARCHAR}, #{postcard,jdbcType=VARCHAR}, #{jobtitle,jdbcType=VARCHAR}, 
@@ -279,12 +273,13 @@
       #{married,jdbcType=VARCHAR}, #{workyears,jdbcType=INTEGER}, #{work2jobtitle,jdbcType=VARCHAR}, 
       #{work3jobtitle,jdbcType=VARCHAR}, #{work4jobtitle,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
       #{createuser,jdbcType=VARCHAR}, #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, 
-      #{fulltexts,jdbcType=VARCHAR}, #{resumedetail,jdbcType=LONGVARBINARY}, #{resumedetail1,jdbcType=LONGVARBINARY}, 
-      #{resumedetail2,jdbcType=LONGVARBINARY}, #{certifications,jdbcType=LONGVARCHAR}, 
-      #{educations,jdbcType=LONGVARCHAR}, #{workexperiences,jdbcType=LONGVARCHAR}, #{perprofile,jdbcType=LONGVARCHAR}, 
-      #{work1desc,jdbcType=LONGVARCHAR}, #{work1projs,jdbcType=LONGVARCHAR}, #{work2desc,jdbcType=LONGVARCHAR}, 
-      #{work2projs,jdbcType=LONGVARCHAR}, #{work3desc,jdbcType=LONGVARCHAR}, #{work3projs,jdbcType=LONGVARCHAR}, 
-      #{work4desc,jdbcType=LONGVARCHAR}, #{work4projs,jdbcType=LONGVARCHAR})
+      #{fulltexts,jdbcType=VARCHAR}, #{resumereportfile,jdbcType=VARCHAR}, #{resumedetail,jdbcType=LONGVARBINARY}, 
+      #{resumedetail1,jdbcType=LONGVARBINARY}, #{resumedetail2,jdbcType=LONGVARBINARY}, 
+      #{certifications,jdbcType=LONGVARCHAR}, #{educations,jdbcType=LONGVARCHAR}, #{workexperiences,jdbcType=LONGVARCHAR}, 
+      #{perprofile,jdbcType=LONGVARCHAR}, #{work1desc,jdbcType=LONGVARCHAR}, #{work1projs,jdbcType=LONGVARCHAR}, 
+      #{work2desc,jdbcType=LONGVARCHAR}, #{work2projs,jdbcType=LONGVARCHAR}, #{work3desc,jdbcType=LONGVARCHAR}, 
+      #{work3projs,jdbcType=LONGVARCHAR}, #{work4desc,jdbcType=LONGVARCHAR}, #{work4projs,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.CandidatesWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -492,6 +487,9 @@
       </if>
       <if test="fulltexts != null">
         fulltexts,
+      </if>
+      <if test="resumereportfile != null">
+        resumereportfile,
       </if>
       <if test="resumedetail != null">
         resumedetail,
@@ -740,6 +738,9 @@
       </if>
       <if test="fulltexts != null">
         #{fulltexts,jdbcType=VARCHAR},
+      </if>
+      <if test="resumereportfile != null">
+        #{resumereportfile,jdbcType=VARCHAR},
       </if>
       <if test="resumedetail != null">
         #{resumedetail,jdbcType=LONGVARBINARY},
@@ -1001,6 +1002,9 @@
       <if test="record.fulltexts != null">
         fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
       </if>
+      <if test="record.resumereportfile != null">
+        resumereportfile = #{record.resumereportfile,jdbcType=VARCHAR},
+      </if>
       <if test="record.resumedetail != null">
         resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
       </if>
@@ -1121,6 +1125,7 @@
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
       fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
+      resumereportfile = #{record.resumereportfile,jdbcType=VARCHAR},
       resumedetail = #{record.resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{record.resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{record.resumedetail2,jdbcType=LONGVARBINARY},
@@ -1209,7 +1214,8 @@
       createuser = #{record.createuser,jdbcType=VARCHAR},
       createstaff = #{record.createstaff,jdbcType=VARCHAR},
       updatestaff = #{record.updatestaff,jdbcType=VARCHAR},
-      fulltexts = #{record.fulltexts,jdbcType=VARCHAR}
+      fulltexts = #{record.fulltexts,jdbcType=VARCHAR},
+      resumereportfile = #{record.resumereportfile,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -1418,6 +1424,9 @@
       <if test="fulltexts != null">
         fulltexts = #{fulltexts,jdbcType=VARCHAR},
       </if>
+      <if test="resumereportfile != null">
+        resumereportfile = #{resumereportfile,jdbcType=VARCHAR},
+      </if>
       <if test="resumedetail != null">
         resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
       </if>
@@ -1535,6 +1544,7 @@
       createstaff = #{createstaff,jdbcType=VARCHAR},
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
       fulltexts = #{fulltexts,jdbcType=VARCHAR},
+      resumereportfile = #{resumereportfile,jdbcType=VARCHAR},
       resumedetail = #{resumedetail,jdbcType=LONGVARBINARY},
       resumedetail1 = #{resumedetail1,jdbcType=LONGVARBINARY},
       resumedetail2 = #{resumedetail2,jdbcType=LONGVARBINARY},
@@ -1620,7 +1630,8 @@
       createuser = #{createuser,jdbcType=VARCHAR},
       createstaff = #{createstaff,jdbcType=VARCHAR},
       updatestaff = #{updatestaff,jdbcType=VARCHAR},
-      fulltexts = #{fulltexts,jdbcType=VARCHAR}
+      fulltexts = #{fulltexts,jdbcType=VARCHAR},
+      resumereportfile = #{resumereportfile,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -1692,6 +1703,7 @@
     createstaff,
     updatestaff,
     fulltexts,
+    resumereportfile,
     resumedetail,
     resumedetail1,
     resumedetail2,
@@ -1778,6 +1790,7 @@
       #{item.createstaff,jdbcType=VARCHAR},
       #{item.updatestaff,jdbcType=VARCHAR},
       #{item.fulltexts,jdbcType=VARCHAR},
+      #{item.resumereportfile,jdbcType=VARCHAR},
       #{item.resumedetail,jdbcType=LONGVARBINARY},
       #{item.resumedetail1,jdbcType=LONGVARBINARY},
       #{item.resumedetail2,jdbcType=LONGVARBINARY},

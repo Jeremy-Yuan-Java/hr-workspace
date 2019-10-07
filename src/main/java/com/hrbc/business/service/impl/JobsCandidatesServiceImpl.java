@@ -243,6 +243,11 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
                 report.setCandidatesId(jobsCandidates.getCandidateid());
                 report.setCustomerId(jobsCandidates.getJobid());
                 reportMapper.insertSelective(report);
+                // 同时将 候选人的简历报告信息更新到 候选人表中
+                CandidatesWithBLOBs record = new CandidatesWithBLOBs();
+                record.setId(jobsCandidates.getCandidateid());
+                record.setResumereportfile(state.getText5());
+                candidatesMapper.updateByPrimaryKeySelective(record);
             }
         }
         return i;

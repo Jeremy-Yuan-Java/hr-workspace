@@ -4604,6 +4604,76 @@ public class CandidatesExample {
             addCriterion("fulltexts not between", value1, value2, "fulltexts");
             return (Criteria) this;
         }
+
+        public Criteria andResumereportfileIsNull() {
+            addCriterion("resumereportfile is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileIsNotNull() {
+            addCriterion("resumereportfile is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileEqualTo(String value) {
+            addCriterion("resumereportfile =", value, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileNotEqualTo(String value) {
+            addCriterion("resumereportfile <>", value, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileGreaterThan(String value) {
+            addCriterion("resumereportfile >", value, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileGreaterThanOrEqualTo(String value) {
+            addCriterion("resumereportfile >=", value, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileLessThan(String value) {
+            addCriterion("resumereportfile <", value, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileLessThanOrEqualTo(String value) {
+            addCriterion("resumereportfile <=", value, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileLike(String value) {
+            addCriterion("resumereportfile like", value, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileNotLike(String value) {
+            addCriterion("resumereportfile not like", value, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileIn(List<String> values) {
+            addCriterion("resumereportfile in", values, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileNotIn(List<String> values) {
+            addCriterion("resumereportfile not in", values, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileBetween(String value1, String value2) {
+            addCriterion("resumereportfile between", value1, value2, "resumereportfile");
+            return (Criteria) this;
+        }
+
+        public Criteria andResumereportfileNotBetween(String value1, String value2) {
+            addCriterion("resumereportfile not between", value1, value2, "resumereportfile");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

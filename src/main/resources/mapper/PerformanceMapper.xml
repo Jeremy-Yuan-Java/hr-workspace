@@ -73,7 +73,7 @@
         WHERE
         s.username = t2.opuser
         ) opusername,
-        count(DISTINCT(t2.jcid)) khs,
+        count(DISTINCT(t2.cno)) khs,
         count(DISTINCT(t2.jobdesc)) jobnum,
         sum(IF(t2.flowstate = 2, 1, 0)) tjl,
         sum(IF(t2.flowstate = 4, 1, 0)) interview,
@@ -180,7 +180,7 @@
                         WHERE
                             s.username = t2.opuser
                     ) opusername,
-                    count(DISTINCT(t2.jcid)) khs,
+                    count(DISTINCT(t2.cno)) khs,
                     count(DISTINCT(t2.jobdesc)) jobnum,
                     sum(IF(t2.flowstate = 2, 1, 0)) tjl,
                     sum(IF(t2.flowstate = 4, 1, 0)) interview,
@@ -286,7 +286,7 @@
         WHERE
         s.username = t2.opuser
         ) opusername,
-        count(DISTINCT(t2.jcid)) khs,
+        count(DISTINCT(t2.cno)) khs,
         count(DISTINCT(t2.jobdesc)) jobnum,
         sum(IF(t2.flowstate = 2, 1, 0)) tjl,
         sum(IF(t2.flowstate = 4, 1, 0)) interview,
@@ -670,8 +670,7 @@
             DATE_FORMAT(t1.optime, '%Y-%m') optmonth,
             DATE_FORMAT(t1.optime, '%Y') optyear,
             tj.jobid,
-            tj.jobtitle,
-            j2.jobdesc,
+            j2.jobdesc jobtitle,
             tj.candidateid,
             tj.candidatename,
             j2.cno,
@@ -701,12 +700,29 @@
         <if test="flowstate != null">
         AND flowstate = #{flowstate}
         </if>
+        <if test="jcid != null">
+            AND jcid = #{jcid}
+        </if>
     </select>
 
 
     <select id="queryMonthlyPerformance"  resultMap="baseMap">
+
         SELECT
-            t4.*, (t4.tjf + t4.msf + t4.off) total
+        t4.id,
+        t4.opdate,
+        t4.opuser,
+        t4.opusername,
+        t4.khs,
+        t4.tjl,
+        t4.interview,
+        t4.offer,
+        t4.money,
+        t4.tjf,
+        t4.msf,
+        if(t4.qyf is null,0,t4.qyf) qyf,
+        t4.off,
+        (t4.tjf + t4.msf+if(t4.qyf is null,0,t4.qyf) + t4.off) total
         FROM
             (
                 SELECT
@@ -719,7 +735,11 @@
                 30,
                 t3.interview * 2
             ) msf,
-            t3.offer * 10 + if(t3.money is null,0, round(t3.money / 50000, 2)) off
+        if(offer>0 or money > 0,(select q.qys from (
+            select `t`.`createuser` AS `createuser`,`t`.`createtime` AS `createtime`,count(`t`.`cname`) AS `qys` from (select `customers`.`createuser` AS `createuser`,date_format(`customers`.`createtime`,'%Y-%m') AS `createtime`,`customers`.`cname` AS `cname` from `customers` where (`customers`.`businessstate` = '签约')) `t` group by `t`.`createuser`,`t`.`createtime`
+        ) q
+        where q.createtime=t3.opdate and q.createuser=t3.opuser),0)*10 qyf,
+            if(t3.money is null,0, round(t3.money / 50000, 2)) off
         FROM
             (SELECT @i := 0) AS i,
             (
@@ -734,7 +754,7 @@
                         WHERE
                             s.username = t2.opuser
                     ) opusername,
-                    count(DISTINCT(t2.jcid)) khs,
+                    count(DISTINCT(t2.cno)) khs,
                     sum(IF(t2.flowstate = 2, 1, 0)) tjl,
                     sum(IF(t2.flowstate = 4, 1, 0)) interview,
                     sum(IF(t2.flowstate = 5, 1, 0)) offer,

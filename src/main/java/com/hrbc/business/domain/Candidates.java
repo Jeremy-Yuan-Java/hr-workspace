@@ -80,7 +80,7 @@ public class Candidates {
     private Date edu1eddate;
 
     private String edu2;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date edu2stdate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date edu2eddate;
@@ -140,6 +140,8 @@ public class Candidates {
     private String updatestaff;
 
     private String fulltexts;
+
+    private String resumereportfile;
 
     public Integer getId() {
         return id;
@@ -683,5 +685,13 @@ public class Candidates {
 
     public void setFulltexts(String fulltexts) {
         this.fulltexts = fulltexts == null ? null : fulltexts.trim();
+    }
+
+    public String getResumereportfile() {
+        return resumereportfile;
+    }
+
+    public void setResumereportfile(String resumereportfile) {
+        this.resumereportfile = resumereportfile == null ? null : resumereportfile.trim();
     }
 }
