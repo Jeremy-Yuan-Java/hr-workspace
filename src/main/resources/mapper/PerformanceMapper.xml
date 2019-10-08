@@ -728,7 +728,7 @@
                 SELECT
                     CONCAT((@i :=@i + 1), '') id,
                     t3.*,
-                IF (t3.tjl >= 16, 16, t3.tjl) tjf,
+                IF (t3.tjl >= 30, 30, t3.tjl) tjf,
 
             IF (
                 t3.interview * 2 >= 30,
