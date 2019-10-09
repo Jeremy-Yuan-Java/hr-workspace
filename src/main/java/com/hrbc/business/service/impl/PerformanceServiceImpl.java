@@ -36,14 +36,7 @@ public class PerformanceServiceImpl  implements PerformanceService {
             // 查询数据的时间范围
             Date createtimest = params.getQuery().getDate("createtimest");
             Date createtimeed = params.getQuery().getDate("createtimeed");
-            if (createtimeed != null) {
-                Calendar c = Calendar.getInstance();
-                c.setTime(createtimeed);
-                c.add(Calendar.DAY_OF_MONTH, 1);
-                createtimeed = c.getTime();
-            }
 
-            System.out.println(createtimest+" " + createtimeed);
             // 具体的查询条件
             String customername = params.getQuery().getString("customername");
             String jobname = params.getQuery().getString("jobname");

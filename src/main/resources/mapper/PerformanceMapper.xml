@@ -79,7 +79,7 @@
         sum(IF(t2.flowstate = 4, 1, 0)) interview,
         sum(IF(t2.flowstate = 5, 1, 0)) offer,
         sum(IF(t2.flowstate = 6, 1, 0)) rzdg,
-        sum(IF(t2.flowstate = 8, 1, 0)) rzfq,
+        sum(IF(t2.flowstate = 8 and t2.offq = 1, 1, 0)) rzfq,
         sum(IF(t2.flowstate = 11, 1, 0)) byqlz
         FROM
         (
@@ -91,7 +91,8 @@
         tj.jobtitle,
         j2.jobdesc,
         j2.cno,
-        j2.cname
+        j2.cname,
+        (select count(1) from jobs_candidates_state jcs where jcs.jcid = t1.jcid and flowstate=5) offq
         FROM
         ( select * from jobs_candidates_state <where> <if test="currentuser != null"> and opuser = #{currentuser}</if> </where> ) t1
         LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
@@ -101,7 +102,7 @@
                 and t1.optime &gt;= #{createtimest}
             </if>
             <if test="createtimeed != null">
-                and t1.optime &lt; #{createtimeed}
+                and DATE_SUB(t1.optime,INTERVAL 1 DAY) &lt; #{createtimeed}
             </if>
             <if test="qcustomername != null">
                 and j2.cname like  #{qcustomername}
@@ -186,7 +187,7 @@
                     sum(IF(t2.flowstate = 4, 1, 0)) interview,
                     sum(IF(t2.flowstate = 5, 1, 0)) offer,
                     sum(IF(t2.flowstate = 6, 1, 0)) rzdg,
-                    sum(IF(t2.flowstate = 8, 1, 0)) rzfq,
+                    sum(IF(t2.flowstate = 8 and t2.offq = 1, 1, 0)) rzfq,
                     sum(IF(t2.flowstate = 11, 1, 0)) byqlz
                 FROM
                     (
@@ -198,7 +199,8 @@
                             tj.jobtitle,
                             j2.jobdesc,
                             j2.cno,
-                            j2.cname
+                            j2.cname,
+        (select count(1) from jobs_candidates_state jcs where jcs.jcid = t1.jcid and flowstate=5) offq
                         FROM
         ( select * from jobs_candidates_state <where> <if test="currentuser != null"> and opuser = #{currentuser}</if> </where> ) t1
                         LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
@@ -208,7 +210,7 @@
                             and t1.optime &gt;= #{createtimest}
                         </if>
                         <if test="createtimeed != null">
-                            and t1.optime &lt; #{createtimeed}
+                            and DATE_SUB(t1.optime,INTERVAL 1 DAY) &lt; #{createtimeed}
                         </if>
                         <if test="qcustomername != null">
                             and j2.cname like  #{qcustomername}
@@ -292,7 +294,7 @@
         sum(IF(t2.flowstate = 4, 1, 0)) interview,
         sum(IF(t2.flowstate = 5, 1, 0)) offer,
         sum(IF(t2.flowstate = 6, 1, 0)) rzdg,
-        sum(IF(t2.flowstate = 8, 1, 0)) rzfq,
+        sum(IF(t2.flowstate = 8 and t2.offq = 1, 1, 0)) rzfq,
         sum(IF(t2.flowstate = 11, 1, 0)) byqlz
         FROM
         (
@@ -304,7 +306,8 @@
         tj.jobtitle,
         j2.jobdesc,
         j2.cno,
-        j2.cname
+        j2.cname,
+        (select count(1) from jobs_candidates_state jcs where jcs.jcid = t1.jcid and flowstate=5) offq
         FROM
         ( select * from jobs_candidates_state <where> <if test="currentuser != null"> and opuser = #{currentuser}</if> </where> ) t1
         LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
@@ -314,7 +317,7 @@
                 and t1.optime &gt;= #{createtimest}
             </if>
             <if test="createtimeed != null">
-                and t1.optime &lt; #{createtimeed}
+                and DATE_SUB(t1.optime,INTERVAL 1 DAY) &lt; #{createtimeed}
             </if>
             <if test="qcustomername != null">
                 and j2.cname like  #{qcustomername}
