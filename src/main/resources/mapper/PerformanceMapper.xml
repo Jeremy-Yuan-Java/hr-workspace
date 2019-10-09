@@ -101,7 +101,7 @@
                 and t1.optime &gt;= #{createtimest}
             </if>
             <if test="createtimeed != null">
-                and t1.optime &lt;= #{createtimeed}
+                and t1.optime &lt; #{createtimeed}
             </if>
             <if test="qcustomername != null">
                 and j2.cname like  #{qcustomername}
@@ -208,7 +208,7 @@
                             and t1.optime &gt;= #{createtimest}
                         </if>
                         <if test="createtimeed != null">
-                            and t1.optime &lt;= #{createtimeed}
+                            and t1.optime &lt; #{createtimeed}
                         </if>
                         <if test="qcustomername != null">
                             and j2.cname like  #{qcustomername}
@@ -314,7 +314,7 @@
                 and t1.optime &gt;= #{createtimest}
             </if>
             <if test="createtimeed != null">
-                and t1.optime &lt;= #{createtimeed}
+                and t1.optime &lt; #{createtimeed}
             </if>
             <if test="qcustomername != null">
                 and j2.cname like  #{qcustomername}
