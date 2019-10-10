@@ -26,8 +26,8 @@ public class Constants {
     static {
         /*CANDIDATE_LOCK_STATE.add(JobFlowE.OFFER确认.code);
         CANDIDATE_LOCK_STATE.add(JobFlowE.入职到岗.code);
-        CANDIDATE_LOCK_STATE.add(JobFlowE.过保.code);
-        CANDIDATE_LOCK_STATE.add(JobFlowE.协商延长保用期.code);*/
+        CANDIDATE_LOCK_STATE.add(JobFlowE.过保.code);*/
+        CANDIDATE_LOCK_STATE.add(JobFlowE.协商延长保用期.code);
     }
 
     //签名算法HmacSha256
