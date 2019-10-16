@@ -47,7 +47,7 @@ public class CustomersServiceImpl implements CustomersService {
         }
         if (entity != null && !StringUtils.isEmpty(entity.getId())) {
             entity.setUpdateuser(JwtToken.getUser());
-
+            entity.setUpdatetime(new Date());
             return mapper.updateByPrimaryKeySelective(entity);
         } else {
             entity.setCreateuser(JwtToken.getUser());

@@ -91,20 +91,27 @@ public class PerformanceServiceImpl  implements PerformanceService {
         if(params != null && params.getQuery() != null){
             String opdate = params.getQuery().getString("opdate");
             String opuser = params.getQuery().getString("opuser");
+
+            // 查询数据的时间范围
+            Date createtimest = params.getQuery().getDate("createtimest");
+            Date createtimeed = params.getQuery().getDate("createtimeed");
+
+
+
             List<Performance> list = null;
             // 判断是查询  年 月  日 的数据
             if (opdate.contains("-")){
                 // 判断是 月 日   2019-09-09
                 if(opdate.indexOf("-") == opdate.lastIndexOf("-")){
                     // 月份
-                    list = performanceMapper.queryRowMonth(opdate,opuser);
+                    list = performanceMapper.queryRowMonth(opdate,opuser,createtimest,createtimeed);
                 }else{
                     // 天
-                    list = performanceMapper.queryRowDay(opdate,opuser);
+                    list = performanceMapper.queryRowDay(opdate,opuser,createtimest,createtimeed);
                 }
             }else{
                 // 查询年份的数据
-                list = performanceMapper.queryRowYear(opdate,opuser);
+                list = performanceMapper.queryRowYear(opdate,opuser,createtimest,createtimeed);
             }
 
             for (Performance p:list) {

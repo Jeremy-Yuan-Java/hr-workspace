@@ -30,6 +30,10 @@ public class PerformanceDetail {
     private String text5;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date1;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date createtimest;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date createtimeed;
 
 
 
@@ -53,6 +57,22 @@ public class PerformanceDetail {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date optime;
+
+    public Date getCreatetimest() {
+        return createtimest;
+    }
+
+    public void setCreatetimest(Date createtimest) {
+        this.createtimest = createtimest;
+    }
+
+    public Date getCreatetimeed() {
+        return createtimeed;
+    }
+
+    public void setCreatetimeed(Date createtimeed) {
+        this.createtimeed = createtimeed;
+    }
 
     public String getJcid() {
         return jcid;

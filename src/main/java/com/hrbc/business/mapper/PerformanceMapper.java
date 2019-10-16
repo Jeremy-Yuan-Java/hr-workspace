@@ -5,6 +5,7 @@ import com.hrbc.business.domain.PerformanceDetail;
 import com.hrbc.business.domain.common.PerformanceDto;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,11 +21,11 @@ public interface PerformanceMapper {
 
     List<Performance> queryYear(Performance performance);
 
-    List<Performance> queryRowYear(@Param("opdate") String opdate,@Param("opuser") String opuser);
+    List<Performance> queryRowYear(@Param("opdate") String opdate, @Param("opuser") String opuser,@Param("createtimest") Date createtimest,@Param("createtimeed")Date createtimeed);
 
-    List<Performance> queryRowMonth(@Param("opdate") String opdate,@Param("opuser") String opuser);
+    List<Performance> queryRowMonth(@Param("opdate") String opdate,@Param("opuser") String opuser,@Param("createtimest") Date createtimest,@Param("createtimeed")Date createtimeed);
 
-    List<Performance> queryRowDay(@Param("opdate") String opdate,@Param("opuser") String opuser);
+    List<Performance> queryRowDay(@Param("opdate") String opdate,@Param("opuser") String opuser,@Param("createtimest") Date createtimest,@Param("createtimeed")Date createtimeed);
 
     List<PerformanceDetail> queryDetail(PerformanceDetail detail);
 

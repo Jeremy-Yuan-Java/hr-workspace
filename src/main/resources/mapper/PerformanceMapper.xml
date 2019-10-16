@@ -102,7 +102,7 @@
                 and t1.optime &gt;= #{createtimest}
             </if>
             <if test="createtimeed != null">
-                and DATE_SUB(t1.optime,INTERVAL 1 DAY) &lt; #{createtimeed}
+                and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
             </if>
             <if test="qcustomername != null">
                 and j2.cname like  #{qcustomername}
@@ -210,7 +210,7 @@
                             and t1.optime &gt;= #{createtimest}
                         </if>
                         <if test="createtimeed != null">
-                            and DATE_SUB(t1.optime,INTERVAL 1 DAY) &lt; #{createtimeed}
+                            and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
                         </if>
                         <if test="qcustomername != null">
                             and j2.cname like  #{qcustomername}
@@ -317,7 +317,7 @@
                 and t1.optime &gt;= #{createtimest}
             </if>
             <if test="createtimeed != null">
-                and DATE_SUB(t1.optime,INTERVAL 1 DAY) &lt; #{createtimeed}
+                and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
             </if>
             <if test="qcustomername != null">
                 and j2.cname like  #{qcustomername}
@@ -421,14 +421,14 @@
                             LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
                             LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
                             where
-                               (
-                                    DATE_FORMAT(t1.optime, '%Y-%m')=#{opdate}
-                                or
                                     DATE_FORMAT(t1.optime, '%Y-%m-%d')=#{opdate}
-                                or
-                                    DATE_FORMAT(t1.optime, '%Y')=#{opdate}
-                                )
                                 and t1.opuser=#{opuser}
+                            <if test="createtimest != null">
+                                and t1.optime &gt;= #{createtimest}
+                            </if>
+                            <if test="createtimeed != null">
+                                and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
+                            </if>
                         ) t2
                     WHERE
                         1 = 1
@@ -530,6 +530,12 @@
                                     DATE_FORMAT(t1.optime, '%Y')=#{opdate}
                                 )
                                 and t1.opuser=#{opuser}
+                                <if test="createtimest != null">
+                                    and t1.optime &gt;= #{createtimest}
+                                </if>
+                                <if test="createtimeed != null">
+                                    and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
+                                </if>
                         ) t2
                     WHERE
                         1 = 1
@@ -633,6 +639,12 @@
                                     DATE_FORMAT(t1.optime, '%Y')=#{opdate}
                                 )
                                 and t1.opuser=#{opuser}
+                                <if test="createtimest != null">
+                                    and t1.optime &gt;= #{createtimest}
+                                </if>
+                                <if test="createtimeed != null">
+                                    and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
+                                </if>
                         ) t2
                     WHERE
                         1 = 1
@@ -706,6 +718,12 @@
         <if test="jcid != null">
             AND jcid = #{jcid}
         </if>
+        <if test="createtimest != null">
+            and t1.optime &gt;= #{createtimest}
+        </if>
+        <if test="createtimeed != null">
+            and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
+        </if>
     </select>
 
 
@@ -739,7 +757,7 @@
                 t3.interview * 2
             ) msf,
         if(offer>0 or money > 0,(select q.qys from (
-            select `t`.`createuser` AS `createuser`,`t`.`createtime` AS `createtime`,count(`t`.`cname`) AS `qys` from (select `customers`.`createuser` AS `createuser`,date_format(`customers`.`createtime`,'%Y-%m') AS `createtime`,`customers`.`cname` AS `cname` from `customers` where (`customers`.`businessstate` = '签约')) `t` group by `t`.`createuser`,`t`.`createtime`
+            select `t`.`createuser` AS `createuser`,`t`.`createtime` AS `createtime`,count(`t`.`cname`) AS `qys` from (select `customers`.`createuser` AS `createuser`,date_format(`customers`.`updatetime`,'%Y-%m') AS `createtime`,`customers`.`cname` AS `cname` from `customers` where (`customers`.`businessstate` = '签约')) `t` group by `t`.`createuser`,`t`.`createtime`
         ) q
         where q.createtime=t3.opdate and q.createuser=t3.opuser),0)*10 qyf,
             if(t3.money is null,0, round(t3.money / 50000, 2)) off
