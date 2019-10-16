@@ -99,7 +99,7 @@
         LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
         <where>
             <if test="createtimest != null">
-                and t1.optime &gt;= #{createtimest}
+                and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
             </if>
             <if test="createtimeed != null">
                 and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
@@ -207,7 +207,7 @@
                         LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
                     <where>
                         <if test="createtimest != null">
-                            and t1.optime &gt;= #{createtimest}
+                            and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
                         </if>
                         <if test="createtimeed != null">
                             and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
@@ -314,7 +314,7 @@
         LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
         <where>
             <if test="createtimest != null">
-                and t1.optime &gt;= #{createtimest}
+                and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
             </if>
             <if test="createtimeed != null">
                 and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
@@ -424,7 +424,7 @@
                                     DATE_FORMAT(t1.optime, '%Y-%m-%d')=#{opdate}
                                 and t1.opuser=#{opuser}
                             <if test="createtimest != null">
-                                and t1.optime &gt;= #{createtimest}
+                                and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
                             </if>
                             <if test="createtimeed != null">
                                 and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
@@ -531,7 +531,7 @@
                                 )
                                 and t1.opuser=#{opuser}
                                 <if test="createtimest != null">
-                                    and t1.optime &gt;= #{createtimest}
+                                    and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
                                 </if>
                                 <if test="createtimeed != null">
                                     and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
@@ -640,7 +640,7 @@
                                 )
                                 and t1.opuser=#{opuser}
                                 <if test="createtimest != null">
-                                    and t1.optime &gt;= #{createtimest}
+                                    and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
                                 </if>
                                 <if test="createtimeed != null">
                                     and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
@@ -719,7 +719,7 @@
             AND jcid = #{jcid}
         </if>
         <if test="createtimest != null">
-            and t1.optime &gt;= #{createtimest}
+            and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
         </if>
         <if test="createtimeed != null">
             and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
