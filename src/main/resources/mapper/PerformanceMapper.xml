@@ -98,12 +98,7 @@
         LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
         LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
         <where>
-            <if test="createtimest != null">
-                and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
-            </if>
-            <if test="createtimeed != null">
-                and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
-            </if>
+
             <if test="qcustomername != null">
                 and j2.cname like  #{qcustomername}
             </if>

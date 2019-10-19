@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrbc.business.mapper.TrainDataMapper">
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.TrainData">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="authc_user" jdbcType="VARCHAR" property="authcUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="backi1" jdbcType="INTEGER" property="backi1" />
+    <result column="backi2" jdbcType="INTEGER" property="backi2" />
+    <result column="backi3" jdbcType="INTEGER" property="backi3" />
+    <result column="backv1" jdbcType="VARCHAR" property="backv1" />
+    <result column="backv2" jdbcType="VARCHAR" property="backv2" />
+    <result column="backv3" jdbcType="VARCHAR" property="backv3" />
+    <result column="backd1" jdbcType="TIMESTAMP" property="backd1" />
+    <result column="backd2" jdbcType="TIMESTAMP" property="backd2" />
+    <result column="backd3" jdbcType="TIMESTAMP" property="backd3" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, file_name, file_url, file_type, authc_user, create_time, update_time, create_user, 
+    backi1, backi2, backi3, backv1, backv2, backv3, backd1, backd2, backd3
+  </sql>
+  <select id="selectByExample" parameterType="com.hrbc.business.domain.TrainDataExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from train_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from train_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from train_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.TrainDataExample">
+    delete from train_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hrbc.business.domain.TrainData">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into train_data (file_name, file_url, file_type, 
+      authc_user, create_time, update_time, 
+      create_user, backi1, backi2, 
+      backi3, backv1, backv2, 
+      backv3, backd1, backd2, 
+      backd3)
+    values (#{fileName,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, 
+      #{authcUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=VARCHAR}, #{backi1,jdbcType=INTEGER}, #{backi2,jdbcType=INTEGER}, 
+      #{backi3,jdbcType=INTEGER}, #{backv1,jdbcType=VARCHAR}, #{backv2,jdbcType=VARCHAR}, 
+      #{backv3,jdbcType=VARCHAR}, #{backd1,jdbcType=TIMESTAMP}, #{backd2,jdbcType=TIMESTAMP}, 
+      #{backd3,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.TrainData">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into train_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="fileUrl != null">
+        file_url,
+      </if>
+      <if test="fileType != null">
+        file_type,
+      </if>
+      <if test="authcUser != null">
+        authc_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="backi1 != null">
+        backi1,
+      </if>
+      <if test="backi2 != null">
+        backi2,
+      </if>
+      <if test="backi3 != null">
+        backi3,
+      </if>
+      <if test="backv1 != null">
+        backv1,
+      </if>
+      <if test="backv2 != null">
+        backv2,
+      </if>
+      <if test="backv3 != null">
+        backv3,
+      </if>
+      <if test="backd1 != null">
+        backd1,
+      </if>
+      <if test="backd2 != null">
+        backd2,
+      </if>
+      <if test="backd3 != null">
+        backd3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="authcUser != null">
+        #{authcUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="backi1 != null">
+        #{backi1,jdbcType=INTEGER},
+      </if>
+      <if test="backi2 != null">
+        #{backi2,jdbcType=INTEGER},
+      </if>
+      <if test="backi3 != null">
+        #{backi3,jdbcType=INTEGER},
+      </if>
+      <if test="backv1 != null">
+        #{backv1,jdbcType=VARCHAR},
+      </if>
+      <if test="backv2 != null">
+        #{backv2,jdbcType=VARCHAR},
+      </if>
+      <if test="backv3 != null">
+        #{backv3,jdbcType=VARCHAR},
+      </if>
+      <if test="backd1 != null">
+        #{backd1,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backd2 != null">
+        #{backd2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backd3 != null">
+        #{backd3,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hrbc.business.domain.TrainDataExample" resultType="java.lang.Long">
+    select count(*) from train_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update train_data
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.fileName != null">
+        file_name = #{record.fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileUrl != null">
+        file_url = #{record.fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileType != null">
+        file_type = #{record.fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authcUser != null">
+        authc_user = #{record.authcUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.backi1 != null">
+        backi1 = #{record.backi1,jdbcType=INTEGER},
+      </if>
+      <if test="record.backi2 != null">
+        backi2 = #{record.backi2,jdbcType=INTEGER},
+      </if>
+      <if test="record.backi3 != null">
+        backi3 = #{record.backi3,jdbcType=INTEGER},
+      </if>
+      <if test="record.backv1 != null">
+        backv1 = #{record.backv1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.backv2 != null">
+        backv2 = #{record.backv2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.backv3 != null">
+        backv3 = #{record.backv3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.backd1 != null">
+        backd1 = #{record.backd1,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.backd2 != null">
+        backd2 = #{record.backd2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.backd3 != null">
+        backd3 = #{record.backd3,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update train_data
+    set id = #{record.id,jdbcType=INTEGER},
+      file_name = #{record.fileName,jdbcType=VARCHAR},
+      file_url = #{record.fileUrl,jdbcType=VARCHAR},
+      file_type = #{record.fileType,jdbcType=VARCHAR},
+      authc_user = #{record.authcUser,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      backi1 = #{record.backi1,jdbcType=INTEGER},
+      backi2 = #{record.backi2,jdbcType=INTEGER},
+      backi3 = #{record.backi3,jdbcType=INTEGER},
+      backv1 = #{record.backv1,jdbcType=VARCHAR},
+      backv2 = #{record.backv2,jdbcType=VARCHAR},
+      backv3 = #{record.backv3,jdbcType=VARCHAR},
+      backd1 = #{record.backd1,jdbcType=TIMESTAMP},
+      backd2 = #{record.backd2,jdbcType=TIMESTAMP},
+      backd3 = #{record.backd3,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.TrainData">
+    update train_data
+    <set>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        file_type = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="authcUser != null">
+        authc_user = #{authcUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="backi1 != null">
+        backi1 = #{backi1,jdbcType=INTEGER},
+      </if>
+      <if test="backi2 != null">
+        backi2 = #{backi2,jdbcType=INTEGER},
+      </if>
+      <if test="backi3 != null">
+        backi3 = #{backi3,jdbcType=INTEGER},
+      </if>
+      <if test="backv1 != null">
+        backv1 = #{backv1,jdbcType=VARCHAR},
+      </if>
+      <if test="backv2 != null">
+        backv2 = #{backv2,jdbcType=VARCHAR},
+      </if>
+      <if test="backv3 != null">
+        backv3 = #{backv3,jdbcType=VARCHAR},
+      </if>
+      <if test="backd1 != null">
+        backd1 = #{backd1,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backd2 != null">
+        backd2 = #{backd2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backd3 != null">
+        backd3 = #{backd3,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.TrainData">
+    update train_data
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      file_type = #{fileType,jdbcType=VARCHAR},
+      authc_user = #{authcUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      backi1 = #{backi1,jdbcType=INTEGER},
+      backi2 = #{backi2,jdbcType=INTEGER},
+      backi3 = #{backi3,jdbcType=INTEGER},
+      backv1 = #{backv1,jdbcType=VARCHAR},
+      backv2 = #{backv2,jdbcType=VARCHAR},
+      backv3 = #{backv3,jdbcType=VARCHAR},
+      backd1 = #{backd1,jdbcType=TIMESTAMP},
+      backd2 = #{backd2,jdbcType=TIMESTAMP},
+      backd3 = #{backd3,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into train_data (
+    file_name,
+    file_url,
+    file_type,
+    authc_user,
+    create_time,
+    update_time,
+    create_user,
+    backi1,
+    backi2,
+    backi3,
+    backv1,
+    backv2,
+    backv3,
+    backd1,
+    backd2,
+    backd3
+    )
+    values
+    <foreach collection="recordList" index="index" item="item" separator=",">
+      (
+      #{item.fileName,jdbcType=VARCHAR},
+      #{item.fileUrl,jdbcType=VARCHAR},
+      #{item.fileType,jdbcType=VARCHAR},
+      #{item.authcUser,jdbcType=VARCHAR},
+      #{item.createTime,jdbcType=TIMESTAMP},
+      #{item.updateTime,jdbcType=TIMESTAMP},
+      #{item.createUser,jdbcType=VARCHAR},
+      #{item.backi1,jdbcType=INTEGER},
+      #{item.backi2,jdbcType=INTEGER},
+      #{item.backi3,jdbcType=INTEGER},
+      #{item.backv1,jdbcType=VARCHAR},
+      #{item.backv2,jdbcType=VARCHAR},
+      #{item.backv3,jdbcType=VARCHAR},
+      #{item.backd1,jdbcType=TIMESTAMP},
+      #{item.backd2,jdbcType=TIMESTAMP},
+      #{item.backd3,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
+</mapper>

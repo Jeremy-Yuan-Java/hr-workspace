@@ -26,6 +26,10 @@ public class PathConf {
      */
     public static String SUFFIX_CARESUME = "resume";
 
+    public static String SUFFIX_CAVIDEO = "video";
+
+    public static String NGINX_PRIFIX  = "http://localhost:8081/";
+
     /**
      * 简历模板文件名前缀
      */
@@ -35,6 +39,7 @@ public class PathConf {
     private static String PIC = "pic/";
     private static String RESUME = "resumes/";
     private static String POSTCARD = "postcard/";
+    private static String VIDEO = "video/";
 
     private static String RESUME_REPORT = "report/";
     private static String RESUME_REPORT_TEMPLATE = "reporttemplate/";
@@ -42,6 +47,7 @@ public class PathConf {
     public static String ACCESS_PATH_PIC = ACCESS_PATH + PIC;
     public static String ACCESS_PATH_RESUME = ACCESS_PATH + RESUME;
     public static String ACCESS_PATH_POSTCARD = ACCESS_PATH + POSTCARD;
+    public static String ACCESS_PATH_VIDEO = ACCESS_PATH + VIDEO ;
 
     @Value("${file.rootpath}")
     public void setFilerootpath(String filerootpath) {
@@ -66,6 +72,8 @@ public class PathConf {
     public static String getSavePathReport(){
         return SAVE_PATH_ROOT + RESUME_REPORT;
     }
+
+    public static String getSavePathVideo(){ return SAVE_PATH_ROOT + VIDEO ;}
 
     public static String getResumeReportPath () { return SAVE_PATH_ROOT + RESUME_REPORT_TEMPLATE ; }
 }
