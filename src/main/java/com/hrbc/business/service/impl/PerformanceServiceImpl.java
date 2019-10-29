@@ -37,6 +37,24 @@ public class PerformanceServiceImpl  implements PerformanceService {
             Date createtimest = params.getQuery().getDate("createtimest");
             Date createtimeed = params.getQuery().getDate("createtimeed");
 
+            if (createtimest != null){
+                String startDate = QuickTimeUtil.dateParseString(createtimest,"yyyy-MM-dd");
+                createtimest = QuickTimeUtil.stringParseDate(startDate,"yyyy-MM-dd");
+                performance.setCreatetimeststr(startDate);
+            }
+
+            if(createtimeed != null){
+                Calendar c = Calendar.getInstance();
+                c.setTime(createtimeed);
+                c.add(Calendar.DAY_OF_MONTH,1);
+
+
+                String endDate = QuickTimeUtil.dateParseString(c.getTime(),"yyyy-MM-dd");
+                createtimeed = QuickTimeUtil.stringParseDate(endDate,"yyyy-MM-dd");
+                performance.setCreatetimeedstr(endDate);
+            }
+
+
             // 具体的查询条件
             String customername = params.getQuery().getString("customername");
             String jobname = params.getQuery().getString("jobname");
@@ -95,8 +113,27 @@ public class PerformanceServiceImpl  implements PerformanceService {
             // 查询数据的时间范围
             Date createtimest = params.getQuery().getDate("createtimest");
             Date createtimeed = params.getQuery().getDate("createtimeed");
+            String createtimeststr = null;
+            String createtimeedstr = null;
+            if (createtimest != null){
+                createtimeststr = QuickTimeUtil.dateParseString(createtimest,"yyyy-MM-dd");
+                //createtimest = QuickTimeUtil.stringParseDate(startDate,"yyyy-MM-dd");
+
+            }
+
+            if(createtimeed != null){
+                Calendar c = Calendar.getInstance();
+                c.setTime(createtimeed);
+                c.add(Calendar.DAY_OF_MONTH,1);
 
 
+                createtimeedstr = QuickTimeUtil.dateParseString(c.getTime(),"yyyy-MM-dd");
+                //createtimeed = QuickTimeUtil.stringParseDate(endDate,"yyyy-MM-dd");
+
+            }
+
+            System.out.println("------>"+createtimest);
+            System.out.println(createtimeed);
 
             List<Performance> list = null;
             // 判断是查询  年 月  日 的数据
@@ -104,14 +141,14 @@ public class PerformanceServiceImpl  implements PerformanceService {
                 // 判断是 月 日   2019-09-09
                 if(opdate.indexOf("-") == opdate.lastIndexOf("-")){
                     // 月份
-                    list = performanceMapper.queryRowMonth(opdate,opuser,createtimest,createtimeed);
+                    list = performanceMapper.queryRowMonth(opdate,opuser,createtimeststr,createtimeedstr);
                 }else{
                     // 天
-                    list = performanceMapper.queryRowDay(opdate,opuser,createtimest,createtimeed);
+                    list = performanceMapper.queryRowDay(opdate,opuser,createtimeststr,createtimeedstr);
                 }
             }else{
                 // 查询年份的数据
-                list = performanceMapper.queryRowYear(opdate,opuser,createtimest,createtimeed);
+                list = performanceMapper.queryRowYear(opdate,opuser,createtimeststr,createtimeedstr);
             }
 
             for (Performance p:list) {
@@ -125,6 +162,23 @@ public class PerformanceServiceImpl  implements PerformanceService {
     @Override
     public List<PerformanceDetail> queryDetail(PerformanceDetail detail) {
         if(detail != null){
+            if (detail.getCreatetimest() != null){
+                String createtimeststr = QuickTimeUtil.dateParseString(detail.getCreatetimest(),"yyyy-MM-dd");
+                //createtimest = QuickTimeUtil.stringParseDate(startDate,"yyyy-MM-dd");
+                detail.setCreatetimeststr(createtimeststr);
+            }
+
+            if(detail.getCreatetimeed() != null){
+                Calendar c = Calendar.getInstance();
+                c.setTime(detail.getCreatetimeed());
+                c.add(Calendar.DAY_OF_MONTH,1);
+
+
+                String createtimeedstr = QuickTimeUtil.dateParseString(c.getTime(),"yyyy-MM-dd");
+                //createtimeed = QuickTimeUtil.stringParseDate(endDate,"yyyy-MM-dd");
+                detail.setCreatetimeedstr(createtimeedstr);
+
+            }
             return performanceMapper.queryDetail(detail);
         }
         return null;

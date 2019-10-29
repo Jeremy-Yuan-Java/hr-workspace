@@ -98,7 +98,12 @@
         LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
         LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
         <where>
-
+            <if test="createtimeststr != null">
+                and t1.optime &gt;= DATE_FORMAT(#{createtimeststr}, '%Y-%m-%d')
+            </if>
+            <if test="createtimeedstr != null">
+                and t1.optime &lt; DATE_FORMAT(#{createtimeedstr}, '%Y-%m-%d')
+            </if>
             <if test="qcustomername != null">
                 and j2.cname like  #{qcustomername}
             </if>
@@ -201,11 +206,11 @@
                         LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
                         LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
                     <where>
-                        <if test="createtimest != null">
-                            and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
+                        <if test="createtimeststr != null">
+                            and t1.optime &gt;= DATE_FORMAT(#{createtimeststr}, '%Y-%m-%d')
                         </if>
-                        <if test="createtimeed != null">
-                            and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
+                        <if test="createtimeedstr != null">
+                            and t1.optime &lt; DATE_FORMAT(#{createtimeedstr}, '%Y-%m-%d')
                         </if>
                         <if test="qcustomername != null">
                             and j2.cname like  #{qcustomername}
@@ -308,11 +313,11 @@
         LEFT JOIN jobs_candidates tj ON t1.jcid = tj.id
         LEFT JOIN customers_jobs j2 ON tj.jobid = j2.id
         <where>
-            <if test="createtimest != null">
-                and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
+            <if test="createtimeststr != null">
+                and t1.optime &gt;= DATE_FORMAT(#{createtimeststr}, '%Y-%m-%d')
             </if>
-            <if test="createtimeed != null">
-                and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
+            <if test="createtimeedstr != null">
+                and t1.optime &lt; DATE_FORMAT(#{createtimeedstr}, '%Y-%m-%d')
             </if>
             <if test="qcustomername != null">
                 and j2.cname like  #{qcustomername}
@@ -418,12 +423,12 @@
                             where
                                     DATE_FORMAT(t1.optime, '%Y-%m-%d')=#{opdate}
                                 and t1.opuser=#{opuser}
-                            <if test="createtimest != null">
-                                and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
-                            </if>
-                            <if test="createtimeed != null">
-                                and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
-                            </if>
+                                <if test="createtimeststr != null">
+                                    and t1.optime &gt;= DATE_FORMAT(#{createtimeststr}, '%Y-%m-%d')
+                                </if>
+                                <if test="createtimeedstr != null">
+                                    and t1.optime &lt; DATE_FORMAT(#{createtimeedstr}, '%Y-%m-%d')
+                                </if>
                         ) t2
                     WHERE
                         1 = 1
@@ -525,11 +530,11 @@
                                     DATE_FORMAT(t1.optime, '%Y')=#{opdate}
                                 )
                                 and t1.opuser=#{opuser}
-                                <if test="createtimest != null">
-                                    and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
+                                <if test="createtimeststr != null">
+                                    and t1.optime &gt;= DATE_FORMAT(#{createtimeststr}, '%Y-%m-%d')
                                 </if>
-                                <if test="createtimeed != null">
-                                    and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
+                                <if test="createtimeedstr != null">
+                                    and t1.optime &lt; DATE_FORMAT(#{createtimeedstr}, '%Y-%m-%d')
                                 </if>
                         ) t2
                     WHERE
@@ -634,11 +639,11 @@
                                     DATE_FORMAT(t1.optime, '%Y')=#{opdate}
                                 )
                                 and t1.opuser=#{opuser}
-                                <if test="createtimest != null">
-                                    and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
+                                <if test="createtimeststr != null">
+                                    and t1.optime &gt;= DATE_FORMAT(#{createtimeststr}, '%Y-%m-%d')
                                 </if>
-                                <if test="createtimeed != null">
-                                    and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
+                                <if test="createtimeedstr != null">
+                                    and t1.optime &lt; DATE_FORMAT(#{createtimeedstr}, '%Y-%m-%d')
                                 </if>
                         ) t2
                     WHERE
@@ -693,9 +698,27 @@
         1=1
         <if test="opdate != null">
             AND (
-            DATE_FORMAT(t1.optime, '%Y-%m') = #{opdate}
+            (
+                DATE_FORMAT(t1.optime, '%Y-%m') = #{opdate}
+
+                <if test="createtimeststr != null">
+                    and t1.optime &gt;= DATE_FORMAT(#{createtimeststr}, '%Y-%m-%d')
+                </if>
+                <if test="createtimeedstr != null">
+                    and t1.optime &lt; DATE_FORMAT(#{createtimeedstr}, '%Y-%m-%d')
+                </if>
+            )
             OR DATE_FORMAT(t1.optime, '%Y-%m-%d') = #{opdate}
-            OR DATE_FORMAT(t1.optime, '%Y') = #{opdate}
+            OR
+                (
+                 DATE_FORMAT(t1.optime, '%Y') = #{opdate}
+                <if test="createtimeststr != null">
+                    and t1.optime &gt;= DATE_FORMAT(#{createtimeststr}, '%Y-%m-%d')
+                </if>
+                <if test="createtimeedstr != null">
+                    and t1.optime &lt; DATE_FORMAT(#{createtimeedstr}, '%Y-%m-%d')
+                </if>
+                 )
             )
         </if>
         <if test="opuser != null">
@@ -713,12 +736,7 @@
         <if test="jcid != null">
             AND jcid = #{jcid}
         </if>
-        <if test="createtimest != null">
-            and t1.optime &gt;= DATE_SUB(#{createtimeed},INTERVAL -1 DAY)
-        </if>
-        <if test="createtimeed != null">
-            and t1.optime &lt; DATE_SUB(#{createtimeed},INTERVAL -2 DAY)
-        </if>
+
     </select>
 
 

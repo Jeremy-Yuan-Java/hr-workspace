@@ -21,11 +21,11 @@ public interface PerformanceMapper {
 
     List<Performance> queryYear(Performance performance);
 
-    List<Performance> queryRowYear(@Param("opdate") String opdate, @Param("opuser") String opuser,@Param("createtimest") Date createtimest,@Param("createtimeed")Date createtimeed);
+    List<Performance> queryRowYear(@Param("opdate") String opdate, @Param("opuser") String opuser,@Param("createtimeststr") String createtimeststr,@Param("createtimeedstr")String createtimeedstr);
 
-    List<Performance> queryRowMonth(@Param("opdate") String opdate,@Param("opuser") String opuser,@Param("createtimest") Date createtimest,@Param("createtimeed")Date createtimeed);
+    List<Performance> queryRowMonth(@Param("opdate") String opdate,@Param("opuser") String opuser,@Param("createtimeststr") String createtimeststr,@Param("createtimeedstr")String createtimeedstr);
 
-    List<Performance> queryRowDay(@Param("opdate") String opdate,@Param("opuser") String opuser,@Param("createtimest") Date createtimest,@Param("createtimeed")Date createtimeed);
+    List<Performance> queryRowDay(@Param("opdate") String opdate,@Param("opuser") String opuser,@Param("createtimeststr") String createtimeststr,@Param("createtimeedstr") String createtimeedstr);
 
     List<PerformanceDetail> queryDetail(PerformanceDetail detail);
 

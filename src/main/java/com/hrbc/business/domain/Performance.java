@@ -56,6 +56,10 @@ public class Performance {
 
     private Date createtimeed;
 
+    private String createtimeststr;
+
+    private String createtimeedstr;
+
     private String qcustomername;
 
     private String qjobname;
@@ -90,6 +94,22 @@ public class Performance {
 
     public void setQyf(Integer qyf) {
         this.qyf = qyf;
+    }
+
+    public String getCreatetimeststr() {
+        return createtimeststr;
+    }
+
+    public void setCreatetimeststr(String createtimeststr) {
+        this.createtimeststr = createtimeststr;
+    }
+
+    public String getCreatetimeedstr() {
+        return createtimeedstr;
+    }
+
+    public void setCreatetimeedstr(String createtimeedstr) {
+        this.createtimeedstr = createtimeedstr;
     }
 
     public String getJobdesc() {
