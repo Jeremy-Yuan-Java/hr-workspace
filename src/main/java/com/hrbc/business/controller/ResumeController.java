@@ -121,7 +121,7 @@ public class ResumeController {
             if (!path.exists()) {
                 path.mkdirs();
             }
-            File outFile = new File(path,fileName+".docx");
+            File outFile = new File(path,fileName+".doc");
             Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile),"UTF-8"));
             //生成文件
             template.process(dataMap, out);

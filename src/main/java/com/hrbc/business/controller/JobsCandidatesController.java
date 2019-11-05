@@ -63,11 +63,31 @@ public class JobsCandidatesController {
     }
 
 
+    @PostMapping("updateJobsCandidatesState")
+    public ResponseDTO updateJobsCandidatesState(@RequestBody JobsCandidatesState entity) {
+        if (entity.getId() == null || entity.getText4() == null) {
+            return new ResponseDTO(false, "参数错误", null);
+
+        }
+        int res = service.updateJobsCandidatesState(entity);
+
+        return new ResponseDTO(true, "操作成功", entity.getId());
+    }
+
+
+
     @PostMapping("loadPage")
     public PageResultDTO loadPage(@RequestBody PageQueryParamDTO params) {
 
         // 返回分页数据
         return service.loadPage(params);
+    }
+
+    @PostMapping("loadStatePage")
+    public PageResultDTO loadStatePage(@RequestBody PageQueryParamDTO params) {
+
+        // 返回分页数据
+        return service.loadStatePage(params);
     }
 
     @GetMapping("remove/{id}")

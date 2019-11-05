@@ -24,5 +24,9 @@ public interface JobsCandidatesService {
 
     public int changeFlowState(JobsCandidatesState state);
 
+    public PageResultDTO loadStatePage(PageQueryParamDTO params);
+
+    public int updateJobsCandidatesState(JobsCandidatesState state);
+
 
     }

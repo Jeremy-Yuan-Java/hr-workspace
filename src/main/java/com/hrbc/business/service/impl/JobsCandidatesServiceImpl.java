@@ -186,6 +186,52 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     }
 
     @Override
+    public PageResultDTO loadStatePage(PageQueryParamDTO params) {
+        long count = 0;
+        List<JobsCandidatesState> list = null;
+        int page = 1;
+        int size = 10;
+        if (params != null) {
+            if (params.getPage() >= 0) {
+                page = params.getPage();
+            }
+            if (params.getSize() >= 0) {
+                size = params.getSize();
+            }
+            JobsCandidatesState dto = null;
+            JobsCandidatesStateExample example = new JobsCandidatesStateExample();
+            example.createCriteria();
+            example.getOredCriteria().get(0).andFlowstateEqualTo(5);
+            if (!StringUtils.isEmpty(params.getOrderby())) {
+                example.setOrderByClause(params.getOrderby());
+            }
+            if (params.getQuery() != null) {
+                dto = JSONObject.toJavaObject(params.getQuery(), JobsCandidatesState.class);
+                if(!StringUtils.isEmpty(dto.getOpuser())){
+                    example.getOredCriteria().get(0).andOpuserEqualTo(dto.getOpuser());
+                }
+            }
+
+            count = stateMapper.countByExample(example);
+
+            if (count > 0) {
+                example.setOffset((page - 1) * size);
+                example.setLimit(size);
+                list = stateMapper.selectByExample(example);
+            }
+        }
+
+        // 返回分页数据
+        return new PageResultDTO(count, list);
+    }
+
+    @Override
+    public int updateJobsCandidatesState(JobsCandidatesState state) {
+
+        return stateMapper.updateByPrimaryKeySelective(state);
+    }
+
+    @Override
     @ProcessLog(businessName = "职位候选人管理", methodName = "remove")
 
     public int remove(JobsCandidates dto) {
@@ -252,4 +298,6 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
         }
         return i;
     }
+
+
 }
