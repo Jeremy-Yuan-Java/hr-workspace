@@ -6,21 +6,20 @@ import com.hrbc.business.common.Constants;
 import com.hrbc.business.common.JwtToken;
 import com.hrbc.business.conf.aop.ProcessLog;
 import com.hrbc.business.domain.*;
+import com.hrbc.business.domain.common.JobsCandidatesStateDto;
 import com.hrbc.business.domain.common.PageQueryParamDTO;
 import com.hrbc.business.domain.common.PageResultDTO;
 import com.hrbc.business.domain.enums.DelFlagE;
 import com.hrbc.business.domain.enums.JobFlowE;
 import com.hrbc.business.mapper.*;
 import com.hrbc.business.service.JobsCandidatesService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -188,7 +187,7 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     @Override
     public PageResultDTO loadStatePage(PageQueryParamDTO params) {
         long count = 0;
-        List<JobsCandidatesState> list = null;
+        List<JobsCandidatesStateDto> jcsd = new ArrayList<>();
         int page = 1;
         int size = 10;
         if (params != null) {
@@ -199,16 +198,35 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
                 size = params.getSize();
             }
             JobsCandidatesState dto = null;
+
+            Date createtimest = params.getQuery().getDate("createtimest");
+            Date createtimeed = params.getQuery().getDate("createtimeed");
+
+            String ismy = params.getQuery().getString("ismy");
+
             JobsCandidatesStateExample example = new JobsCandidatesStateExample();
             example.createCriteria();
             example.getOredCriteria().get(0).andFlowstateEqualTo(5);
             if (!StringUtils.isEmpty(params.getOrderby())) {
                 example.setOrderByClause(params.getOrderby());
             }
+
+            if(ismy != null && "yes".equals(ismy)){
+                String username = JwtToken.getUser();
+                example.getOredCriteria().get(0).andOpuserEqualTo(username);
+            }
+
             if (params.getQuery() != null) {
                 dto = JSONObject.toJavaObject(params.getQuery(), JobsCandidatesState.class);
                 if(!StringUtils.isEmpty(dto.getOpuser())){
                     example.getOredCriteria().get(0).andOpuserEqualTo(dto.getOpuser());
+                }
+
+                if (createtimest != null) {
+                    example.getOredCriteria().get(0).andCreatetimeGreaterThanOrEqualTo(createtimest);
+                }
+                if (createtimeed != null) {
+                    example.getOredCriteria().get(0).andCreatetimeLessThanOrEqualTo(createtimeed);
                 }
             }
 
@@ -217,12 +235,26 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
             if (count > 0) {
                 example.setOffset((page - 1) * size);
                 example.setLimit(size);
-                list = stateMapper.selectByExample(example);
+                List<JobsCandidatesState> list = stateMapper.selectByExample(example);
+                // 添加客户名称 和人选名称  职位相关信息
+                for(JobsCandidatesState state : list){
+                    JobsCandidatesStateDto jcd = new JobsCandidatesStateDto();
+                    BeanUtils.copyProperties(state,jcd);
+                    JobsCandidates jc = mapper.selectByPrimaryKey(state.getJcid());
+                    jcd.setCandidatesid(jc.getCandidateid());
+                    jcd.setCandidatesname(jc.getCandidatename());
+                    CustomersJobs cj = jobsMapper.selectByPrimaryKey(jc.getJobid());
+                    jcd.setJobno(cj.getJobno());
+                    jcd.setJobdesc(cj.getJobdesc());
+                    jcd.setCno(cj.getCno());
+                    jcd.setCname(cj.getCname());
+                    jcsd.add(jcd);
+                }
             }
         }
 
         // 返回分页数据
-        return new PageResultDTO(count, list);
+        return new PageResultDTO(count, jcsd);
     }
 
     @Override

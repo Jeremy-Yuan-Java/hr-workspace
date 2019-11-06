@@ -62,6 +62,7 @@ public class TrainDataServiceImpl implements TrainDataService {
 
             TrainDataExample.Criteria criteria = example.createCriteria();
             criteria.andAuthcUserLike("%全部可见%");
+            criteria.andBacki1EqualTo(DelFlagE.NO.code);
             example.or(criteria);
 
 
