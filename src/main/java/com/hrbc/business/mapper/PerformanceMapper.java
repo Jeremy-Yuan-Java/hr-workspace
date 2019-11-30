@@ -1,7 +1,9 @@
 package com.hrbc.business.mapper;
 
+import com.hrbc.business.domain.DepositRecevied;
 import com.hrbc.business.domain.Performance;
 import com.hrbc.business.domain.PerformanceDetail;
+import com.hrbc.business.domain.WorkPlan;
 import com.hrbc.business.domain.common.PerformanceDto;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +33,13 @@ public interface PerformanceMapper {
 
     List<Performance> queryMonthlyPerformance(@Param("opdate") String opdate,@Param("opusername") String opuser,@Param("currentuser") String currentuser);
 
+    List<DepositRecevied> queryDepositRecevied(DepositRecevied depositRecevied);
+
+    Integer countDepositRecevied(DepositRecevied depositRecevied);
+
+    Integer querySignCount(WorkPlan plan);
+
+    String queryOfferComplete(WorkPlan plan);
+
+    String queryPerformance(WorkPlan plan);
 }

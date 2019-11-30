@@ -34,6 +34,9 @@
     <result column="phoneno1" jdbcType="VARCHAR" property="phoneno1" />
     <result column="contactuser2" jdbcType="VARCHAR" property="contactuser2" />
     <result column="phoneno2" jdbcType="VARCHAR" property="phoneno2" />
+    <result column="deducts" jdbcType="VARCHAR" property="deducts" />
+    <result column="payments" jdbcType="VARCHAR" property="payments" />
+    <result column="ensurences" jdbcType="VARCHAR" property="ensurences" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hrbc.business.domain.Customers">
     <result column="followrec" jdbcType="LONGVARBINARY" property="followrec" />
@@ -100,7 +103,8 @@
     id, cno, cname, opsstaffname, opsstaffno, contactuser, phoneno, phonenobak, email, 
     emailbak, wechat, jobtitle, businessstate, verify, state, delflag, createtime, updatetime, 
     major, majorsub, createuser, updateuser, createstaff, updatestaff, remark, customerdesc, 
-    fulltexts, opsstaffid, contactuser1, phoneno1, contactuser2, phoneno2
+    fulltexts, opsstaffid, contactuser1, phoneno1, contactuser2, phoneno2, deducts, payments, 
+    ensurences
   </sql>
   <sql id="Blob_Column_List">
     followrec
@@ -120,15 +124,6 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
-    </if>
-
   </select>
   <select id="selectByExample" parameterType="com.hrbc.business.domain.CustomersExample" resultMap="BaseResultMap">
     select
@@ -184,7 +179,8 @@
       createstaff, updatestaff, remark, 
       customerdesc, fulltexts, opsstaffid, 
       contactuser1, phoneno1, contactuser2, 
-      phoneno2, followrec)
+      phoneno2, deducts, payments, 
+      ensurences, followrec)
     values (#{cno,jdbcType=VARCHAR}, #{cname,jdbcType=VARCHAR}, #{opsstaffname,jdbcType=VARCHAR}, 
       #{opsstaffno,jdbcType=VARCHAR}, #{contactuser,jdbcType=VARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
       #{phonenobak,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{emailbak,jdbcType=VARCHAR}, 
@@ -195,7 +191,8 @@
       #{createstaff,jdbcType=VARCHAR}, #{updatestaff,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{customerdesc,jdbcType=VARCHAR}, #{fulltexts,jdbcType=VARCHAR}, #{opsstaffid,jdbcType=INTEGER}, 
       #{contactuser1,jdbcType=VARCHAR}, #{phoneno1,jdbcType=VARCHAR}, #{contactuser2,jdbcType=VARCHAR}, 
-      #{phoneno2,jdbcType=VARCHAR}, #{followrec,jdbcType=LONGVARBINARY})
+      #{phoneno2,jdbcType=VARCHAR}, #{deducts,jdbcType=VARCHAR}, #{payments,jdbcType=VARCHAR}, 
+      #{ensurences,jdbcType=VARCHAR}, #{followrec,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="com.hrbc.business.domain.Customers">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -296,6 +293,15 @@
       <if test="phoneno2 != null">
         phoneno2,
       </if>
+      <if test="deducts != null">
+        deducts,
+      </if>
+      <if test="payments != null">
+        payments,
+      </if>
+      <if test="ensurences != null">
+        ensurences,
+      </if>
       <if test="followrec != null">
         followrec,
       </if>
@@ -393,6 +399,15 @@
       </if>
       <if test="phoneno2 != null">
         #{phoneno2,jdbcType=VARCHAR},
+      </if>
+      <if test="deducts != null">
+        #{deducts,jdbcType=VARCHAR},
+      </if>
+      <if test="payments != null">
+        #{payments,jdbcType=VARCHAR},
+      </if>
+      <if test="ensurences != null">
+        #{ensurences,jdbcType=VARCHAR},
       </if>
       <if test="followrec != null">
         #{followrec,jdbcType=LONGVARBINARY},
@@ -504,6 +519,15 @@
       <if test="record.phoneno2 != null">
         phoneno2 = #{record.phoneno2,jdbcType=VARCHAR},
       </if>
+      <if test="record.deducts != null">
+        deducts = #{record.deducts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payments != null">
+        payments = #{record.payments,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ensurences != null">
+        ensurences = #{record.ensurences,jdbcType=VARCHAR},
+      </if>
       <if test="record.followrec != null">
         followrec = #{record.followrec,jdbcType=LONGVARBINARY},
       </if>
@@ -546,6 +570,9 @@
       phoneno1 = #{record.phoneno1,jdbcType=VARCHAR},
       contactuser2 = #{record.contactuser2,jdbcType=VARCHAR},
       phoneno2 = #{record.phoneno2,jdbcType=VARCHAR},
+      deducts = #{record.deducts,jdbcType=VARCHAR},
+      payments = #{record.payments,jdbcType=VARCHAR},
+      ensurences = #{record.ensurences,jdbcType=VARCHAR},
       followrec = #{record.followrec,jdbcType=LONGVARBINARY}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -584,7 +611,10 @@
       contactuser1 = #{record.contactuser1,jdbcType=VARCHAR},
       phoneno1 = #{record.phoneno1,jdbcType=VARCHAR},
       contactuser2 = #{record.contactuser2,jdbcType=VARCHAR},
-      phoneno2 = #{record.phoneno2,jdbcType=VARCHAR}
+      phoneno2 = #{record.phoneno2,jdbcType=VARCHAR},
+      deducts = #{record.deducts,jdbcType=VARCHAR},
+      payments = #{record.payments,jdbcType=VARCHAR},
+      ensurences = #{record.ensurences,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -685,6 +715,15 @@
       <if test="phoneno2 != null">
         phoneno2 = #{phoneno2,jdbcType=VARCHAR},
       </if>
+      <if test="deducts != null">
+        deducts = #{deducts,jdbcType=VARCHAR},
+      </if>
+      <if test="payments != null">
+        payments = #{payments,jdbcType=VARCHAR},
+      </if>
+      <if test="ensurences != null">
+        ensurences = #{ensurences,jdbcType=VARCHAR},
+      </if>
       <if test="followrec != null">
         followrec = #{followrec,jdbcType=LONGVARBINARY},
       </if>
@@ -724,6 +763,9 @@
       phoneno1 = #{phoneno1,jdbcType=VARCHAR},
       contactuser2 = #{contactuser2,jdbcType=VARCHAR},
       phoneno2 = #{phoneno2,jdbcType=VARCHAR},
+      deducts = #{deducts,jdbcType=VARCHAR},
+      payments = #{payments,jdbcType=VARCHAR},
+      ensurences = #{ensurences,jdbcType=VARCHAR},
       followrec = #{followrec,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -759,7 +801,10 @@
       contactuser1 = #{contactuser1,jdbcType=VARCHAR},
       phoneno1 = #{phoneno1,jdbcType=VARCHAR},
       contactuser2 = #{contactuser2,jdbcType=VARCHAR},
-      phoneno2 = #{phoneno2,jdbcType=VARCHAR}
+      phoneno2 = #{phoneno2,jdbcType=VARCHAR},
+      deducts = #{deducts,jdbcType=VARCHAR},
+      payments = #{payments,jdbcType=VARCHAR},
+      ensurences = #{ensurences,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
@@ -795,6 +840,9 @@
     phoneno1,
     contactuser2,
     phoneno2,
+    deducts,
+    payments,
+    ensurences,
     followrec
     )
     values
@@ -831,6 +879,9 @@
       #{item.phoneno1,jdbcType=VARCHAR},
       #{item.contactuser2,jdbcType=VARCHAR},
       #{item.phoneno2,jdbcType=VARCHAR},
+      #{item.deducts,jdbcType=VARCHAR},
+      #{item.payments,jdbcType=VARCHAR},
+      #{item.ensurences,jdbcType=VARCHAR},
       #{item.followrec,jdbcType=LONGVARBINARY}
       )
     </foreach>

@@ -2304,6 +2304,216 @@ public class CustomersExample {
             addCriterion("phoneno2 not between", value1, value2, "phoneno2");
             return (Criteria) this;
         }
+
+        public Criteria andDeductsIsNull() {
+            addCriterion("deducts is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsIsNotNull() {
+            addCriterion("deducts is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsEqualTo(String value) {
+            addCriterion("deducts =", value, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsNotEqualTo(String value) {
+            addCriterion("deducts <>", value, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsGreaterThan(String value) {
+            addCriterion("deducts >", value, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsGreaterThanOrEqualTo(String value) {
+            addCriterion("deducts >=", value, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsLessThan(String value) {
+            addCriterion("deducts <", value, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsLessThanOrEqualTo(String value) {
+            addCriterion("deducts <=", value, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsLike(String value) {
+            addCriterion("deducts like", value, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsNotLike(String value) {
+            addCriterion("deducts not like", value, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsIn(List<String> values) {
+            addCriterion("deducts in", values, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsNotIn(List<String> values) {
+            addCriterion("deducts not in", values, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsBetween(String value1, String value2) {
+            addCriterion("deducts between", value1, value2, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeductsNotBetween(String value1, String value2) {
+            addCriterion("deducts not between", value1, value2, "deducts");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsIsNull() {
+            addCriterion("payments is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsIsNotNull() {
+            addCriterion("payments is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsEqualTo(String value) {
+            addCriterion("payments =", value, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsNotEqualTo(String value) {
+            addCriterion("payments <>", value, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsGreaterThan(String value) {
+            addCriterion("payments >", value, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsGreaterThanOrEqualTo(String value) {
+            addCriterion("payments >=", value, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsLessThan(String value) {
+            addCriterion("payments <", value, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsLessThanOrEqualTo(String value) {
+            addCriterion("payments <=", value, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsLike(String value) {
+            addCriterion("payments like", value, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsNotLike(String value) {
+            addCriterion("payments not like", value, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsIn(List<String> values) {
+            addCriterion("payments in", values, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsNotIn(List<String> values) {
+            addCriterion("payments not in", values, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsBetween(String value1, String value2) {
+            addCriterion("payments between", value1, value2, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaymentsNotBetween(String value1, String value2) {
+            addCriterion("payments not between", value1, value2, "payments");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesIsNull() {
+            addCriterion("ensurences is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesIsNotNull() {
+            addCriterion("ensurences is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesEqualTo(String value) {
+            addCriterion("ensurences =", value, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesNotEqualTo(String value) {
+            addCriterion("ensurences <>", value, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesGreaterThan(String value) {
+            addCriterion("ensurences >", value, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesGreaterThanOrEqualTo(String value) {
+            addCriterion("ensurences >=", value, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesLessThan(String value) {
+            addCriterion("ensurences <", value, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesLessThanOrEqualTo(String value) {
+            addCriterion("ensurences <=", value, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesLike(String value) {
+            addCriterion("ensurences like", value, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesNotLike(String value) {
+            addCriterion("ensurences not like", value, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesIn(List<String> values) {
+            addCriterion("ensurences in", values, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesNotIn(List<String> values) {
+            addCriterion("ensurences not in", values, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesBetween(String value1, String value2) {
+            addCriterion("ensurences between", value1, value2, "ensurences");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnsurencesNotBetween(String value1, String value2) {
+            addCriterion("ensurences not between", value1, value2, "ensurences");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

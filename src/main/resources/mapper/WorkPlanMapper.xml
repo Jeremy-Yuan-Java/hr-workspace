@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrbc.business.mapper.WorkPlanMapper">
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.WorkPlan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="cnname" jdbcType="VARCHAR" property="cnname" />
+    <result column="years" jdbcType="INTEGER" property="years" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="isdelete" jdbcType="INTEGER" property="isdelete" />
+    <result column="months" jdbcType="INTEGER" property="months" />
+    <result column="offers" jdbcType="VARCHAR" property="offers" />
+    <result column="realizeoffers" jdbcType="VARCHAR" property="realizeoffers" />
+    <result column="performances" jdbcType="VARCHAR" property="performances" />
+    <result column="realizeperformances" jdbcType="VARCHAR" property="realizeperformances" />
+    <result column="signs" jdbcType="VARCHAR" property="signs" />
+    <result column="realizesigns" jdbcType="VARCHAR" property="realizesigns" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, username, cnname, years, remark, createtime, updatetime, isdelete, months, offers, 
+    realizeoffers, performances, realizeperformances, signs, realizesigns
+  </sql>
+  <select id="selectByExample" parameterType="com.hrbc.business.domain.WorkPlanExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from work_plan
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from work_plan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from work_plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.WorkPlanExample">
+    delete from work_plan
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hrbc.business.domain.WorkPlan">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into work_plan (username, cnname, years, 
+      remark, createtime, updatetime, 
+      isdelete, months, offers, 
+      realizeoffers, performances, realizeperformances, 
+      signs, realizesigns)
+    values (#{username,jdbcType=VARCHAR}, #{cnname,jdbcType=VARCHAR}, #{years,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{isdelete,jdbcType=INTEGER}, #{months,jdbcType=INTEGER}, #{offers,jdbcType=VARCHAR}, 
+      #{realizeoffers,jdbcType=VARCHAR}, #{performances,jdbcType=VARCHAR}, #{realizeperformances,jdbcType=VARCHAR}, 
+      #{signs,jdbcType=VARCHAR}, #{realizesigns,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.WorkPlan">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into work_plan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        username,
+      </if>
+      <if test="cnname != null">
+        cnname,
+      </if>
+      <if test="years != null">
+        years,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="isdelete != null">
+        isdelete,
+      </if>
+      <if test="months != null">
+        months,
+      </if>
+      <if test="offers != null">
+        offers,
+      </if>
+      <if test="realizeoffers != null">
+        realizeoffers,
+      </if>
+      <if test="performances != null">
+        performances,
+      </if>
+      <if test="realizeperformances != null">
+        realizeperformances,
+      </if>
+      <if test="signs != null">
+        signs,
+      </if>
+      <if test="realizesigns != null">
+        realizesigns,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="cnname != null">
+        #{cnname,jdbcType=VARCHAR},
+      </if>
+      <if test="years != null">
+        #{years,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdelete != null">
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="months != null">
+        #{months,jdbcType=INTEGER},
+      </if>
+      <if test="offers != null">
+        #{offers,jdbcType=VARCHAR},
+      </if>
+      <if test="realizeoffers != null">
+        #{realizeoffers,jdbcType=VARCHAR},
+      </if>
+      <if test="performances != null">
+        #{performances,jdbcType=VARCHAR},
+      </if>
+      <if test="realizeperformances != null">
+        #{realizeperformances,jdbcType=VARCHAR},
+      </if>
+      <if test="signs != null">
+        #{signs,jdbcType=VARCHAR},
+      </if>
+      <if test="realizesigns != null">
+        #{realizesigns,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hrbc.business.domain.WorkPlanExample" resultType="java.lang.Long">
+    select count(*) from work_plan
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update work_plan
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null">
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cnname != null">
+        cnname = #{record.cnname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.years != null">
+        years = #{record.years,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null">
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null">
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isdelete != null">
+        isdelete = #{record.isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.months != null">
+        months = #{record.months,jdbcType=INTEGER},
+      </if>
+      <if test="record.offers != null">
+        offers = #{record.offers,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realizeoffers != null">
+        realizeoffers = #{record.realizeoffers,jdbcType=VARCHAR},
+      </if>
+      <if test="record.performances != null">
+        performances = #{record.performances,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realizeperformances != null">
+        realizeperformances = #{record.realizeperformances,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signs != null">
+        signs = #{record.signs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realizesigns != null">
+        realizesigns = #{record.realizesigns,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update work_plan
+    set id = #{record.id,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      cnname = #{record.cnname,jdbcType=VARCHAR},
+      years = #{record.years,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      isdelete = #{record.isdelete,jdbcType=INTEGER},
+      months = #{record.months,jdbcType=INTEGER},
+      offers = #{record.offers,jdbcType=VARCHAR},
+      realizeoffers = #{record.realizeoffers,jdbcType=VARCHAR},
+      performances = #{record.performances,jdbcType=VARCHAR},
+      realizeperformances = #{record.realizeperformances,jdbcType=VARCHAR},
+      signs = #{record.signs,jdbcType=VARCHAR},
+      realizesigns = #{record.realizesigns,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.WorkPlan">
+    update work_plan
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="cnname != null">
+        cnname = #{cnname,jdbcType=VARCHAR},
+      </if>
+      <if test="years != null">
+        years = #{years,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdelete != null">
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="months != null">
+        months = #{months,jdbcType=INTEGER},
+      </if>
+      <if test="offers != null">
+        offers = #{offers,jdbcType=VARCHAR},
+      </if>
+      <if test="realizeoffers != null">
+        realizeoffers = #{realizeoffers,jdbcType=VARCHAR},
+      </if>
+      <if test="performances != null">
+        performances = #{performances,jdbcType=VARCHAR},
+      </if>
+      <if test="realizeperformances != null">
+        realizeperformances = #{realizeperformances,jdbcType=VARCHAR},
+      </if>
+      <if test="signs != null">
+        signs = #{signs,jdbcType=VARCHAR},
+      </if>
+      <if test="realizesigns != null">
+        realizesigns = #{realizesigns,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.WorkPlan">
+    update work_plan
+    set username = #{username,jdbcType=VARCHAR},
+      cnname = #{cnname,jdbcType=VARCHAR},
+      years = #{years,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      months = #{months,jdbcType=INTEGER},
+      offers = #{offers,jdbcType=VARCHAR},
+      realizeoffers = #{realizeoffers,jdbcType=VARCHAR},
+      performances = #{performances,jdbcType=VARCHAR},
+      realizeperformances = #{realizeperformances,jdbcType=VARCHAR},
+      signs = #{signs,jdbcType=VARCHAR},
+      realizesigns = #{realizesigns,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into work_plan (
+    username,
+    cnname,
+    years,
+    remark,
+    createtime,
+    updatetime,
+    isdelete,
+    months,
+    offers,
+    realizeoffers,
+    performances,
+    realizeperformances,
+    signs,
+    realizesigns
+    )
+    values
+    <foreach collection="recordList" index="index" item="item" separator=",">
+      (
+      #{item.username,jdbcType=VARCHAR},
+      #{item.cnname,jdbcType=VARCHAR},
+      #{item.years,jdbcType=INTEGER},
+      #{item.remark,jdbcType=VARCHAR},
+      #{item.createtime,jdbcType=TIMESTAMP},
+      #{item.updatetime,jdbcType=TIMESTAMP},
+      #{item.isdelete,jdbcType=INTEGER},
+      #{item.months,jdbcType=INTEGER},
+      #{item.offers,jdbcType=VARCHAR},
+      #{item.realizeoffers,jdbcType=VARCHAR},
+      #{item.performances,jdbcType=VARCHAR},
+      #{item.realizeperformances,jdbcType=VARCHAR},
+      #{item.signs,jdbcType=VARCHAR},
+      #{item.realizesigns,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+</mapper>

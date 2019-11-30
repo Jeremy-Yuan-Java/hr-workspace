@@ -171,7 +171,7 @@ public class JwtToken {
     }
 
     public static void main(String[] args) throws Exception {
-        String token = JwtToken.generToken("aaa", "gcqsys", "zhouhongshuo");
+        String token = JwtToken.generToken("Vivi.li", "Vivi.li", "Vivi.li");
         Thread.sleep(2000);
         Claims claims = JwtToken.verifyToken("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJtYXlrZSIsImlhdCI6MTU1NzE5OTgzMCwic3ViIjoibWF5a2UiLCJpc3MiOiJUYWlNdUtlSmkiLCJleHAiOjE1NTc4MDQ2MzB9.wszEsK8Va8VIDwmxXlyrHTZhcDnWKLgyNhL4lTR6a7Y");
         System.out.println(token);

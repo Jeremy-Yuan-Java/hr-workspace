@@ -249,6 +249,10 @@ public class CustomersJobsServiceImpl implements CustomersJobsService {
                     example.getOredCriteria().get(0).andTargetcompanyLike("%" + dto.getTargetcompany() + "%");
                 }
 
+                if (!StringUtils.isEmpty(dto.getCno())) {
+                    example.getOredCriteria().get(0).andCnoEqualTo(dto.getCno());
+                }
+
                 if (publishtimest != null) {
                     example.getOredCriteria().get(0).andPublishtimeGreaterThanOrEqualTo(publishtimest);
                 }

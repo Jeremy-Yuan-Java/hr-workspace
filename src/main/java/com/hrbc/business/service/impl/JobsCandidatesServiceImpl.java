@@ -36,6 +36,9 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
     @Autowired
     private CandidatesJobsReportMapper reportMapper;
 
+    @Autowired
+    private CounselorPerformanceDeductMapper cpdMapper;
+
     @Override
     public JobsCandidates get(Integer id) {
         return mapper.selectByPrimaryKey(id);
@@ -310,6 +313,17 @@ public class JobsCandidatesServiceImpl implements JobsCandidatesService {
             jobsCandidates.setId(state.getJcid());
             jobsCandidates.setState(state.getFlowstate());
             mapper.updateByPrimaryKeySelective(jobsCandidates);
+
+            if(state.getFlowstate() == 11){
+                // 保用期离职  那么需要将 绩效 状态更新为 待退
+                CounselorPerformanceDeduct cpd = new CounselorPerformanceDeduct();
+                //cpd.setJobsCandidatesId(state.getJcid());
+                cpd.setDeducttype("待退");
+                CounselorPerformanceDeductExample cpdExample = new CounselorPerformanceDeductExample();
+                cpdExample.createCriteria().andJobsCandidatesIdEqualTo(state.getJcid());
+                cpdMapper.updateByExampleSelective(cpd,cpdExample);
+            }
+
             if (state.getFlowstate() == 2 && !StringUtils.isEmpty(state.getText5())) {
                 CandidatesJobsReport report = new CandidatesJobsReport();
                 report.setReportpath(state.getText5());

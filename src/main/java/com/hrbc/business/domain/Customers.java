@@ -1,6 +1,5 @@
 package com.hrbc.business.domain;
 
-import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -60,6 +59,14 @@ public class Customers {
 
     private byte[] followrec;
 
+    public String getCommunicaterec() {
+        return communicaterec;
+    }
+
+    public void setCommunicaterec(String communicaterec) {
+        this.communicaterec = communicaterec;
+    }
+
     private String communicaterec;
 
     private String fulltexts;
@@ -74,54 +81,12 @@ public class Customers {
 
     private String phoneno2;
 
+    private String deducts;
 
-    public String getContactuser1() {
-        return contactuser1;
-    }
+    private String payments;
 
-    public void setContactuser1(String contactuser1) {
-        this.contactuser1 = contactuser1;
-    }
+    private String ensurences;
 
-    public String getPhoneno1() {
-        return phoneno1;
-    }
-
-    public void setPhoneno1(String phoneno1) {
-        this.phoneno1 = phoneno1;
-    }
-
-    public String getContactuser2() {
-        return contactuser2;
-    }
-
-    public void setContactuser2(String contactuser2) {
-        this.contactuser2 = contactuser2;
-    }
-
-    public String getPhoneno2() {
-        return phoneno2;
-    }
-
-    public void setPhoneno2(String phoneno2) {
-        this.phoneno2 = phoneno2;
-    }
-
-    public Integer getOpsstaffid() {
-        return opsstaffid;
-    }
-
-    public void setOpsstaffid(Integer opsstaffid) {
-        this.opsstaffid = opsstaffid;
-    }
-
-    public String getFulltexts() {
-        return fulltexts;
-    }
-
-    public void setFulltexts(String fulltexts) {
-        this.fulltexts = fulltexts;
-    }
 
 
     public Integer getId() {
@@ -332,37 +297,83 @@ public class Customers {
         this.customerdesc = customerdesc == null ? null : customerdesc.trim();
     }
 
+    public String getFulltexts() {
+        return fulltexts;
+    }
+
+    public void setFulltexts(String fulltexts) {
+        this.fulltexts = fulltexts == null ? null : fulltexts.trim();
+    }
+
+    public Integer getOpsstaffid() {
+        return opsstaffid;
+    }
+
+    public void setOpsstaffid(Integer opsstaffid) {
+        this.opsstaffid = opsstaffid;
+    }
+
+    public String getContactuser1() {
+        return contactuser1;
+    }
+
+    public void setContactuser1(String contactuser1) {
+        this.contactuser1 = contactuser1 == null ? null : contactuser1.trim();
+    }
+
+    public String getPhoneno1() {
+        return phoneno1;
+    }
+
+    public void setPhoneno1(String phoneno1) {
+        this.phoneno1 = phoneno1 == null ? null : phoneno1.trim();
+    }
+
+    public String getContactuser2() {
+        return contactuser2;
+    }
+
+    public void setContactuser2(String contactuser2) {
+        this.contactuser2 = contactuser2 == null ? null : contactuser2.trim();
+    }
+
+    public String getPhoneno2() {
+        return phoneno2;
+    }
+
+    public void setPhoneno2(String phoneno2) {
+        this.phoneno2 = phoneno2 == null ? null : phoneno2.trim();
+    }
+
+    public String getDeducts() {
+        return deducts;
+    }
+
+    public void setDeducts(String deducts) {
+        this.deducts = deducts == null ? null : deducts.trim();
+    }
+
+    public String getPayments() {
+        return payments;
+    }
+
+    public void setPayments(String payments) {
+        this.payments = payments == null ? null : payments.trim();
+    }
+
+    public String getEnsurences() {
+        return ensurences;
+    }
+
+    public void setEnsurences(String ensurences) {
+        this.ensurences = ensurences == null ? null : ensurences.trim();
+    }
+
     public byte[] getFollowrec() {
         return followrec;
     }
 
     public void setFollowrec(byte[] followrec) {
         this.followrec = followrec;
-    }
-
-    public String getCommunicaterec() {
-        return communicaterec;
-    }
-
-    public void setCommunicaterec(String communicaterec) {
-        this.communicaterec = communicaterec;
-    }
-
-    private JSONArray follows;
-
-    public JSONArray getFollows() {
-        JSONArray array = null;
-        if (followrec == null) {
-            array = JSONArray.parseArray("[]");
-        } else {
-            String msg = new String(followrec);
-            array = JSONArray.parseArray(new String(msg));
-        }
-        followrec = null;
-        return array;
-    }
-
-    public void setFollows(JSONArray follows) {
-        this.follows = follows;
     }
 }

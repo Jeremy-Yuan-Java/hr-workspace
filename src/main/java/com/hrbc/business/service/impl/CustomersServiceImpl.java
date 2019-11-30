@@ -176,7 +176,7 @@ public class CustomersServiceImpl implements CustomersService {
             if (count > 0) {
                 example.setOffset((page - 1) * size);
                 example.setLimit(size);
-                list = mapper.selectByExampleWithBLOBs(example);
+                list = mapper.selectByExample(example);
             }
         }
 

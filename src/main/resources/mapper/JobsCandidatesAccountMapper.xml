@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrbc.business.mapper.JobsCandidatesAccountMapper">
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.JobsCandidatesAccount">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="account_date" jdbcType="TIMESTAMP" property="accountDate" />
+    <result column="account_money" jdbcType="DOUBLE" property="accountMoney" />
+    <result column="jobs_candidates_id" jdbcType="INTEGER" property="jobsCandidatesId" />
+    <result column="cname" jdbcType="VARCHAR" property="cname" />
+    <result column="cno" jdbcType="VARCHAR" property="cno" />
+    <result column="jobno" jdbcType="VARCHAR" property="jobno" />
+    <result column="jobdesc" jdbcType="VARCHAR" property="jobdesc" />
+    <result column="candidatesid" jdbcType="INTEGER" property="candidatesid" />
+    <result column="candidatesname" jdbcType="VARCHAR" property="candidatesname" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="createuser" jdbcType="VARCHAR" property="createuser" />
+    <result column="updateuser" jdbcType="VARCHAR" property="updateuser" />
+    <result column="back1" jdbcType="VARCHAR" property="back1" />
+    <result column="back2" jdbcType="VARCHAR" property="back2" />
+    <result column="back3" jdbcType="VARCHAR" property="back3" />
+    <result column="isdelete" jdbcType="INTEGER" property="isdelete" />
+    <result column="jobcandidateid" jdbcType="INTEGER" property="jobcandidateid" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="accounttype" jdbcType="VARCHAR" property="accounttype" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, account_date, account_money, jobs_candidates_id, cname, cno, jobno, jobdesc, 
+    candidatesid, candidatesname, createtime, updatetime, createuser, updateuser, back1, 
+    back2, back3, isdelete, jobcandidateid, remark, accounttype
+  </sql>
+  <select id="selectByExample" parameterType="com.hrbc.business.domain.JobsCandidatesAccountExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from jobs_candidates_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from jobs_candidates_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from jobs_candidates_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.JobsCandidatesAccountExample">
+    delete from jobs_candidates_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hrbc.business.domain.JobsCandidatesAccount">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into jobs_candidates_account (account_date, account_money, jobs_candidates_id, 
+      cname, cno, jobno, 
+      jobdesc, candidatesid, candidatesname, 
+      createtime, updatetime, createuser, 
+      updateuser, back1, back2, 
+      back3, isdelete, jobcandidateid, 
+      remark, accounttype)
+    values (#{accountDate,jdbcType=TIMESTAMP}, #{accountMoney,jdbcType=DOUBLE}, #{jobsCandidatesId,jdbcType=INTEGER}, 
+      #{cname,jdbcType=VARCHAR}, #{cno,jdbcType=VARCHAR}, #{jobno,jdbcType=VARCHAR}, 
+      #{jobdesc,jdbcType=VARCHAR}, #{candidatesid,jdbcType=INTEGER}, #{candidatesname,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR}, 
+      #{updateuser,jdbcType=VARCHAR}, #{back1,jdbcType=VARCHAR}, #{back2,jdbcType=VARCHAR}, 
+      #{back3,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, #{jobcandidateid,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{accounttype,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.JobsCandidatesAccount">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into jobs_candidates_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="accountDate != null">
+        account_date,
+      </if>
+      <if test="accountMoney != null">
+        account_money,
+      </if>
+      <if test="jobsCandidatesId != null">
+        jobs_candidates_id,
+      </if>
+      <if test="cname != null">
+        cname,
+      </if>
+      <if test="cno != null">
+        cno,
+      </if>
+      <if test="jobno != null">
+        jobno,
+      </if>
+      <if test="jobdesc != null">
+        jobdesc,
+      </if>
+      <if test="candidatesid != null">
+        candidatesid,
+      </if>
+      <if test="candidatesname != null">
+        candidatesname,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="createuser != null">
+        createuser,
+      </if>
+      <if test="updateuser != null">
+        updateuser,
+      </if>
+      <if test="back1 != null">
+        back1,
+      </if>
+      <if test="back2 != null">
+        back2,
+      </if>
+      <if test="back3 != null">
+        back3,
+      </if>
+      <if test="isdelete != null">
+        isdelete,
+      </if>
+      <if test="jobcandidateid != null">
+        jobcandidateid,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="accounttype != null">
+        accounttype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="accountDate != null">
+        #{accountDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accountMoney != null">
+        #{accountMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="jobsCandidatesId != null">
+        #{jobsCandidatesId,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null">
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="cno != null">
+        #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="jobno != null">
+        #{jobno,jdbcType=VARCHAR},
+      </if>
+      <if test="jobdesc != null">
+        #{jobdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="candidatesid != null">
+        #{candidatesid,jdbcType=INTEGER},
+      </if>
+      <if test="candidatesname != null">
+        #{candidatesname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null">
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="back1 != null">
+        #{back1,jdbcType=VARCHAR},
+      </if>
+      <if test="back2 != null">
+        #{back2,jdbcType=VARCHAR},
+      </if>
+      <if test="back3 != null">
+        #{back3,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null">
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="jobcandidateid != null">
+        #{jobcandidateid,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="accounttype != null">
+        #{accounttype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hrbc.business.domain.JobsCandidatesAccountExample" resultType="java.lang.Long">
+    select count(*) from jobs_candidates_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update jobs_candidates_account
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.accountDate != null">
+        account_date = #{record.accountDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.accountMoney != null">
+        account_money = #{record.accountMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.jobsCandidatesId != null">
+        jobs_candidates_id = #{record.jobsCandidatesId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cname != null">
+        cname = #{record.cname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cno != null">
+        cno = #{record.cno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobno != null">
+        jobno = #{record.jobno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobdesc != null">
+        jobdesc = #{record.jobdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.candidatesid != null">
+        candidatesid = #{record.candidatesid,jdbcType=INTEGER},
+      </if>
+      <if test="record.candidatesname != null">
+        candidatesname = #{record.candidatesname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null">
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null">
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createuser != null">
+        createuser = #{record.createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null">
+        updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.back1 != null">
+        back1 = #{record.back1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.back2 != null">
+        back2 = #{record.back2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.back3 != null">
+        back3 = #{record.back3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isdelete != null">
+        isdelete = #{record.isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.jobcandidateid != null">
+        jobcandidateid = #{record.jobcandidateid,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accounttype != null">
+        accounttype = #{record.accounttype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update jobs_candidates_account
+    set id = #{record.id,jdbcType=INTEGER},
+      account_date = #{record.accountDate,jdbcType=TIMESTAMP},
+      account_money = #{record.accountMoney,jdbcType=DOUBLE},
+      jobs_candidates_id = #{record.jobsCandidatesId,jdbcType=INTEGER},
+      cname = #{record.cname,jdbcType=VARCHAR},
+      cno = #{record.cno,jdbcType=VARCHAR},
+      jobno = #{record.jobno,jdbcType=VARCHAR},
+      jobdesc = #{record.jobdesc,jdbcType=VARCHAR},
+      candidatesid = #{record.candidatesid,jdbcType=INTEGER},
+      candidatesname = #{record.candidatesname,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      createuser = #{record.createuser,jdbcType=VARCHAR},
+      updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      back1 = #{record.back1,jdbcType=VARCHAR},
+      back2 = #{record.back2,jdbcType=VARCHAR},
+      back3 = #{record.back3,jdbcType=VARCHAR},
+      isdelete = #{record.isdelete,jdbcType=INTEGER},
+      jobcandidateid = #{record.jobcandidateid,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      accounttype = #{record.accounttype,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.JobsCandidatesAccount">
+    update jobs_candidates_account
+    <set>
+      <if test="accountDate != null">
+        account_date = #{accountDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accountMoney != null">
+        account_money = #{accountMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="jobsCandidatesId != null">
+        jobs_candidates_id = #{jobsCandidatesId,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null">
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="cno != null">
+        cno = #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="jobno != null">
+        jobno = #{jobno,jdbcType=VARCHAR},
+      </if>
+      <if test="jobdesc != null">
+        jobdesc = #{jobdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="candidatesid != null">
+        candidatesid = #{candidatesid,jdbcType=INTEGER},
+      </if>
+      <if test="candidatesname != null">
+        candidatesname = #{candidatesname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuser != null">
+        createuser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null">
+        updateuser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="back1 != null">
+        back1 = #{back1,jdbcType=VARCHAR},
+      </if>
+      <if test="back2 != null">
+        back2 = #{back2,jdbcType=VARCHAR},
+      </if>
+      <if test="back3 != null">
+        back3 = #{back3,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null">
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="jobcandidateid != null">
+        jobcandidateid = #{jobcandidateid,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="accounttype != null">
+        accounttype = #{accounttype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.JobsCandidatesAccount">
+    update jobs_candidates_account
+    set account_date = #{accountDate,jdbcType=TIMESTAMP},
+      account_money = #{accountMoney,jdbcType=DOUBLE},
+      jobs_candidates_id = #{jobsCandidatesId,jdbcType=INTEGER},
+      cname = #{cname,jdbcType=VARCHAR},
+      cno = #{cno,jdbcType=VARCHAR},
+      jobno = #{jobno,jdbcType=VARCHAR},
+      jobdesc = #{jobdesc,jdbcType=VARCHAR},
+      candidatesid = #{candidatesid,jdbcType=INTEGER},
+      candidatesname = #{candidatesname,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      createuser = #{createuser,jdbcType=VARCHAR},
+      updateuser = #{updateuser,jdbcType=VARCHAR},
+      back1 = #{back1,jdbcType=VARCHAR},
+      back2 = #{back2,jdbcType=VARCHAR},
+      back3 = #{back3,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      jobcandidateid = #{jobcandidateid,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      accounttype = #{accounttype,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into jobs_candidates_account (
+    account_date,
+    account_money,
+    jobs_candidates_id,
+    cname,
+    cno,
+    jobno,
+    jobdesc,
+    candidatesid,
+    candidatesname,
+    createtime,
+    updatetime,
+    createuser,
+    updateuser,
+    back1,
+    back2,
+    back3,
+    isdelete,
+    jobcandidateid,
+    remark,
+    accounttype
+    )
+    values
+    <foreach collection="recordList" index="index" item="item" separator=",">
+      (
+      #{item.accountDate,jdbcType=TIMESTAMP},
+      #{item.accountMoney,jdbcType=DOUBLE},
+      #{item.jobsCandidatesId,jdbcType=INTEGER},
+      #{item.cname,jdbcType=VARCHAR},
+      #{item.cno,jdbcType=VARCHAR},
+      #{item.jobno,jdbcType=VARCHAR},
+      #{item.jobdesc,jdbcType=VARCHAR},
+      #{item.candidatesid,jdbcType=INTEGER},
+      #{item.candidatesname,jdbcType=VARCHAR},
+      #{item.createtime,jdbcType=TIMESTAMP},
+      #{item.updatetime,jdbcType=TIMESTAMP},
+      #{item.createuser,jdbcType=VARCHAR},
+      #{item.updateuser,jdbcType=VARCHAR},
+      #{item.back1,jdbcType=VARCHAR},
+      #{item.back2,jdbcType=VARCHAR},
+      #{item.back3,jdbcType=VARCHAR},
+      #{item.isdelete,jdbcType=INTEGER},
+      #{item.jobcandidateid,jdbcType=INTEGER},
+      #{item.remark,jdbcType=VARCHAR},
+      #{item.accounttype,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+</mapper>

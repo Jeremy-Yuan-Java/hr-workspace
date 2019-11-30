@@ -883,4 +883,299 @@
             ) t3
             ) t4
     </select>
+
+    <resultMap id="depositMap" type="com.hrbc.business.domain.DepositRecevied">
+        <id column="id" property="id"/>
+        <result column="entrytime" property="entrytime"/>
+
+    </resultMap>
+
+    <select id="queryDepositRecevied" resultMap="depositMap" parameterType="com.hrbc.business.domain.DepositRecevied">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        t5.id,
+        t5.candidateid,
+        t5.candidatename,
+        t5.optime,
+        t5.opuser,
+        t5.opusername,
+
+        IF (
+        SUBSTRING_INDEX(t5.ps1, ':' ,- 1) IS NULL,
+        0,
+        SUBSTRING_INDEX(t5.ps1, ':' ,- 1)
+        ) +
+        IF (
+        SUBSTRING_INDEX(t5.ps2, ':' ,- 1) IS NULL,
+        0,
+        SUBSTRING_INDEX(t5.ps2, ':' ,- 1)
+        ) +
+        IF (
+        SUBSTRING_INDEX(t5.ps3, ':' ,- 1) IS NULL,
+        0,
+        SUBSTRING_INDEX(t5.ps3, ':' ,- 1)
+        ) offermoney,
+        t5.date1 entrytime,
+        t5.offertime,
+        t6.id jobid,
+        t6.jobno,
+        t6.jobdesc,
+        t7.cno,
+        t7.cname,
+        t7.deducts,
+        t7.payments,
+        t7.ensurences,
+        t8.region,
+
+        IF (
+        t5.state = 5,
+        'offer待回款',
+        '入职待回款'
+        ) deposittype
+        FROM
+        (
+        SELECT
+        t3.*, t4.text4,
+        t4.date1,
+        t4.createtime offertime,
+        SUBSTRING_INDEX(t4.text4, ';', 1) ps1,
+
+        IF (
+        locate(
+        ';',
+        SUBSTRING_INDEX(t4.text4, ';', 2)
+        ) > 0,
+        SUBSTRING_INDEX(
+        SUBSTRING_INDEX(t4.text4, ';', 2),
+        ';' ,- 1
+        ),
+        NULL
+        ) ps2,
+
+        IF (
+        LENGTH(t4.text4) - LENGTH(REPLACE(t4.text4, ';', '')) = 2,
+        SUBSTRING_INDEX(t4.text4, ';' ,- 1),
+        NULL
+        ) ps3
+        FROM
+        (
+        SELECT
+        t1.*
+        FROM
+        jobs_candidates t1
+        WHERE
+        state IN (5, 6, 7, 13)
+        AND id NOT IN (
+        SELECT DISTINCT
+        t2.jobs_candidates_id
+        FROM
+        jobs_candidates_account t2
+        WHERE
+        t2.jobs_candidates_id IS NOT NULL
+        )
+        ) t3
+        LEFT JOIN (
+        SELECT
+        *
+        FROM
+        jobs_candidates_state
+        WHERE
+        flowstate = 5
+        ) t4 ON t3.id = t4.jcid
+        ) t5
+        LEFT JOIN customers_jobs t6 ON t5.jobid = t6.id
+        LEFT JOIN customers t7 ON t6.cno = t7.cno
+        LEFT JOIN staffs t8 ON t5.opuser = t8.username
+        ) tt
+        <where>
+
+            <if test="opuser!=null">
+                and tt.opuser = #{opuser}
+            </if>
+            <if test="cno != null">
+                and tt.cno = #{cno}
+            </if>
+            <if test="jobno != null">
+                and tt.jobid = #{jobno}
+            </if>
+            <if test="candidateid != null">
+                and tt.candidateid = #{candidateid}
+            </if>
+            <if test="deposittype != null">
+                and tt.deposittype = #{deposittype}
+            </if>
+            <if test="region != null">
+                and tt.region = #{region}
+            </if>
+        </where>
+            <if test="offerset != null">
+               limit #{offerset},#{limit}
+            </if>
+
+    </select>
+
+    <select id="countDepositRecevied" resultType="_int">
+        SELECT
+        count(1)
+        FROM
+        (
+        SELECT
+        t5.id,
+        t5.candidateid,
+        t5.candidatename,
+        t5.optime,
+        t5.opuser,
+        t5.opusername,
+
+        IF (
+        SUBSTRING_INDEX(t5.ps1, ':' ,- 1) IS NULL,
+        0,
+        SUBSTRING_INDEX(t5.ps1, ':' ,- 1)
+        ) +
+        IF (
+        SUBSTRING_INDEX(t5.ps2, ':' ,- 1) IS NULL,
+        0,
+        SUBSTRING_INDEX(t5.ps2, ':' ,- 1)
+        ) +
+        IF (
+        SUBSTRING_INDEX(t5.ps3, ':' ,- 1) IS NULL,
+        0,
+        SUBSTRING_INDEX(t5.ps3, ':' ,- 1)
+        ) offermoney,
+        t5.date1 entrytime,
+        t5.offertime,
+        t6.id jobid,
+        t6.jobno,
+        t6.jobdesc,
+        t7.cno,
+        t7.cname,
+        t7.deducts,
+        t7.payments,
+        t7.ensurences,
+        t8.region,
+
+        IF (
+        t5.state = 5,
+        'offer待回款',
+        '入职待回款'
+        ) deposittype
+        FROM
+        (
+        SELECT
+        t3.*, t4.text4,
+        t4.date1,
+        t4.createtime offertime,
+        SUBSTRING_INDEX(t4.text4, ';', 1) ps1,
+
+        IF (
+        locate(
+        ';',
+        SUBSTRING_INDEX(t4.text4, ';', 2)
+        ) > 0,
+        SUBSTRING_INDEX(
+        SUBSTRING_INDEX(t4.text4, ';', 2),
+        ';' ,- 1
+        ),
+        NULL
+        ) ps2,
+
+        IF (
+        LENGTH(t4.text4) - LENGTH(REPLACE(t4.text4, ';', '')) = 2,
+        SUBSTRING_INDEX(t4.text4, ';' ,- 1),
+        NULL
+        ) ps3
+        FROM
+        (
+        SELECT
+        t1.*
+        FROM
+        jobs_candidates t1
+        WHERE
+        state IN (5, 6, 7, 13)
+        AND id NOT IN (
+        SELECT DISTINCT
+        t2.jobs_candidates_id
+        FROM
+        jobs_candidates_account t2
+        WHERE
+        t2.jobs_candidates_id IS NOT NULL
+        )
+        ) t3
+        LEFT JOIN (
+        SELECT
+        *
+        FROM
+        jobs_candidates_state
+        WHERE
+        flowstate = 5
+        ) t4 ON t3.id = t4.jcid
+        ) t5
+        LEFT JOIN customers_jobs t6 ON t5.jobid = t6.id
+        LEFT JOIN customers t7 ON t6.cno = t7.cno
+        LEFT JOIN staffs t8 ON t5.opuser = t8.username
+        ) tt
+        <where>
+
+            <if test="opuser!=null">
+                and tt.opuser = #{opuser}
+            </if>
+            <if test="cno != null">
+                and tt.cno = #{cno}
+            </if>
+            <if test="jobno != null">
+                and tt.jobid = #{jobno}
+            </if>
+            <if test="candidateid != null">
+                and tt.candidateid = #{candidateid}
+            </if>
+            <if test="deposittype != null">
+                and tt.deposittype = #{deposittype}
+            </if>
+            <if test="region != null">
+                and tt.region = #{region}
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询签约数量，根据 员工，年份 和月份 -->
+    <select id="querySignCount" parameterType="com.hrbc.business.domain.WorkPlan" resultType="_int">
+        SELECT
+            IFNULL(count(*),0)
+        FROM
+            customers
+        WHERE
+            businessstate = '签约'
+        AND createuser = #{username}
+        AND YEAR (updatetime) = #{years}
+        AND MONTH (updatetime) = #{months}
+    </select>
+
+    <!-- 查询出offer额  -->
+    <select id="queryOfferComplete" parameterType="com.hrbc.business.domain.WorkPlan" resultType="string">
+        SELECT
+            text4
+        FROM
+            jobs_candidates_state t
+        WHERE
+            t.flowstate = 5
+        AND opuser = #{username}
+        AND YEAR (CREATETIME) = #{years}
+        AND MONTH (createtime) = #{months}
+        AND text4 is not null
+    </select>
+    <!-- 查询出绩效数据-->
+    <select id="queryPerformance" parameterType="com.hrbc.business.domain.WorkPlan" resultType="string">
+        SELECT
+            text4
+        FROM
+            jobs_candidates_state t
+        WHERE
+            t.flowstate = 5
+        AND YEAR (CREATETIME) = #{years}
+        AND MONTH (createtime) = #{months}
+        AND text4 is not null
+    </select>
 </mapper>

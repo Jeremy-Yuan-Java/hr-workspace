@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrbc.business.mapper.InvoicesMapper">
+  <resultMap id="BaseResultMap" type="com.hrbc.business.domain.Invoices">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="invoicetype" jdbcType="VARCHAR" property="invoicetype" />
+    <result column="cno" jdbcType="VARCHAR" property="cno" />
+    <result column="cname" jdbcType="VARCHAR" property="cname" />
+    <result column="taxnum" jdbcType="VARCHAR" property="taxnum" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="depositbank" jdbcType="VARCHAR" property="depositbank" />
+    <result column="banknumber" jdbcType="VARCHAR" property="banknumber" />
+    <result column="depositmoney" jdbcType="DOUBLE" property="depositmoney" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="deposittime" jdbcType="DATE" property="deposittime" />
+    <result column="invoicestatus" jdbcType="VARCHAR" property="invoicestatus" />
+    <result column="proposer" jdbcType="VARCHAR" property="proposer" />
+    <result column="proposername" jdbcType="VARCHAR" property="proposername" />
+    <result column="drawer" jdbcType="VARCHAR" property="drawer" />
+    <result column="drawername" jdbcType="VARCHAR" property="drawername" />
+    <result column="createuser" jdbcType="VARCHAR" property="createuser" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updateuser" jdbcType="VARCHAR" property="updateuser" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="isdelete" jdbcType="INTEGER" property="isdelete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, invoicetype, cno, cname, taxnum, address, phone, depositbank, banknumber, depositmoney, 
+    remark, deposittime, invoicestatus, proposer, proposername, drawer, drawername, createuser, 
+    createtime, updateuser, updatetime, isdelete
+  </sql>
+  <select id="selectByExample" parameterType="com.hrbc.business.domain.InvoicesExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from invoices
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from invoices
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from invoices
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hrbc.business.domain.InvoicesExample">
+    delete from invoices
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hrbc.business.domain.Invoices">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into invoices (invoicetype, cno, cname, 
+      taxnum, address, phone, 
+      depositbank, banknumber, depositmoney, 
+      remark, deposittime, invoicestatus, 
+      proposer, proposername, drawer, 
+      drawername, createuser, createtime, 
+      updateuser, updatetime, isdelete
+      )
+    values (#{invoicetype,jdbcType=VARCHAR}, #{cno,jdbcType=VARCHAR}, #{cname,jdbcType=VARCHAR}, 
+      #{taxnum,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{depositbank,jdbcType=VARCHAR}, #{banknumber,jdbcType=VARCHAR}, #{depositmoney,jdbcType=DOUBLE}, 
+      #{remark,jdbcType=VARCHAR}, #{deposittime,jdbcType=DATE}, #{invoicestatus,jdbcType=VARCHAR}, 
+      #{proposer,jdbcType=VARCHAR}, #{proposername,jdbcType=VARCHAR}, #{drawer,jdbcType=VARCHAR}, 
+      #{drawername,jdbcType=VARCHAR}, #{createuser,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updateuser,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrbc.business.domain.Invoices">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into invoices
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="invoicetype != null">
+        invoicetype,
+      </if>
+      <if test="cno != null">
+        cno,
+      </if>
+      <if test="cname != null">
+        cname,
+      </if>
+      <if test="taxnum != null">
+        taxnum,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="depositbank != null">
+        depositbank,
+      </if>
+      <if test="banknumber != null">
+        banknumber,
+      </if>
+      <if test="depositmoney != null">
+        depositmoney,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="deposittime != null">
+        deposittime,
+      </if>
+      <if test="invoicestatus != null">
+        invoicestatus,
+      </if>
+      <if test="proposer != null">
+        proposer,
+      </if>
+      <if test="proposername != null">
+        proposername,
+      </if>
+      <if test="drawer != null">
+        drawer,
+      </if>
+      <if test="drawername != null">
+        drawername,
+      </if>
+      <if test="createuser != null">
+        createuser,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updateuser != null">
+        updateuser,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="isdelete != null">
+        isdelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="invoicetype != null">
+        #{invoicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="cno != null">
+        #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="cname != null">
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="taxnum != null">
+        #{taxnum,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="depositbank != null">
+        #{depositbank,jdbcType=VARCHAR},
+      </if>
+      <if test="banknumber != null">
+        #{banknumber,jdbcType=VARCHAR},
+      </if>
+      <if test="depositmoney != null">
+        #{depositmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="deposittime != null">
+        #{deposittime,jdbcType=DATE},
+      </if>
+      <if test="invoicestatus != null">
+        #{invoicestatus,jdbcType=VARCHAR},
+      </if>
+      <if test="proposer != null">
+        #{proposer,jdbcType=VARCHAR},
+      </if>
+      <if test="proposername != null">
+        #{proposername,jdbcType=VARCHAR},
+      </if>
+      <if test="drawer != null">
+        #{drawer,jdbcType=VARCHAR},
+      </if>
+      <if test="drawername != null">
+        #{drawername,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null">
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdelete != null">
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hrbc.business.domain.InvoicesExample" resultType="java.lang.Long">
+    select count(*) from invoices
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update invoices
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.invoicetype != null">
+        invoicetype = #{record.invoicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cno != null">
+        cno = #{record.cno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cname != null">
+        cname = #{record.cname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxnum != null">
+        taxnum = #{record.taxnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.depositbank != null">
+        depositbank = #{record.depositbank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.banknumber != null">
+        banknumber = #{record.banknumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.depositmoney != null">
+        depositmoney = #{record.depositmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deposittime != null">
+        deposittime = #{record.deposittime,jdbcType=DATE},
+      </if>
+      <if test="record.invoicestatus != null">
+        invoicestatus = #{record.invoicestatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proposer != null">
+        proposer = #{record.proposer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proposername != null">
+        proposername = #{record.proposername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drawer != null">
+        drawer = #{record.drawer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drawername != null">
+        drawername = #{record.drawername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createuser != null">
+        createuser = #{record.createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null">
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateuser != null">
+        updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null">
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isdelete != null">
+        isdelete = #{record.isdelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update invoices
+    set id = #{record.id,jdbcType=INTEGER},
+      invoicetype = #{record.invoicetype,jdbcType=VARCHAR},
+      cno = #{record.cno,jdbcType=VARCHAR},
+      cname = #{record.cname,jdbcType=VARCHAR},
+      taxnum = #{record.taxnum,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      depositbank = #{record.depositbank,jdbcType=VARCHAR},
+      banknumber = #{record.banknumber,jdbcType=VARCHAR},
+      depositmoney = #{record.depositmoney,jdbcType=DOUBLE},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      deposittime = #{record.deposittime,jdbcType=DATE},
+      invoicestatus = #{record.invoicestatus,jdbcType=VARCHAR},
+      proposer = #{record.proposer,jdbcType=VARCHAR},
+      proposername = #{record.proposername,jdbcType=VARCHAR},
+      drawer = #{record.drawer,jdbcType=VARCHAR},
+      drawername = #{record.drawername,jdbcType=VARCHAR},
+      createuser = #{record.createuser,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      isdelete = #{record.isdelete,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrbc.business.domain.Invoices">
+    update invoices
+    <set>
+      <if test="invoicetype != null">
+        invoicetype = #{invoicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="cno != null">
+        cno = #{cno,jdbcType=VARCHAR},
+      </if>
+      <if test="cname != null">
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="taxnum != null">
+        taxnum = #{taxnum,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="depositbank != null">
+        depositbank = #{depositbank,jdbcType=VARCHAR},
+      </if>
+      <if test="banknumber != null">
+        banknumber = #{banknumber,jdbcType=VARCHAR},
+      </if>
+      <if test="depositmoney != null">
+        depositmoney = #{depositmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="deposittime != null">
+        deposittime = #{deposittime,jdbcType=DATE},
+      </if>
+      <if test="invoicestatus != null">
+        invoicestatus = #{invoicestatus,jdbcType=VARCHAR},
+      </if>
+      <if test="proposer != null">
+        proposer = #{proposer,jdbcType=VARCHAR},
+      </if>
+      <if test="proposername != null">
+        proposername = #{proposername,jdbcType=VARCHAR},
+      </if>
+      <if test="drawer != null">
+        drawer = #{drawer,jdbcType=VARCHAR},
+      </if>
+      <if test="drawername != null">
+        drawername = #{drawername,jdbcType=VARCHAR},
+      </if>
+      <if test="createuser != null">
+        createuser = #{createuser,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateuser != null">
+        updateuser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdelete != null">
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrbc.business.domain.Invoices">
+    update invoices
+    set invoicetype = #{invoicetype,jdbcType=VARCHAR},
+      cno = #{cno,jdbcType=VARCHAR},
+      cname = #{cname,jdbcType=VARCHAR},
+      taxnum = #{taxnum,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      depositbank = #{depositbank,jdbcType=VARCHAR},
+      banknumber = #{banknumber,jdbcType=VARCHAR},
+      depositmoney = #{depositmoney,jdbcType=DOUBLE},
+      remark = #{remark,jdbcType=VARCHAR},
+      deposittime = #{deposittime,jdbcType=DATE},
+      invoicestatus = #{invoicestatus,jdbcType=VARCHAR},
+      proposer = #{proposer,jdbcType=VARCHAR},
+      proposername = #{proposername,jdbcType=VARCHAR},
+      drawer = #{drawer,jdbcType=VARCHAR},
+      drawername = #{drawername,jdbcType=VARCHAR},
+      createuser = #{createuser,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updateuser = #{updateuser,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      isdelete = #{isdelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into invoices (
+    invoicetype,
+    cno,
+    cname,
+    taxnum,
+    address,
+    phone,
+    depositbank,
+    banknumber,
+    depositmoney,
+    remark,
+    deposittime,
+    invoicestatus,
+    proposer,
+    proposername,
+    drawer,
+    drawername,
+    createuser,
+    createtime,
+    updateuser,
+    updatetime,
+    isdelete
+    )
+    values
+    <foreach collection="recordList" index="index" item="item" separator=",">
+      (
+      #{item.invoicetype,jdbcType=VARCHAR},
+      #{item.cno,jdbcType=VARCHAR},
+      #{item.cname,jdbcType=VARCHAR},
+      #{item.taxnum,jdbcType=VARCHAR},
+      #{item.address,jdbcType=VARCHAR},
+      #{item.phone,jdbcType=VARCHAR},
+      #{item.depositbank,jdbcType=VARCHAR},
+      #{item.banknumber,jdbcType=VARCHAR},
+      #{item.depositmoney,jdbcType=DOUBLE},
+      #{item.remark,jdbcType=VARCHAR},
+      #{item.deposittime,jdbcType=DATE},
+      #{item.invoicestatus,jdbcType=VARCHAR},
+      #{item.proposer,jdbcType=VARCHAR},
+      #{item.proposername,jdbcType=VARCHAR},
+      #{item.drawer,jdbcType=VARCHAR},
+      #{item.drawername,jdbcType=VARCHAR},
+      #{item.createuser,jdbcType=VARCHAR},
+      #{item.createtime,jdbcType=TIMESTAMP},
+      #{item.updateuser,jdbcType=VARCHAR},
+      #{item.updatetime,jdbcType=TIMESTAMP},
+      #{item.isdelete,jdbcType=INTEGER}
+      )
+    </foreach>
+  </insert>
+</mapper>
