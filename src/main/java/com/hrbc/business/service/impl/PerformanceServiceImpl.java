@@ -32,6 +32,7 @@ public class PerformanceServiceImpl  implements PerformanceService {
     public PerformanceDto query(PageQueryParamDTO params) {
         PerformanceDto dto = null;
         Performance performance = new Performance();
+        String activeName = null;
         if(params != null && params.getQuery() != null){
             // 查询数据的时间范围
             Date createtimest = params.getQuery().getDate("createtimest");
@@ -59,6 +60,7 @@ public class PerformanceServiceImpl  implements PerformanceService {
             String customername = params.getQuery().getString("customername");
             String jobname = params.getQuery().getString("jobname");
             String opusername = params.getQuery().getString("qopusername");
+            activeName = params.getQuery().getString("activeName");
 
             String ismy = params.getQuery().getString("ismy");
             if(!StringUtils.isEmpty(ismy) && "yes".equals(ismy)){
@@ -87,9 +89,23 @@ public class PerformanceServiceImpl  implements PerformanceService {
         }
 
         // 查询出月度的信息
-        List<Performance> days = performanceMapper.queryDay(performance);
-        List<Performance> months = performanceMapper.queryMonth(performance);
-        List<Performance> years = performanceMapper.queryYear(performance);
+        List<Performance> days = null;
+        List<Performance> months = null;
+        List<Performance> years = null;
+        if(activeName !=null){
+            if("first".equals(activeName)){
+                days = performanceMapper.queryDay(performance);
+            }
+
+            if("second".equals(activeName)){
+                months = performanceMapper.queryMonth(performance);
+            }
+
+            if("third".equals(activeName)){
+                years = performanceMapper.queryYear(performance);
+            }
+        }
+
         dto = new PerformanceDto();
         dto.setDays(days);
         dto.setMonths(months);
