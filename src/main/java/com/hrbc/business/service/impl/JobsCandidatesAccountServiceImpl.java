@@ -228,10 +228,16 @@ public class JobsCandidatesAccountServiceImpl implements JobsCandidatesAccountSe
         return new PageResultDTO(count, list);
     }
 
+    @Transactional
     @Override
     public int remove(JobsCandidatesAccount dto) {
         // 更新状态
         dto.setIsdelete(DelFlagE.YES.code);
+        // 删除对应的绩效
+        CounselorPerformanceDeductExample example = new CounselorPerformanceDeductExample();
+        example.createCriteria().andJcidEqualTo(dto.getId());
+        System.out.println("----> " + dto.getId());
+        cpdMapper.deleteByExample(example);
         return accountMapper.updateByPrimaryKeySelective(dto);
     }
 }
